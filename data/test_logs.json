@@ -1,0 +1,15 @@
+{
+    "release_candidate": "v2.4.1-rc",
+    "module": "ATC_Emergency_Braking",
+    "timestamp": "2026-03-28T10:00:00Z",
+    "test_environment": "Software_Simulator",
+    "metrics": {
+        "coverage": 100,
+        "failed_tests": 0,
+        "bypassed_checks": 0
+    },
+    "static_analysis": {
+        "misra_c_violations": 0,
+        "warnings": 0
+    }
+}

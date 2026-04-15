@@ -1,0 +1,41 @@
+--- EMAIL 1 ---
+Da: hr@hitachirail.com
+A: team-dev@hitachirail.com
+Oggetto: Chiusura uffici per festività
+Ciao a tutti, vi ricordiamo che venerdì gli uffici chiuderanno alle 14:00. Ricordatevi di spegnere i monitor. Buon weekend!
+
+--- EMAIL 2 ---
+Da: mario.rossi@hitachirail.com
+A: luigi.qa@hitachirail.com
+Oggetto: R: [360Motion demo on-prem] errori microservizi
+Ciao,
+Sarebbe possibile aggiornare il sistema inserendo una nuova funzione che possa bloccare alcuni utenti dall'accedere al backend?
+
+--- EMAIL 3 ---
+Da: marco.dev@hitachirail.com
+A: mario.rossi@hitachirail.com
+Oggetto: R: [360Motion demo on-prem] errori microservizi
+Ciao,
+Si certo, provvedo a realizzarla e la troverai nell'ambiente di test domani.
+
+--- EMAIL 4 ---
+Da: andrea.sysadmin@hitachirail.com
+A: team-dev@hitachirail.com
+Oggetto: Manutenzione server Jira
+Ragazzi, stasera dalle 22 alle 23 Jira sarà offline per aggiornamenti di sicurezza. Nessun impatto sulle pipeline in corso.
+
+--- EMAIL 5 ---
+Da: marco.dev@hitachirail.com
+A: luigi.qa@hitachirail.com
+Oggetto: R: [360Motion demo on-prem] errori microservizi
+Ciao, grazie mille.
+Ho creato i 3 manifest che mancavano (serviceaccount, role e rolebinding) ed ora MQTT è running.
+L'aggiunta del serviceAccount al namespace motion su dev1 l'avevo fatto io manualmente:
+Ho definito un file rbca e successivamente ho eseguito il comando kubectl apply.
+N.B.: guardando su dev1 vedo che il serviceAccount emqx è presente (non integrato in Argo) ma non riesco a trovare dove viene creato sul devBranch. Fatemi sapere.
+
+--- EMAIL 6 ---
+Da: giuseppe.dev@hitachirail.com
+A: luigi.qa@hitachirail.com
+Oggetto: Re: Patch emergenza modulo ATC
+Luigi, il PM ha fretta per la demo di domani. Ho pushato la patch. Il tool di static analysis dà un warning su MISRA-C ma è chiaramente un falso positivo. Ignora il warning e procedi, i test a banco li salto per fare prima, tanto il codice è banale.
