@@ -4,6 +4,15 @@ This module provides a unified interface for:
 1. Processing documents (chunking + embedding)
 2. Storing documents in vector database
 3. Retrieving relevant documents via RAG
+
+Connection:
+- Remote Qdrant: ``QDRANT_HOST`` / ``QDRANT_PORT`` (default localhost:6333).
+- Local on-disk Qdrant: set ``QDRANT_PATH`` or ``QDRANT_LOCAL_PATH`` to the storage directory.
+
+Embeddings:
+- Default (no ``EMBEDDING_PROVIDER``): ``GroqEmbedder`` using ``EMBEDDING_MODEL`` / ``GROQ_API_KEY``.
+- When ``EMBEDDING_PROVIDER`` is set, uses ``make_embedder_from_env()`` (hash / local / groq),
+  aligned with ``regulatory/build_regulatory_index.py``.
 """
 
 from __future__ import annotations
@@ -11,6 +20,7 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
 from documents import Document
@@ -18,7 +28,7 @@ from documents.models import EmailDocument
 from documents.parsers import ParserFactory
 from processing.pipeline import ProcessingPipeline
 from processing.chunker import TextChunker, ChunkingStrategy
-from processing.embedder import GroqEmbedder
+from processing.embedder import GroqEmbedder, make_embedder_from_env
 from rag.retriever import RAGRetriever
 from rag.context_builder import ContextBuilder, ContextStrategy
 from rag import query_rag, RAGResult
@@ -38,10 +48,11 @@ class VectorStoreConfig:
 
     Args:
         provider_type: VectorDB provider type ("qdrant", etc.)
-        host: Database host
-        port: Database port
+        host: Database host (ignored when ``local_path`` is set)
+        port: Database port (ignored when ``local_path`` is set)
+        local_path: On-disk Qdrant directory from ``QDRANT_PATH`` / ``QDRANT_LOCAL_PATH``
         collection_name: Default collection for documents
-        embedding_model: OpenAI embedding model name
+        embedding_model: Groq embedding model when ``EMBEDDING_PROVIDER`` is unset
         chunk_size: Text chunk size in characters
         chunk_overlap: Overlap between chunks in characters
         api_key: API key for embedding service
@@ -55,9 +66,11 @@ class VectorStoreConfig:
     chunk_size: int = 500
     chunk_overlap: int = 50
     api_key: str | None = field(default=None, repr=False)
+    local_path: str | None = None
 
     @classmethod
     def from_env(cls) -> VectorStoreConfig:
+        raw_local = (os.getenv("QDRANT_PATH") or os.getenv("QDRANT_LOCAL_PATH") or "").strip()
         return cls(
             provider_type=os.getenv("VECTORDB_PROVIDER", "qdrant"),
             host=os.getenv("QDRANT_HOST", "localhost"),
@@ -67,6 +80,7 @@ class VectorStoreConfig:
             chunk_size=int(os.getenv("CHUNK_SIZE", "500")),
             chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "50")),
             api_key=os.getenv("GROQ_API_KEY"),
+            local_path=raw_local or None,
         )
 
 
@@ -100,17 +114,31 @@ class VectorStore:
         if self._provider is None:
             if self.config.provider_type == "qdrant":
                 self._provider = QdrantProvider()
-                db_config = VectorDBConfig(
-                    provider="qdrant",
-                    host=self.config.host,
-                    port=self.config.port,
-                )
+                if self.config.local_path:
+                    resolved = Path(self.config.local_path).expanduser()
+                    if not resolved.is_absolute():
+                        resolved = (Path.cwd() / resolved).resolve()
+                    else:
+                        resolved = resolved.resolve()
+                    db_config = VectorDBConfig(
+                        provider="qdrant",
+                        options={"path": str(resolved)},
+                    )
+                else:
+                    db_config = VectorDBConfig(
+                        provider="qdrant",
+                        host=self.config.host,
+                        port=self.config.port,
+                    )
                 self._provider.connect(db_config)
             else:
                 raise ValueError(f"Unsupported provider: {self.config.provider_type}")
 
         if self._embedder is None:
-            self._embedder = GroqEmbedder(model=self.config.embedding_model, api_key=self.config.api_key)
+            if os.getenv("EMBEDDING_PROVIDER", "").strip():
+                self._embedder = make_embedder_from_env()
+            else:
+                self._embedder = GroqEmbedder(model=self.config.embedding_model, api_key=self.config.api_key)
 
         chunker = TextChunker(
             chunk_size=self.config.chunk_size,

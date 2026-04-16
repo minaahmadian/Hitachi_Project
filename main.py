@@ -1,9 +1,12 @@
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 from langgraph.graph import StateGraph, END
+from core.audit_export import write_vdd_audit_artifact
 from core.state import GraphState
 from core.io_utils import load_local_data
 from core.docx_parser import parse_docx
@@ -46,6 +49,11 @@ if __name__ == "__main__":
     )
     
     final_state = app.invoke(initial_state)
+
+    repo_root = Path(__file__).resolve().parent
+    audit_path = write_vdd_audit_artifact(repo_root=repo_root, final_state=final_state)
+    if audit_path is not None:
+        print(f"\nVDD audit bundle written to: {audit_path}")
     
     print("\n" + "="*50)
     print("DRAFT VDD (Version Description Document)")
