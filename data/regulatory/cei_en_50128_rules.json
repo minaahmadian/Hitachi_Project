@@ -69,19 +69,6 @@
     "clause_id": "5.1",
     "clause_title": "Objective",
     "modality": "SHALL",
-    "requirement_text": "F S O D L A S N A a a s s e c n o c i a p o C Requirements Requisiti There shall be produced, in accordance with EN 50126 and EN 50129: Devono essere prodotti, in accordo con la EN 50126 e la EN 50129: (cid:2) (cid:2) (cid:2) (cid:2) System Requirements Specification; System Safety Requirements Specification; System Architecture Description; System Safety Plan; (cid:2) (cid:2) Specifica dei Requisiti di Sistema; Specifica dei Requisiti di Sicurezza del Sistema; (cid:2) Descrizione dell\u2019Architettura del Sistema; (cid:2) Piano di Sicurezza del Sistema; which include: che comprendono: (cid:2) (cid:2) (cid:2) (cid:2) safety functions; configuration or architecture of the system; hardware reliability requirements; safety integrity requirements.",
-    "condition": null,
-    "action": "F S O D L A S N A a a s s e c n o c i a p o C Requirements Requisiti There shall be produced, in accordance with EN 50126 and EN 50129: Devono essere prodotti, in accordo con la EN 50126 e la EN 50129: (cid:2) (cid:2) (cid:2) (cid:2) System Requirements Specification; System Safety Requirements Specification; System Architecture Description; System Safety Plan; (cid:2) (cid:2) Specifica dei Requisiti di Sistema; Specifica dei Requisiti di Sicurezza del Sistema; (cid:2) Descrizione dell\u2019Architettura del Sistema; (cid:2) Piano di Sicurezza del Sistema; which include: che comprendono: (cid:2) (cid:2) (cid:2) (cid:2) safety functions; configuration or architecture of the system; hardware reliability requirements; safety integrity requirements.",
-    "category": "traceability_and_requirements",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00007",
-    "clause_id": "5.1",
-    "clause_title": "Objective",
-    "modality": "SHALL",
     "requirement_text": "The software safety integrity level shall be spec- ified through following the general process for obtaining a safety integrity level identified in EN 50126.",
     "condition": null,
     "action": "The software safety integrity level shall be spec- ified through following the general process for obtaining a safety integrity level identified in EN 50126.",
@@ -91,7 +78,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00008",
+    "rule_id": "R-00007",
     "clause_id": "5.1",
     "clause_title": "Objective",
     "modality": "SHALL",
@@ -104,7 +91,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00009",
+    "rule_id": "R-00008",
     "clause_id": "5.2.3",
     "clause_title": "Without further precautions, the software safety",
     "modality": "SHALL",
@@ -117,7 +104,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00010",
+    "rule_id": "R-00009",
     "clause_id": "5.2.5",
     "clause_title": "Risk may be quanti\ufb01ed but it is not possible to",
     "modality": "SHALL",
@@ -130,20 +117,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00011",
+    "rule_id": "R-00010",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
     "requirement_text": "If different software components have different software safety integrity levels, these shall be specified in the Software Archi- tecture Specification (clause 9).",
-    "condition": "If different software components have different software safety integrity levels, these",
-    "action": "shall be specified in the Software Archi- tecture Specification (clause 9).",
+    "condition": "If different software components have different software safety integrity levels",
+    "action": "these shall be specified in the Software Archi- tecture Specification (clause 9).",
     "category": "safety_assurance",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00012",
+    "rule_id": "R-00011",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -156,7 +143,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00013",
+    "rule_id": "R-00012",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -169,7 +156,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00014",
+    "rule_id": "R-00013",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -182,7 +169,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00015",
+    "rule_id": "R-00014",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -195,7 +182,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00016",
+    "rule_id": "R-00015",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -208,7 +195,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00017",
+    "rule_id": "R-00016",
     "clause_id": "6.2.7",
     "clause_title": "The software safety integrity level shall be spec-",
     "modality": "SHALL",
@@ -221,7 +208,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00018",
+    "rule_id": "R-00017",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -234,7 +221,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00019",
+    "rule_id": "R-00018",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -247,7 +234,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00020",
+    "rule_id": "R-00019",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -260,7 +247,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00021",
+    "rule_id": "R-00020",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -273,7 +260,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00022",
+    "rule_id": "R-00021",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -286,7 +273,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00023",
+    "rule_id": "R-00022",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -299,7 +286,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00024",
+    "rule_id": "R-00023",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "MUST",
@@ -312,7 +299,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00025",
+    "rule_id": "R-00024",
     "clause_id": "6.2.8",
     "clause_title": "Throughout the Software Lifecycle, the parties",
     "modality": "SHALL",
@@ -325,20 +312,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00026",
+    "rule_id": "R-00025",
     "clause_id": "6.2.10",
     "clause_title": "At the discretion of the Safety Authority, the As-",
     "modality": "SHALL",
-    "requirement_text": "sessor may be part of the supplier\u2019s organisation or of the customer\u2019s organisation but, in such cases, the Assessor shall A discrezione dell\u2019Autorit\u00e0 per la Sicurezza, il Va- lutatore pu\u00f2 far parte dell\u2019organizzazione del for- nitore, o dell\u2019organizzazione del cliente, ma in tale caso, il Valutatore deve (cid:2) (cid:2) (cid:2) be authorised by the Safety Authority; be totally independent from the project team; report directly to the Safety Authority.",
+    "requirement_text": "sessor may be part of the supplier\u2019s organisation or of the customer\u2019s organisation but, in such cases, the Assessor shall A discrezione dell\u2019Autorit\u00e0 per la Sicurezza, il Va- lutatore pu\u00f2 far parte dell\u2019organizzazione del for- nitore, o dell\u2019organizzazione del cliente, ma in tale caso, il Valutatore deve be authorised by the Safety Authority; be totally independent from the project team; report directly to the Safety Authority.",
     "condition": null,
-    "action": "sessor may be part of the supplier\u2019s organisation or of the customer\u2019s organisation but, in such cases, the Assessor shall A discrezione dell\u2019Autorit\u00e0 per la Sicurezza, il Va- lutatore pu\u00f2 far parte dell\u2019organizzazione del for- nitore, o dell\u2019organizzazione del cliente, ma in tale caso, il Valutatore deve (cid:2) (cid:2) (cid:2) be authorised by the Safety Authority; be totally independent from the project team; report directly to the Safety Authority.",
+    "action": "sessor may be part of the supplier\u2019s organisation or of the customer\u2019s organisation but, in such cases, the Assessor shall A discrezione dell\u2019Autorit\u00e0 per la Sicurezza, il Va- lutatore pu\u00f2 far parte dell\u2019organizzazione del for- nitore, o dell\u2019organizzazione del cliente, ma in tale caso, il Valutatore deve be authorised by the Safety Authority; be totally independent from the project team; report directly to the Safety Authority.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00027",
+    "rule_id": "R-00026",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -351,7 +338,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00028",
+    "rule_id": "R-00027",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -364,7 +351,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00029",
+    "rule_id": "R-00028",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -377,7 +364,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00030",
+    "rule_id": "R-00029",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -390,7 +377,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00031",
+    "rule_id": "R-00030",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -403,7 +390,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00032",
+    "rule_id": "R-00031",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -416,7 +403,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00033",
+    "rule_id": "R-00032",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -429,7 +416,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00034",
+    "rule_id": "R-00033",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -442,7 +429,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00035",
+    "rule_id": "R-00034",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -455,7 +442,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00036",
+    "rule_id": "R-00035",
     "clause_id": "7.2.6",
     "clause_title": "Objectives",
     "modality": "SHALL",
@@ -468,20 +455,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00037",
-    "clause_id": "7.2.6",
-    "clause_title": "Objectives",
-    "modality": "SHALL",
-    "requirement_text": "F S O D L A S N A a a s s e c n o c i a p o C veloped software (see 9.4.6) shall be written ac- cording to the following rules: a) it shall contain or implement all applicable conditions and requirements of the prede- cessor document with which it has a hierar- chical relationship; it shall not contradict the predecessor docu- ment; b) sviluppato in precedenza (vedere 9.4.6) deve es- sere scritto secondo le seguenti regole: a) deve contenere o implementare tutte le con- dizioni ed i requisiti applicabili del documen- to predecessore con il quale ha una relazione gerarchica; b) non deve contraddire il documento predeces- sore; 7.2.7 7.2.8 7.2.9",
-    "condition": null,
-    "action": "F S O D L A S N A a a s s e c n o c i a p o C veloped software (see 9.4.6) shall be written ac- cording to the following rules: a) it shall contain or implement all applicable conditions and requirements of the prede- cessor document with which it has a hierar- chical relationship; it shall not contradict the predecessor docu- ment; b) sviluppato in precedenza (vedere 9.4.6) deve es- sere scritto secondo le seguenti regole: a) deve contenere o implementare tutte le con- dizioni ed i requisiti applicabili del documen- to predecessore con il quale ha una relazione gerarchica; b) non deve contraddire il documento predeces- sore; 7.2.7 7.2.8 7.2.9",
-    "category": "traceability_and_requirements",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00038",
+    "rule_id": "R-00036",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHALL",
@@ -494,7 +468,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00039",
+    "rule_id": "R-00037",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHALL",
@@ -507,7 +481,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00040",
+    "rule_id": "R-00038",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHALL",
@@ -520,7 +494,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00041",
+    "rule_id": "R-00039",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHALL",
@@ -533,20 +507,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00042",
+    "rule_id": "R-00040",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHOULD",
     "requirement_text": "Where a clause is given, the following clauses should also be checked as they may contain fur- ther information.",
-    "condition": "Where a clause is given, the following clauses",
-    "action": "should also be checked as they may contain fur- ther information.",
+    "condition": "Where a clause is given",
+    "action": "the following clauses should also be checked as they may contain fur- ther information.",
     "category": "general_compliance",
     "severity": "MEDIUM",
     "confidence": 0.83,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00043",
+    "rule_id": "R-00041",
     "clause_id": "7.2.10",
     "clause_title": "c) each term, acronym or abbreviation shall",
     "modality": "SHOULD",
@@ -559,7 +533,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00044",
+    "rule_id": "R-00042",
     "clause_id": "8.4.1",
     "clause_title": "Requirements",
     "modality": "SHALL",
@@ -572,7 +546,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00045",
+    "rule_id": "R-00043",
     "clause_id": "8.4.1",
     "clause_title": "Requirements",
     "modality": "SHALL",
@@ -585,7 +559,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00046",
+    "rule_id": "R-00044",
     "clause_id": "8.4.1",
     "clause_title": "Requirements",
     "modality": "SHALL",
@@ -598,7 +572,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00047",
+    "rule_id": "R-00045",
     "clause_id": "8.4.2",
     "clause_title": "To the extent required by the software safety in-",
     "modality": "SHALL",
@@ -611,7 +585,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00048",
+    "rule_id": "R-00046",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -624,7 +598,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00049",
+    "rule_id": "R-00047",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -637,7 +611,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00050",
+    "rule_id": "R-00048",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -650,7 +624,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00051",
+    "rule_id": "R-00049",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -663,7 +637,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00052",
+    "rule_id": "R-00050",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -676,7 +650,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00053",
+    "rule_id": "R-00051",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -689,7 +663,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00054",
+    "rule_id": "R-00052",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -702,20 +676,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00055",
+    "rule_id": "R-00053",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
     "requirement_text": "When the software is required to perform func- tions especially those related to achieving the required system safety integrity level, then these shall be clearly identified in the Software Re- quirements Specification.",
-    "condition": "When the software is required to perform func- tions especially those related to achieving the required system safety integrity level, then these",
-    "action": "shall be clearly identified in the Software Re- quirements Specification.",
+    "condition": "When the software is required to perform func- tions especially those related to achieving the required system safety integrity level",
+    "action": "then these shall be clearly identified in the Software Re- quirements Specification.",
     "category": "traceability_and_requirements",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00056",
+    "rule_id": "R-00054",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -728,7 +702,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00057",
+    "rule_id": "R-00055",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -741,7 +715,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00058",
+    "rule_id": "R-00056",
     "clause_id": "8.4.13",
     "clause_title": "The Software Requirements Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -754,7 +728,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00059",
+    "rule_id": "R-00057",
     "clause_id": "9.4.1",
     "clause_title": "SW MODULE DESIGN",
     "modality": "SHALL",
@@ -767,7 +741,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00060",
+    "rule_id": "R-00058",
     "clause_id": "9.4.5",
     "clause_title": "The Software Architecture Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -780,7 +754,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00061",
+    "rule_id": "R-00059",
     "clause_id": "9.4.5",
     "clause_title": "The Software Architecture Speci\ufb01cation shall",
     "modality": "SHALL",
@@ -793,33 +767,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00062",
-    "clause_id": "9.4.5",
-    "clause_title": "The Software Architecture Speci\ufb01cation shall",
-    "modality": "SHALL",
-    "requirement_text": "The Software Architecture Specification shall identify all software components and for these components identify: i) whether these components are new, exist- ing or proprietary; ii) whether these components have been pre- viously validated and if so their validation conditions; ii) La Specifica dell\u2019Architettura del Software deve identificare tutti i componenti software e per que- sti componenti identificare: i) se questi componenti sono nuovi, esistenti o proprietari; se questi componenti sono stati precedente- mente validati ed in caso affermativo le loro condizioni di validazione; iii) the software safety integrity level of the iii) il livello di integrit\u00e0 della sicurezza del sof- component.",
-    "condition": "The Software Architecture Specification",
-    "action": "shall identify all software components and for these components identify: i) whether these components are new, exist- ing or proprietary; ii) whether these components have been pre- viously validated and if so their validation conditions; ii) La Specifica dell\u2019Architettura del Software deve identificare tutti i componenti software e per que- sti componenti identificare: i) se questi componenti sono nuovi, esistenti o proprietari; se questi componenti sono stati precedente- mente validati ed in caso affermativo le loro condizioni di validazione; iii) the software safety integrity level of the iii) il livello di integrit\u00e0 della sicurezza del sof- component.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00063",
-    "clause_id": "9.4.5",
-    "clause_title": "The Software Architecture Speci\ufb01cation shall",
-    "modality": "SHALL",
-    "requirement_text": "The use of COTS software shall be subject to the following restrictions: i) for software safety integrity level 0, the use of the COTS software shall be accepted with no further precautions; if COTS software is to be used at software safety integrity levels 1 or 2, it shall be in- cluded in the software validation process; ii) iii) if COTS software is to be used at software safety integrity levels 3 or 4, the following precautions shall also be taken: a) the COTS software shall be included in the validation testing; L\u2019utilizzo di software COTS deve essere soggetto alle seguenti restrizioni: i) Per livello di integrit\u00e0 della sicurezza del sof- tware 0, l\u2019utilizzo del software COTS deve es- sere accettato senza ulteriori precauzioni; ii) Se il software COTS viene usato per i livelli di integrit\u00e0 della sicurezza del software 1 o 2, esso deve essere inserito nel processo di vali- dazione del software; iii) Se il software COTS viene usato per i livelli di integrit\u00e0 della sicurezza del software 3 o 4, devono essere prese anche le seguenti pre- cauzioni: a) il software COTS deve essere incluso nel- le prove di validazione; b) an analysis of possible failures shall be b) deve essere eseguita un\u2019analisi dei possi- carried out; c) a strategy shall be defined to detect fail- ures of the COTS software and to pro- tect the system from these failures; d) the protection strategy shall be the sub- ject of validation testing; e) error logs shall exist and shall be evalu- f) ated; as far as practicable, only the simplest functions of the COTS software shall be used.",
-    "condition": "The use of COTS software",
-    "action": "shall be subject to the following restrictions: i) for software safety integrity level 0, the use of the COTS software shall be accepted with no further precautions; if COTS software is to be used at software safety integrity levels 1 or 2, it shall be in- cluded in the software validation process; ii) iii) if COTS software is to be used at software safety integrity levels 3 or 4, the following precautions shall also be taken: a) the COTS software shall be included in the validation testing; L\u2019utilizzo di software COTS deve essere soggetto alle seguenti restrizioni: i) Per livello di integrit\u00e0 della sicurezza del sof- tware 0, l\u2019utilizzo del software COTS deve es- sere accettato senza ulteriori precauzioni; ii) Se il software COTS viene usato per i livelli di integrit\u00e0 della sicurezza del software 1 o 2, esso deve essere inserito nel processo di vali- dazione del software; iii) Se il software COTS viene usato per i livelli di integrit\u00e0 della sicurezza del software 3 o 4, devono essere prese anche le seguenti pre- cauzioni: a) il software COTS deve essere incluso nel- le prove di validazione; b) an analysis of possible failures shall be b) deve essere eseguita un\u2019analisi dei possi- carried out; c) a strategy shall be defined to detect fail- ures of the COTS software and to pro- tect the system from these failures; d) the protection strategy shall be the sub- ject of validation testing; e) error logs shall exist and shall be evalu- f) ated; as far as practicable, only the simplest functions of the COTS software shall be used.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00064",
+    "rule_id": "R-00060",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -832,7 +780,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00065",
+    "rule_id": "R-00061",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -845,7 +793,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00066",
+    "rule_id": "R-00062",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "MUST",
@@ -858,7 +806,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00067",
+    "rule_id": "R-00063",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -871,7 +819,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00068",
+    "rule_id": "R-00064",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -884,7 +832,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00069",
+    "rule_id": "R-00065",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -897,7 +845,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00070",
+    "rule_id": "R-00066",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -910,7 +858,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00071",
+    "rule_id": "R-00067",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -923,7 +871,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00072",
+    "rule_id": "R-00068",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -936,7 +884,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00073",
+    "rule_id": "R-00069",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -949,7 +897,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00074",
+    "rule_id": "R-00070",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -962,7 +910,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00075",
+    "rule_id": "R-00071",
     "clause_id": "9.4.6",
     "clause_title": "If previously developed software is to be used",
     "modality": "SHALL",
@@ -975,20 +923,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00076",
-    "clause_id": "10.1.2",
-    "clause_title": "To design and implement software of a de\ufb01ned",
-    "modality": "SHALL",
-    "requirement_text": "F S O D L A S N A a a s s e c n o c i a p o C and test will be a critical element in the valida- tion, particular consideration shall be given to verification and test needs throughout the de- sign and development, in order to ensure the resultant system and its software will be readily testable from the outset.",
-    "condition": null,
-    "action": "F S O D L A S N A a a s s e c n o c i a p o C and test will be a critical element in the valida- tion, particular consideration shall be given to verification and test needs throughout the de- sign and development, in order to ensure the resultant system and its software will be readily testable from the outset.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00077",
+    "rule_id": "R-00072",
     "clause_id": "10.4.3",
     "clause_title": "The Software Requirements Speci\ufb01cation and",
     "modality": "SHALL",
@@ -1001,7 +936,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00078",
+    "rule_id": "R-00073",
     "clause_id": "10.4.3",
     "clause_title": "The Software Requirements Speci\ufb01cation and",
     "modality": "SHALL",
@@ -1014,7 +949,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00079",
+    "rule_id": "R-00074",
     "clause_id": "10.4.3",
     "clause_title": "The Software Requirements Speci\ufb01cation and",
     "modality": "SHALL",
@@ -1027,20 +962,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00080",
-    "clause_id": "10.4.12",
-    "clause_title": "The Software Module Design Speci\ufb01cations",
-    "modality": "SHALL",
-    "requirement_text": "shall address (one Software module Design Specification per module): i) identification of all lowest software compo- nents (called modules in the present stand- ard) traced back to the upper level; their detailed interfaces with environment and other modules with detailed inputs and outputs; ii) Le Specifiche di Progetto del Modulo Software de- vono trattare (una Specifica della progettazione del modulo Software per ogni modulo): i) identificazione di tutti i componenti software di livello pi\u00f9 basso (chiamati moduli nella presen- te norma) tracciati verso il livello superiore; le loro interfacce dettagliate con l\u2019ambiente e gli altri moduli con ingressi e uscite dettaglia- ti; ii) iii) their safety integrity level; iv) detailed algorithms and data structures.",
-    "condition": null,
-    "action": "shall address (one Software module Design Specification per module): i) identification of all lowest software compo- nents (called modules in the present stand- ard) traced back to the upper level; their detailed interfaces with environment and other modules with detailed inputs and outputs; ii) Le Specifiche di Progetto del Modulo Software de- vono trattare (una Specifica della progettazione del modulo Software per ogni modulo): i) identificazione di tutti i componenti software di livello pi\u00f9 basso (chiamati moduli nella presen- te norma) tracciati verso il livello superiore; le loro interfacce dettagliate con l\u2019ambiente e gli altri moduli con ingressi e uscite dettaglia- ti; ii) iii) their safety integrity level; iv) detailed algorithms and data structures.",
-    "category": "lifecycle_engineering",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00081",
+    "rule_id": "R-00075",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHOULD",
@@ -1053,7 +975,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00082",
+    "rule_id": "R-00076",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1066,7 +988,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00083",
+    "rule_id": "R-00077",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1079,20 +1001,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00084",
+    "rule_id": "R-00078",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
     "requirement_text": "When applicable, automatic testing tools and integrated development tools shall be used.",
-    "condition": "When applicable, automatic testing tools and integrated development tools",
-    "action": "shall be used.",
+    "condition": "When applicable",
+    "action": "automatic testing tools and integrated development tools shall be used.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00085",
+    "rule_id": "R-00079",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1105,7 +1027,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00086",
+    "rule_id": "R-00080",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1118,7 +1040,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00087",
+    "rule_id": "R-00081",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1131,20 +1053,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00088",
+    "rule_id": "R-00082",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
     "requirement_text": "ii) When 10.4.10 cannot be satisfied then a justifica- tion for any alternative language detailing its fit- ness for purpose shall be recorded in the Soft- ware Architecture Specification or Software Quality Assurance Plan.",
-    "condition": "ii) When 10.4.10 cannot be satisfied then a justifica- tion for any alternative language detailing its fit- ness for purpose",
-    "action": "shall be recorded in the Soft- ware Architecture Specification or Software Quality Assurance Plan.",
+    "condition": null,
+    "action": "ii) When 10.4.10 cannot be satisfied then a justifica- tion for any alternative language detailing its fit- ness for purpose shall be recorded in the Soft- ware Architecture Specification or Software Quality Assurance Plan.",
     "category": "lifecycle_engineering",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00089",
+    "rule_id": "R-00083",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1157,7 +1079,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00090",
+    "rule_id": "R-00084",
     "clause_id": "10.4.12",
     "clause_title": "The Software Module Design Speci\ufb01cations",
     "modality": "SHALL",
@@ -1170,20 +1092,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00091",
+    "rule_id": "R-00085",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
-    "requirement_text": "As a minimum, each soft- ware module shall contain in the source code the following (non-exhaustive) list: information defined the in (cid:2) (cid:2) (cid:2) author; configuration history; short description.",
+    "requirement_text": "As a minimum, each soft- ware module shall contain in the source code the following (non-exhaustive) list: information defined the in author; configuration history; short description.",
     "condition": null,
-    "action": "As a minimum, each soft- ware module shall contain in the source code the following (non-exhaustive) list: information defined the in (cid:2) (cid:2) (cid:2) author; configuration history; short description.",
+    "action": "As a minimum, each soft- ware module shall contain in the source code the following (non-exhaustive) list: information defined the in author; configuration history; short description.",
     "category": "traceability_and_requirements",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00092",
+    "rule_id": "R-00086",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHOULD",
@@ -1196,7 +1118,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00093",
+    "rule_id": "R-00087",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
@@ -1209,7 +1131,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00094",
+    "rule_id": "R-00088",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
@@ -1222,7 +1144,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00095",
+    "rule_id": "R-00089",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
@@ -1235,7 +1157,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00096",
+    "rule_id": "R-00090",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
@@ -1248,33 +1170,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00097",
+    "rule_id": "R-00091",
     "clause_id": "10.4.15",
     "clause_title": "The coding standards shall specify good pro-",
     "modality": "SHALL",
     "requirement_text": "Deve essere prodotto un Rapporto di Prova del Modulo Software e deve comprendere i seguenti aspetti: i) una dichiarazione dei risultati della prova e se ogni modulo ha soddisfatto i requisiti della sua Specifica di Progettazione del Modulo Software; ii) per ogni modulo deve essere fornita una di- chiarazione di copertura della prova, dimo- strando che tutte le istruzioni di codice sor- gente sono state eseguite almeno una volta; iii) deve essere in un formato tale da consentire la verifica ispettiva; iv) test cases and their results shall be recorded in a machine readable form for subsequent analysis; Tests should be repeatable and be performed by automatic means, if practica- ble.",
-    "condition": "Deve essere prodotto un Rapporto di Prova del Modulo Software e deve comprendere i seguenti aspetti: i) una dichiarazione dei risultati della prova e se ogni modulo ha soddisfatto i requisiti della sua Specifica di Progettazione del Modulo Software; ii) per ogni modulo deve essere fornita una di- chiarazione di copertura della prova, dimo- strando che tutte le istruzioni di codice sor- gente sono state eseguite almeno una volta; iii) deve essere in un formato tale da consentire la verifica ispettiva; iv) test cases and their results",
-    "action": "shall be recorded in a machine readable form for subsequent analysis; Tests should be repeatable and be performed by automatic means, if practica- ble.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00098",
-    "clause_id": "10.4.15",
-    "clause_title": "The coding standards shall specify good pro-",
-    "modality": "SHALL",
-    "requirement_text": "In accordance with the required software safety integrity level the design method chosen shall possess features that facilitate: i) abstraction, modularity and other features which control complexity; the clear and precise expression of (cid:2) ii) functionality; information flow between components, sequencing and time related informa- tion; concurrency; data structure and properties; (cid:2) (cid:2) (cid:2) (cid:2) In accordo con il livello di integrit\u00e0 della sicurezza del software richiesto il metodo di progettazione scelto deve possedere caratteristiche che facilitano: astrazione, modularit\u00e0 e altre caratteristiche che i) controllano la complessit\u00e0; la chiara e precisa espressione di (cid:2) ii) funzionalit\u00e0; flusso di informazioni tra componenti; sequenza ed informazioni relazionate con il tempo; concorrenzialit\u00e0; struttura dei dati e propriet\u00e0; (cid:2) (cid:2) (cid:2) (cid:2) iii) human comprehension; iv) verification and validation.",
     "condition": null,
-    "action": "In accordance with the required software safety integrity level the design method chosen shall possess features that facilitate: i) abstraction, modularity and other features which control complexity; the clear and precise expression of (cid:2) ii) functionality; information flow between components, sequencing and time related informa- tion; concurrency; data structure and properties; (cid:2) (cid:2) (cid:2) (cid:2) In accordo con il livello di integrit\u00e0 della sicurezza del software richiesto il metodo di progettazione scelto deve possedere caratteristiche che facilitano: astrazione, modularit\u00e0 e altre caratteristiche che i) controllano la complessit\u00e0; la chiara e precisa espressione di (cid:2) ii) funzionalit\u00e0; flusso di informazioni tra componenti; sequenza ed informazioni relazionate con il tempo; concorrenzialit\u00e0; struttura dei dati e propriet\u00e0; (cid:2) (cid:2) (cid:2) (cid:2) iii) human comprehension; iv) verification and validation.",
+    "action": "Deve essere prodotto un Rapporto di Prova del Modulo Software e deve comprendere i seguenti aspetti: i) una dichiarazione dei risultati della prova e se ogni modulo ha soddisfatto i requisiti della sua Specifica di Progettazione del Modulo Software; ii) per ogni modulo deve essere fornita una di- chiarazione di copertura della prova, dimo- strando che tutte le istruzioni di codice sor- gente sono state eseguite almeno una volta; iii) deve essere in un formato tale da consentire la verifica ispettiva; iv) test cases and their results shall be recorded in a machine readable form for subsequent analysis; Tests should be repeatable and be performed by automatic means, if practica- ble.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00099",
+    "rule_id": "R-00092",
     "clause_id": "11.4.4",
     "clause_title": "A Software Veri\ufb01cation Plan shall be created in",
     "modality": "SHALL",
@@ -1287,7 +1196,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00100",
+    "rule_id": "R-00093",
     "clause_id": "11.4.4",
     "clause_title": "A Software Veri\ufb01cation Plan shall be created in",
     "modality": "SHALL",
@@ -1300,7 +1209,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00101",
+    "rule_id": "R-00094",
     "clause_id": "11.4.4",
     "clause_title": "A Software Veri\ufb01cation Plan shall be created in",
     "modality": "SHALL",
@@ -1313,7 +1222,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00102",
+    "rule_id": "R-00095",
     "clause_id": "11.4.4",
     "clause_title": "A Software Veri\ufb01cation Plan shall be created in",
     "modality": "SHOULD",
@@ -1326,7 +1235,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00103",
+    "rule_id": "R-00096",
     "clause_id": "11.4.12",
     "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
     "modality": "SHALL",
@@ -1339,7 +1248,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00104",
+    "rule_id": "R-00097",
     "clause_id": "11.4.12",
     "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
     "modality": "SHALL",
@@ -1352,7 +1261,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00105",
+    "rule_id": "R-00098",
     "clause_id": "11.4.12",
     "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
     "modality": "SHALL",
@@ -1365,7 +1274,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00106",
+    "rule_id": "R-00099",
     "clause_id": "11.4.12",
     "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
     "modality": "SHALL",
@@ -1378,20 +1287,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00107",
-    "clause_id": "11.4.12",
-    "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
-    "modality": "SHALL",
-    "requirement_text": "Software Requirements Verification: Once the Software Requirements Specification has been established, verification shall address: i) the adequacy of the Software Requirements Specification in fulfilling the requirements set out in the System Requirements Specifi- cation, the System Safety Requirements Specification and the Software Quality As- surance Plan; the adequacy of the Software Requirements Test Specification as a test of the Software Requirements Specification; ii) Verifica dei Requisiti del Software: Una volta che \u00e8 stata stabilita la Specifica dei Requisiti del Softwa- re la verifica deve trattare: i) l\u2019adeguatezza della Specifica dei Requisiti del Software nel soddisfare i requisiti definiti nella Specifica dei Requisiti del Sistema, nella Specifi- ca dei Requisiti di Sicurezza del Sistema e nel Piano di Assicurazione della Qualit\u00e0 del Softwa- re; l\u2019adeguatezza della Specifica di Prova dei Re- quisiti del Software come prova della Specifi- ca dei Requisiti del Software; ii) iii) the internal consistency of the Software Re- iii) la consistenza interna della Specifica dei Re- quirements Specification.",
-    "condition": null,
-    "action": "Software Requirements Verification: Once the Software Requirements Specification has been established, verification shall address: i) the adequacy of the Software Requirements Specification in fulfilling the requirements set out in the System Requirements Specifi- cation, the System Safety Requirements Specification and the Software Quality As- surance Plan; the adequacy of the Software Requirements Test Specification as a test of the Software Requirements Specification; ii) Verifica dei Requisiti del Software: Una volta che \u00e8 stata stabilita la Specifica dei Requisiti del Softwa- re la verifica deve trattare: i) l\u2019adeguatezza della Specifica dei Requisiti del Software nel soddisfare i requisiti definiti nella Specifica dei Requisiti del Sistema, nella Specifi- ca dei Requisiti di Sicurezza del Sistema e nel Piano di Assicurazione della Qualit\u00e0 del Softwa- re; l\u2019adeguatezza della Specifica di Prova dei Re- quisiti del Software come prova della Specifi- ca dei Requisiti del Software; ii) iii) the internal consistency of the Software Re- iii) la consistenza interna della Specifica dei Re- quirements Specification.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00108",
+    "rule_id": "R-00100",
     "clause_id": "11.4.12",
     "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
     "modality": "SHALL",
@@ -1404,20 +1300,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00109",
-    "clause_id": "11.4.12",
-    "clause_title": "Veri\ufb01cation shall be carried out by an independ-",
-    "modality": "SHALL",
-    "requirement_text": "Software Architecture and Design Verification: Af- ter the Software Architecture Specification and the Software Design Specification have been es- tablished, verification shall address: i) the adequacy of the Software Architecture Specification and the Software Design Spec- ification in fulfilling the Software Require- ments Specification; the adequacy of the Software Design Speci- fication for the Software Requirements Specification with respect to consistency and completeness; ii) L\u2019Architettura del Software e la Verifica della proget- tazione: dopo che sono state definite la Specifica dell\u2019Architettura del Software e la Specifica della Progettazione del Software la verifica deve trattare: i) l\u2019adeguatezza della Specifica dell\u2019Architettura del Software e della Specifica della Progettazio- ne del Software nel soddisfare la Specifica dei Requisiti del Software; l\u2019adeguatezza della Specifica della Progetta- zione del Software alla Specifica dei Requisiti del Software riguardo a consistenza e comple- tezza; ii) o n a i l a t I i o c n c e t o r t t e E o t a t i l m o C - I E C a d 7 0 0 2 / 0 1 / 2 0 a t a d n i A D E R B O D L A S N A e A P S .",
-    "condition": null,
-    "action": "Software Architecture and Design Verification: Af- ter the Software Architecture Specification and the Software Design Specification have been es- tablished, verification shall address: i) the adequacy of the Software Architecture Specification and the Software Design Spec- ification in fulfilling the Software Require- ments Specification; the adequacy of the Software Design Speci- fication for the Software Requirements Specification with respect to consistency and completeness; ii) L\u2019Architettura del Software e la Verifica della proget- tazione: dopo che sono state definite la Specifica dell\u2019Architettura del Software e la Specifica della Progettazione del Software la verifica deve trattare: i) l\u2019adeguatezza della Specifica dell\u2019Architettura del Software e della Specifica della Progettazio- ne del Software nel soddisfare la Specifica dei Requisiti del Software; l\u2019adeguatezza della Specifica della Progetta- zione del Software alla Specifica dei Requisiti del Software riguardo a consistenza e comple- tezza; ii) o n a i l a t I i o c n c e t o r t t e E o t a t i l m o C - I E C a d 7 0 0 2 / 0 1 / 2 0 a t a d n i A D E R B O D L A S N A e A P S .",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00110",
+    "rule_id": "R-00101",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1430,20 +1313,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00111",
-    "clause_id": "11.4.13",
-    "clause_title": "CODICE",
-    "modality": "SHALL",
-    "requirement_text": "Software Module Verification: After each Software Module Design Specification has been estab- lished, verification shall address: i) the adequacy of the Software Module De- sign Specification in fulfilling the Software Design Specification; the adequacy of the Software Module Test Specification as a set of test cases for the Software Module Design Specification; iii) the decomposition of the Software Design Specification into software modules and the Software Module Design Specifications with reference to (cid:2) feasibility of the performance required, testability for further verification, readability by the development and ver- ification team, and (cid:2) (cid:2) Verifica del Modulo Software: dopo che ogni Speci- fica della Progettazione del Modulo Software \u00e8 stata definita, la verifica deve trattare: i) l\u2019adeguatezza della Specifica della Progettazione del Modulo Software nel soddisfare la Specifica della Progettazione del Software; l\u2019adeguatezza della Specifica di Prova del Mo- dulo Software come insieme di casi di prova per la Specifica della Progettazione del Modu- lo Software; ii) iii) la scomposizione della Specifica della Proget- tazione del Software in moduli software e le Specifiche di Progettazione del Modulo Sof- tware con riferimento a (cid:2) fattibilit\u00e0 delle prestazioni richieste, possibilit\u00e0 di prova per ulteriori verifiche, leggibilit\u00e0 da parte del gruppo di sviluppo e verifica, e (cid:2) (cid:2) (cid:2) maintainability to permit further evolu- (cid:2) manutenibilit\u00e0 per ottenere ulteriori svi- tion; luppi; iv) the adequacy of the Software Module Test Reports as a record of the tests carried out in accordance with the Software Module Test Specification.",
-    "condition": null,
-    "action": "Software Module Verification: After each Software Module Design Specification has been estab- lished, verification shall address: i) the adequacy of the Software Module De- sign Specification in fulfilling the Software Design Specification; the adequacy of the Software Module Test Specification as a set of test cases for the Software Module Design Specification; iii) the decomposition of the Software Design Specification into software modules and the Software Module Design Specifications with reference to (cid:2) feasibility of the performance required, testability for further verification, readability by the development and ver- ification team, and (cid:2) (cid:2) Verifica del Modulo Software: dopo che ogni Speci- fica della Progettazione del Modulo Software \u00e8 stata definita, la verifica deve trattare: i) l\u2019adeguatezza della Specifica della Progettazione del Modulo Software nel soddisfare la Specifica della Progettazione del Software; l\u2019adeguatezza della Specifica di Prova del Mo- dulo Software come insieme di casi di prova per la Specifica della Progettazione del Modu- lo Software; ii) iii) la scomposizione della Specifica della Proget- tazione del Software in moduli software e le Specifiche di Progettazione del Modulo Sof- tware con riferimento a (cid:2) fattibilit\u00e0 delle prestazioni richieste, possibilit\u00e0 di prova per ulteriori verifiche, leggibilit\u00e0 da parte del gruppo di sviluppo e verifica, e (cid:2) (cid:2) (cid:2) maintainability to permit further evolu- (cid:2) manutenibilit\u00e0 per ottenere ulteriori svi- tion; luppi; iv) the adequacy of the Software Module Test Reports as a record of the tests carried out in accordance with the Software Module Test Specification.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00112",
+    "rule_id": "R-00102",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1456,7 +1326,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00113",
+    "rule_id": "R-00103",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1469,7 +1339,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00114",
+    "rule_id": "R-00104",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1482,7 +1352,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00115",
+    "rule_id": "R-00105",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1495,7 +1365,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00116",
+    "rule_id": "R-00106",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
@@ -1508,20 +1378,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00117",
+    "rule_id": "R-00107",
     "clause_id": "11.4.13",
     "clause_title": "CODICE",
     "modality": "SHALL",
     "requirement_text": "If there is a failure, the reasons for the failure shall be recorded; Verifica del Codice Sorgente del Software: nella mi- sura in cui \u00e8 richiesto dal livello di integrit\u00e0 della sicurezza del software il Codice Sorgente del Sof- tware deve essere verificato per assicurare confor- mit\u00e0 alla Specifica di Progettazione del Modulo Software e al Piano di Assicurazione della Qualit\u00e0 del Software.",
-    "condition": "If there is a failure, the reasons for the failure",
-    "action": "shall be recorded; Verifica del Codice Sorgente del Software: nella mi- sura in cui \u00e8 richiesto dal livello di integrit\u00e0 della sicurezza del software il Codice Sorgente del Sof- tware deve essere verificato per assicurare confor- mit\u00e0 alla Specifica di Progettazione del Modulo Software e al Piano di Assicurazione della Qualit\u00e0 del Software.",
+    "condition": "If there is a failure",
+    "action": "the reasons for the failure shall be recorded; Verifica del Codice Sorgente del Software: nella mi- sura in cui \u00e8 richiesto dal livello di integrit\u00e0 della sicurezza del software il Codice Sorgente del Sof- tware deve essere verificato per assicurare confor- mit\u00e0 alla Specifica di Progettazione del Modulo Software e al Piano di Assicurazione della Qualit\u00e0 del Software.",
     "category": "general_compliance",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00118",
+    "rule_id": "R-00108",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1534,7 +1404,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00119",
+    "rule_id": "R-00109",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1547,7 +1417,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00120",
+    "rule_id": "R-00110",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1560,7 +1430,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00121",
+    "rule_id": "R-00111",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1573,7 +1443,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00122",
+    "rule_id": "R-00112",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1586,7 +1456,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00123",
+    "rule_id": "R-00113",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1599,20 +1469,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00124",
+    "rule_id": "R-00114",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
     "requirement_text": "If there is a failure, it shall be recorded; ii) the Software/Hardware Integration Test Re- port shall be in a form that is auditable; ii) Un Rapporto di Prova di Integrazione Softwa- re/Hardware deve essere prodotto come segue: i) Il Rapporto di Prova di Integrazione Softwa- re/Hardware deve riportare i risultati di prova e se gli obiettivi e i criteri del Piano di Prova di In- tegrazione Software/Hardware sono stati soddi- sfatti.",
-    "condition": "If there is a failure, it",
-    "action": "shall be recorded; ii) the Software/Hardware Integration Test Re- port shall be in a form that is auditable; ii) Un Rapporto di Prova di Integrazione Softwa- re/Hardware deve essere prodotto come segue: i) Il Rapporto di Prova di Integrazione Softwa- re/Hardware deve riportare i risultati di prova e se gli obiettivi e i criteri del Piano di Prova di In- tegrazione Software/Hardware sono stati soddi- sfatti.",
+    "condition": "If there is a failure",
+    "action": "it shall be recorded; ii) the Software/Hardware Integration Test Re- port shall be in a form that is auditable; ii) Un Rapporto di Prova di Integrazione Softwa- re/Hardware deve essere prodotto come segue: i) Il Rapporto di Prova di Integrazione Softwa- re/Hardware deve riportare i risultati di prova e se gli obiettivi e i criteri del Piano di Prova di In- tegrazione Software/Hardware sono stati soddi- sfatti.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00125",
+    "rule_id": "R-00115",
     "clause_id": "12.4.8",
     "clause_title": "Sw Validation Report",
     "modality": "SHALL",
@@ -1625,7 +1495,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00126",
+    "rule_id": "R-00116",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
@@ -1638,7 +1508,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00127",
+    "rule_id": "R-00117",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
@@ -1651,20 +1521,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00128",
+    "rule_id": "R-00118",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
     "requirement_text": "If required by the software safety integrity level, the scope and contents of the Software Validation Plan shall be agreed with the assessor.",
-    "condition": "If required by the software safety integrity level, the scope and contents of the Software Validation Plan",
-    "action": "shall be agreed with the assessor.",
+    "condition": "If required by the software safety integrity level",
+    "action": "the scope and contents of the Software Validation Plan shall be agreed with the assessor.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00129",
+    "rule_id": "R-00119",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
@@ -1677,7 +1547,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00130",
+    "rule_id": "R-00120",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
@@ -1690,7 +1560,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00131",
+    "rule_id": "R-00121",
     "clause_id": "13.4.6",
     "clause_title": "Analysing and testing shall be the main valida-",
     "modality": "SHALL",
@@ -1703,20 +1573,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00132",
+    "rule_id": "R-00122",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
-    "requirement_text": "The Software Validation Plan shall identify the steps necessary to demonstrate the adequacy of the: Software Requirements Specification; Software Architecture Specification; Software Design Specification; Software Module Design Specification; (cid:2) (cid:2) (cid:2) Il Piano di Validazione del Software deve identifica- re i passi necessari a dimostrare l\u2019adeguatezza della: (cid:2) (cid:2) (cid:2) (cid:2) Specifica dei Requisiti del Software; Specifica dell\u2019Architettura del Software; Specifica della Progettazione del Software; Specifica della Progettazione del Modulo Sof- tware; in fulfilling the safety requirements set out in the System Safety Requirements Specification.",
+    "requirement_text": "The Software Validation Plan shall identify the steps necessary to demonstrate the adequacy of the: Software Requirements Specification; Software Architecture Specification; Software Design Specification; Software Module Design Specification; Il Piano di Validazione del Software deve identifica- re i passi necessari a dimostrare l\u2019adeguatezza della: Specifica dei Requisiti del Software; Specifica dell\u2019Architettura del Software; Specifica della Progettazione del Software; Specifica della Progettazione del Modulo Sof- tware; in fulfilling the safety requirements set out in the System Safety Requirements Specification.",
     "condition": null,
-    "action": "The Software Validation Plan shall identify the steps necessary to demonstrate the adequacy of the: Software Requirements Specification; Software Architecture Specification; Software Design Specification; Software Module Design Specification; (cid:2) (cid:2) (cid:2) Il Piano di Validazione del Software deve identifica- re i passi necessari a dimostrare l\u2019adeguatezza della: (cid:2) (cid:2) (cid:2) (cid:2) Specifica dei Requisiti del Software; Specifica dell\u2019Architettura del Software; Specifica della Progettazione del Software; Specifica della Progettazione del Modulo Sof- tware; in fulfilling the safety requirements set out in the System Safety Requirements Specification.",
+    "action": "The Software Validation Plan shall identify the steps necessary to demonstrate the adequacy of the: Software Requirements Specification; Software Architecture Specification; Software Design Specification; Software Module Design Specification; Il Piano di Validazione del Software deve identifica- re i passi necessari a dimostrare l\u2019adeguatezza della: Specifica dei Requisiti del Software; Specifica dell\u2019Architettura del Software; Specifica della Progettazione del Software; Specifica della Progettazione del Modulo Sof- tware; in fulfilling the safety requirements set out in the System Safety Requirements Specification.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00133",
+    "rule_id": "R-00123",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1729,7 +1599,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00134",
+    "rule_id": "R-00124",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1742,7 +1612,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00135",
+    "rule_id": "R-00125",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1755,7 +1625,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00136",
+    "rule_id": "R-00126",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1768,7 +1638,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00137",
+    "rule_id": "R-00127",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1781,7 +1651,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00138",
+    "rule_id": "R-00128",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
@@ -1794,33 +1664,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00139",
+    "rule_id": "R-00129",
     "clause_id": "13.4.11",
     "clause_title": "(cid:2)",
     "modality": "SHALL",
     "requirement_text": "If there is a failure, it shall be re- corded; it shall state the tests results and whether the whole software on its target machine fulfils the requirements set out in the Soft- ware Requirements Specification; ii) Una volta che l\u2019integrazione hardware/software \u00e8 finita, deve essere prodotto un Rapporto di Valida- zione del Software come segue: i) deve dichiarare se gli obiettivi e i criteri del Piano di Validazione del Software sono stati soddisfatti.",
-    "condition": "If there is a failure, it",
-    "action": "shall be re- corded; it shall state the tests results and whether the whole software on its target machine fulfils the requirements set out in the Soft- ware Requirements Specification; ii) Una volta che l\u2019integrazione hardware/software \u00e8 finita, deve essere prodotto un Rapporto di Valida- zione del Software come segue: i) deve dichiarare se gli obiettivi e i criteri del Piano di Validazione del Software sono stati soddisfatti.",
+    "condition": "If there is a failure",
+    "action": "it shall be re- corded; it shall state the tests results and whether the whole software on its target machine fulfils the requirements set out in the Soft- ware Requirements Specification; ii) Una volta che l\u2019integrazione hardware/software \u00e8 finita, deve essere prodotto un Rapporto di Valida- zione del Software come segue: i) deve dichiarare se gli obiettivi e i criteri del Piano di Validazione del Software sono stati soddisfatti.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00140",
-    "clause_id": "13.4.11",
-    "clause_title": "(cid:2)",
-    "modality": "SHALL",
-    "requirement_text": "Se vi \u00e8 un mancato funzionamento, questo deve essere registrato; ii) deve dichiarare i risultati delle prove e se l\u2019inte- ro software sulla sua macchina definitiva soddi- sfa i requisiti stabiliti nella Specifica dei Requisiti del Software; iii) an evaluation of the test coverage on the re- quirements of the Software Requirements Specification shall be provided; iii) deve essere fornita una valutazione della coper- tura delle prove rispetto ai requisiti della Speci- fica dei Requisiti del Software; iv) the Software Validation Report shall be in a form that is auditable; v) test cases and their results shall be recorded in a machine readable form for subsequent analysis; iv) il Rapporto di Validazione del Software deve es- sere in un formato che ne consenta la verifica ispettiva; i casi di prova e i loro risultati devono essere re- gistrati in una forma leggibile da macchine per successive analisi; v) vi) tests should be repeatable and be per- formed by automatic means, if practicable.",
-    "condition": "Se vi \u00e8 un mancato funzionamento, questo deve essere registrato; ii) deve dichiarare i risultati delle prove e se l\u2019inte- ro software sulla sua macchina definitiva soddi- sfa i requisiti stabiliti nella Specifica dei Requisiti del Software; iii) an evaluation of the test coverage on the re- quirements of the Software Requirements Specification",
-    "action": "shall be provided; iii) deve essere fornita una valutazione della coper- tura delle prove rispetto ai requisiti della Speci- fica dei Requisiti del Software; iv) the Software Validation Report shall be in a form that is auditable; v) test cases and their results shall be recorded in a machine readable form for subsequent analysis; iv) il Rapporto di Validazione del Software deve es- sere in un formato che ne consenta la verifica ispettiva; i casi di prova e i loro risultati devono essere re- gistrati in una forma leggibile da macchine per successive analisi; v) vi) tests should be repeatable and be per- formed by automatic means, if practicable.",
-    "category": "verification_and_testing",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00141",
+    "rule_id": "R-00130",
     "clause_id": "13.4.14",
     "clause_title": "Any discrepancies found, including detected er-",
     "modality": "SHALL",
@@ -1833,7 +1690,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00142",
+    "rule_id": "R-00131",
     "clause_id": "13.4.14",
     "clause_title": "Any discrepancies found, including detected er-",
     "modality": "SHALL",
@@ -1846,7 +1703,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00143",
+    "rule_id": "R-00132",
     "clause_id": "13.4.14",
     "clause_title": "Any discrepancies found, including detected er-",
     "modality": "SHALL",
@@ -1859,7 +1716,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00144",
+    "rule_id": "R-00133",
     "clause_id": "13.4.14",
     "clause_title": "Any discrepancies found, including detected er-",
     "modality": "SHALL",
@@ -1872,7 +1729,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00145",
+    "rule_id": "R-00134",
     "clause_id": "14.4.4",
     "clause_title": "For software of safety integrity level zero:",
     "modality": "SHALL",
@@ -1885,7 +1742,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00146",
+    "rule_id": "R-00135",
     "clause_id": "14.4.4",
     "clause_title": "For software of safety integrity level zero:",
     "modality": "SHALL",
@@ -1898,7 +1755,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00147",
+    "rule_id": "R-00136",
     "clause_id": "14.4.4",
     "clause_title": "For software of safety integrity level zero:",
     "modality": "SHALL",
@@ -1911,7 +1768,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00148",
+    "rule_id": "R-00137",
     "clause_id": "14.4.4",
     "clause_title": "For software of safety integrity level zero:",
     "modality": "SHALL",
@@ -1924,33 +1781,33 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00149",
+    "rule_id": "R-00138",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
     "requirement_text": "To the extent required by the software safety in- tegrity level, the Assessor shall decide if appro- priate methods have been selected and applied at each phase of the software lifecycle.",
-    "condition": "To the extent required by the software safety in- tegrity level, the Assessor",
-    "action": "shall decide if appro- priate methods have been selected and applied at each phase of the software lifecycle.",
+    "condition": null,
+    "action": "To the extent required by the software safety in- tegrity level, the Assessor shall decide if appro- priate methods have been selected and applied at each phase of the software lifecycle.",
     "category": "safety_assurance",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00150",
+    "rule_id": "R-00139",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
     "requirement_text": "If required by the software safety integrity level, the Assessor shall agree the scope and contents of the Software Validation Plan.",
-    "condition": "If required by the software safety integrity level, the Assessor",
-    "action": "shall agree the scope and contents of the Software Validation Plan.",
+    "condition": "If required by the software safety integrity level",
+    "action": "the Assessor shall agree the scope and contents of the Software Validation Plan.",
     "category": "verification_and_testing",
     "severity": "HIGH",
     "confidence": 0.94,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00151",
+    "rule_id": "R-00140",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
@@ -1963,7 +1820,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00152",
+    "rule_id": "R-00141",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
@@ -1976,7 +1833,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00153",
+    "rule_id": "R-00142",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
@@ -1989,7 +1846,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00154",
+    "rule_id": "R-00143",
     "clause_id": "14.4.11",
     "clause_title": "The Assessor shall assess that the software of",
     "modality": "SHALL",
@@ -2002,7 +1859,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00155",
+    "rule_id": "R-00144",
     "clause_id": "15.3",
     "clause_title": "Output documents",
     "modality": "SHALL",
@@ -2015,7 +1872,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00156",
+    "rule_id": "R-00145",
     "clause_id": "15.4.9",
     "clause_title": "The supplier and/or developer shall establish,",
     "modality": "SHALL",
@@ -2028,7 +1885,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00157",
+    "rule_id": "R-00146",
     "clause_id": "15.4.9",
     "clause_title": "The supplier and/or developer shall establish,",
     "modality": "SHALL",
@@ -2041,7 +1898,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00158",
+    "rule_id": "R-00147",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2054,7 +1911,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00159",
+    "rule_id": "R-00148",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2067,7 +1924,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00160",
+    "rule_id": "R-00149",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2080,7 +1937,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00161",
+    "rule_id": "R-00150",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2093,20 +1950,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00162",
+    "rule_id": "R-00151",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHOULD",
     "requirement_text": "At Software Safety Integrity Level 3 and 4 where a Highly recommended option is not available it is strongly recommended that to raise the recommendation to \u201cR\u201d there should be a subset of these languages and that there should be a precise set of coding standards.",
-    "condition": "At Software Safety Integrity Level 3 and 4 where a Highly recommended option is not available it is strongly recommended that to raise the recommendation to \u201cR\u201d there",
-    "action": "should be a subset of these languages and that there should be a precise set of coding standards.",
+    "condition": null,
+    "action": "At Software Safety Integrity Level 3 and 4 where a Highly recommended option is not available it is strongly recommended that to raise the recommendation to \u201cR\u201d there should be a subset of these languages and that there should be a precise set of coding standards.",
     "category": "lifecycle_engineering",
     "severity": "MEDIUM",
     "confidence": 0.83,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00163",
+    "rule_id": "R-00152",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHOULD",
@@ -2119,7 +1976,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00164",
+    "rule_id": "R-00153",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2132,7 +1989,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00165",
+    "rule_id": "R-00154",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2145,7 +2002,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00166",
+    "rule_id": "R-00155",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2158,7 +2015,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00167",
+    "rule_id": "R-00156",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2171,7 +2028,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00168",
+    "rule_id": "R-00157",
     "clause_id": "16",
     "clause_title": "SOFTWARE MAINTENANCE",
     "modality": "SHALL",
@@ -2184,7 +2041,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00169",
+    "rule_id": "R-00158",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2197,7 +2054,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00170",
+    "rule_id": "R-00159",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2210,7 +2067,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00171",
+    "rule_id": "R-00160",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHOULD",
@@ -2223,7 +2080,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00172",
+    "rule_id": "R-00161",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2236,7 +2093,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00173",
+    "rule_id": "R-00162",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2249,7 +2106,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00174",
+    "rule_id": "R-00163",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2262,7 +2119,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00175",
+    "rule_id": "R-00164",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2275,7 +2132,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00176",
+    "rule_id": "R-00165",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2288,7 +2145,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00177",
+    "rule_id": "R-00166",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2301,7 +2158,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00178",
+    "rule_id": "R-00167",
     "clause_id": "16.4.6",
     "clause_title": "As a minimum, maintenance shall be carried",
     "modality": "SHALL",
@@ -2314,7 +2171,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00179",
+    "rule_id": "R-00168",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2327,7 +2184,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00180",
+    "rule_id": "R-00169",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2340,7 +2197,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00181",
+    "rule_id": "R-00170",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2353,7 +2210,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00182",
+    "rule_id": "R-00171",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2366,7 +2223,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00183",
+    "rule_id": "R-00172",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2379,7 +2236,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00184",
+    "rule_id": "R-00173",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2392,7 +2249,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00185",
+    "rule_id": "R-00174",
     "clause_id": "16.4.9",
     "clause_title": "External supplier control, problem reporting",
     "modality": "SHALL",
@@ -2405,7 +2262,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00186",
+    "rule_id": "R-00175",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "SHALL",
@@ -2418,7 +2275,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00187",
+    "rule_id": "R-00176",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "SHALL",
@@ -2431,7 +2288,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00188",
+    "rule_id": "R-00177",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "MUST",
@@ -2444,7 +2301,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00189",
+    "rule_id": "R-00178",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "SHALL",
@@ -2457,7 +2314,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00190",
+    "rule_id": "R-00179",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "SHALL",
@@ -2470,7 +2327,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00191",
+    "rule_id": "R-00180",
     "clause_id": "17.4.1.2",
     "clause_title": "Data Preparation Lifecycle",
     "modality": "SHALL",
@@ -2483,7 +2340,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00192",
+    "rule_id": "R-00181",
     "clause_id": "17.4.1.5",
     "clause_title": "Validation and Assessment",
     "modality": "SHALL",
@@ -2496,7 +2353,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00193",
+    "rule_id": "R-00182",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2509,7 +2366,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00194",
+    "rule_id": "R-00183",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2522,7 +2379,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00195",
+    "rule_id": "R-00184",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2535,7 +2392,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00196",
+    "rule_id": "R-00185",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2548,7 +2405,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00197",
+    "rule_id": "R-00186",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2561,7 +2418,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00198",
+    "rule_id": "R-00187",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2574,7 +2431,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00199",
+    "rule_id": "R-00188",
     "clause_id": "17.4.2.1",
     "clause_title": "Data Preparation Procedures and Tools",
     "modality": "SHALL",
@@ -2587,7 +2444,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00200",
+    "rule_id": "R-00189",
     "clause_id": "17.4.2.2",
     "clause_title": "The Data Preparation Plan shall allocate a safety",
     "modality": "SHALL",
@@ -2600,7 +2457,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00201",
+    "rule_id": "R-00190",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2613,20 +2470,20 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00202",
+    "rule_id": "R-00191",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "MUST",
     "requirement_text": "Where new notations are intro- duced, the necessary user documentation must be provided and training shall also be provided where appropriate.",
-    "condition": "Where new notations are intro- duced, the necessary user documentation",
-    "action": "must be provided and training shall also be provided where appropriate.",
+    "condition": "Where new notations are intro- duced",
+    "action": "the necessary user documentation must be provided and training shall also be provided where appropriate.",
     "category": "safety_assurance",
     "severity": "HIGH",
     "confidence": 0.97,
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00203",
+    "rule_id": "R-00192",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2639,7 +2496,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00204",
+    "rule_id": "R-00193",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2652,7 +2509,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00205",
+    "rule_id": "R-00194",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2665,7 +2522,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00206",
+    "rule_id": "R-00195",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2678,7 +2535,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00207",
+    "rule_id": "R-00196",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2691,7 +2548,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00208",
+    "rule_id": "R-00197",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2704,7 +2561,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00209",
+    "rule_id": "R-00198",
     "clause_id": "17.4.3.2",
     "clause_title": "quired system safety integrity level and the de-",
     "modality": "SHALL",
@@ -2717,7 +2574,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00210",
+    "rule_id": "R-00199",
     "clause_id": "17.4.3.3",
     "clause_title": "During the Software Module Design phase a rigid",
     "modality": "SHALL",
@@ -2730,20 +2587,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00211",
-    "clause_id": "17.4.3.3",
-    "clause_title": "During the Software Module Design phase a rigid",
-    "modality": "SHALL",
-    "requirement_text": "it shall be possible to recompile and update either the generic software or the Durante la fase di Progetto del Modulo Software deve essere imposta una rigida separazione tra co- dice del programma e dati, per esempio deve es- sere possibile ricompilare e aggiornare sia il sof- o n a i l a t I i o c n c e t o r t t e E o t a t i l m o C - I E C a d 7 0 0 2 / 0 1 / 2 0 a t a d n i A D E R B O D L A S N A e A P S .",
-    "condition": null,
-    "action": "it shall be possible to recompile and update either the generic software or the Durante la fase di Progetto del Modulo Software deve essere imposta una rigida separazione tra co- dice del programma e dati, per esempio deve es- sere possibile ricompilare e aggiornare sia il sof- o n a i l a t I i o c n c e t o r t t e E o t a t i l m o C - I E C a d 7 0 0 2 / 0 1 / 2 0 a t a d n i A D E R B O D L A S N A e A P S .",
-    "category": "lifecycle_engineering",
-    "severity": "HIGH",
-    "confidence": 0.94,
-    "source_document": "CEI EN 50128.pdf"
-  },
-  {
-    "rule_id": "R-00212",
+    "rule_id": "R-00200",
     "clause_id": "17.4.3.3",
     "clause_title": "During the Software Module Design phase a rigid",
     "modality": "SHOULD",
@@ -2756,7 +2600,7 @@
     "source_document": "CEI EN 50128.pdf"
   },
   {
-    "rule_id": "R-00213",
+    "rule_id": "R-00201",
     "clause_id": "17.4.3.4",
     "clause_title": "During the Software Maintenance phase, the",
     "modality": "MUST",

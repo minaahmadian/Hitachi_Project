@@ -14,6 +14,7 @@ MODAL_PATTERNS = (
 )
 
 SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+CLAUSE_ID_FORMAT_RE = re.compile(r"^\d+(?:\.\d+)*$")
 
 
 @dataclass(slots=True)
@@ -51,6 +52,79 @@ def _split_sentences(text: str) -> list[str]:
     return [s.strip() for s in SENTENCE_SPLIT_RE.split(normalized) if s.strip()]
 
 
+def _clean_sentence(sentence: str) -> str:
+    s = sentence.replace("ﬁ", "fi").replace("ﬂ", "fl")
+    s = s.replace("(cid:2)", " ")
+    s = s.replace("", " ")
+    s = re.sub(r"\.{5,}", " ", s)
+    s = re.sub(r"\s+", " ", s)
+    return s.strip(" -;:,")
+
+
+def _is_noisy_sentence(sentence: str) -> bool:
+    s = sentence.strip()
+    if not s:
+        return True
+
+    # Common OCR/pagination artifacts.
+    if "RIPRODUZIONE SU LICENZA" in s or "Copia concessa a" in s:
+        return True
+    if "(cid:" in s:
+        return True
+    if re.search(r"\bo n a i l a t i\b", s.lower()):
+        return True
+    # OCR artifact: long runs of single-letter tokens separated by spaces.
+    if re.search(r"(?:\b[A-Za-z]\b\s+){8,}", s):
+        return True
+
+    # Too little alphabetic content.
+    alpha_count = sum(1 for ch in s if ch.isalpha())
+    if alpha_count < 18:
+        return True
+
+    # Dense symbol/bullet rows are likely tables or OCR noise.
+    symbol_count = len(re.findall(r"[♦•\[\]\(\)\|]", s))
+    if symbol_count >= 6:
+        return True
+
+    return False
+
+
+def _split_condition_action(sentence: str, modality: str) -> tuple[str | None, str]:
+    """
+    Improved split:
+    - if sentence starts with If/When/Where/As long as, condition is up to the first comma
+      or up to the modal word, whichever gives a meaningful condition.
+    - action keeps the normative part.
+    """
+    s = sentence.strip()
+    lower = s.lower()
+    modal_match = re.search(rf"\b{modality.lower()}\b", lower)
+    if not modal_match:
+        return None, s
+
+    leading_conditional = re.match(r"^(if|when|where|as long as)\b", lower) is not None
+    if not leading_conditional:
+        return None, s
+
+    comma_pos = s.find(",")
+    modal_pos = modal_match.start()
+
+    condition: str | None = None
+    if comma_pos != -1 and comma_pos < modal_pos:
+        condition = s[:comma_pos].strip()
+        action = s[comma_pos + 1 :].strip()
+    else:
+        condition = s[:modal_pos].strip(" ,;:-")
+        action = s[modal_pos:].strip()
+
+    if not condition or len(condition) < 6:
+        return None, s
+    if not action:
+        return None, s
+    return condition, action
+
+
 def _detect_modality(sentence: str) -> str | None:
     for label, pattern in MODAL_PATTERNS:
         if pattern.search(sentence):
@@ -64,25 +138,8 @@ def _extract_condition_action(sentence: str, modality: str) -> tuple[str | None,
     - if sentence contains "if/when/where/as long as", keep pre-modal as condition
     - action is sentence with leading condition removed when possible
     """
-    lower = sentence.lower()
-    conditional_markers = (" if ", " when ", " where ", " as long as ")
-    has_condition = any(marker in f" {lower} " for marker in conditional_markers)
-
-    condition: str | None = None
-    action = sentence
-
-    # Split around first modal occurrence to isolate decision logic.
-    modal_match = re.search(rf"\b{modality.lower()}\b", lower)
-    if modal_match:
-        pre = sentence[: modal_match.start()].strip(" ,;:-")
-        post = sentence[modal_match.start() :].strip()
-        if has_condition and pre:
-            condition = pre
-            action = post
-        else:
-            action = sentence
-
-    return (condition if condition else None, action)
+    condition, action = _split_condition_action(sentence, modality)
+    return condition, action
 
 
 def _categorize_rule(clause_id: str, title: str, sentence: str) -> str:
@@ -122,15 +179,27 @@ def _iter_rules(clauses: Iterable[dict[str, object]]) -> list[LogicalRule]:
         text = str(clause.get("text", "")).strip()
         source_document = str(clause.get("source_document", "CEI EN 50128.pdf"))
 
-        if not clause_id or not text:
+        if not clause_id or not text or not CLAUSE_ID_FORMAT_RE.match(clause_id):
             continue
 
         for sentence in _split_sentences(text):
+            sentence = _clean_sentence(sentence)
+            if _is_noisy_sentence(sentence):
+                continue
+
             modality = _detect_modality(sentence)
             if modality is None:
                 continue
 
+            # Keep meaningful normative statements only.
+            if len(sentence) < 35:
+                continue
+
             condition, action = _extract_condition_action(sentence, modality)
+            action = _clean_sentence(action)
+            if _is_noisy_sentence(action):
+                continue
+
             category = _categorize_rule(clause_id, title, sentence)
             severity = _severity_from_modality(modality)
             confidence = _confidence_from_modality(modality)
