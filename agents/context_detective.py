@@ -30,7 +30,20 @@ def context_detective_node(state: GraphState):
     """)
     user_message = HumanMessage(content=f"Emails:\n{state['email_threads']}")
     
-    response = llm.invoke([system_prompt, user_message])
+    try:
+        response = llm.invoke([system_prompt, user_message])
+    except Exception as exc:
+        # Fallback mode when external LLM call is unavailable.
+        return {
+            "detective_report": {
+                "status": "SUSPICIOUS",
+                "severity": "HIGH",
+                "reason": f"LLM unreachable in detective node: {exc}",
+                "red_flags": [
+                    "Unable to semantically verify communications due to LLM connectivity issue"
+                ],
+            }
+        }
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = json.loads(content)

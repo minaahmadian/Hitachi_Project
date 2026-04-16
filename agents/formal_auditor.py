@@ -200,7 +200,22 @@ Document text for analysis:
 {analysis_text}
 """)
 
-    response = llm.invoke([system_prompt, user_message])
+    try:
+        response = llm.invoke([system_prompt, user_message])
+    except Exception as exc:
+        # Fallback mode when external LLM call is unavailable.
+        return {
+            "auditor_report": {
+                "overall_assessment": "PARTIAL",
+                "requirements_found": extracted_snippets[:5],
+                "compliance_score": 50,
+                "risks": [f"LLM unreachable in auditor node: {exc}"],
+                "recommendations": [
+                    "Retry with network access for full semantic audit",
+                    "Use deterministic regulatory assessor output as interim gate",
+                ],
+            }
+        }
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = _normalize_auditor_report(json.loads(content))

@@ -40,7 +40,35 @@ def lead_assessor_node(state: GraphState):
     Regulatory Report: {json.dumps(state.get('regulatory_report', {}))}
     """)
     
-    response = llm.invoke([system_prompt, user_message])
+    try:
+        response = llm.invoke([system_prompt, user_message])
+    except Exception:
+        # Deterministic fallback when LLM is unavailable.
+        auditor = state.get("auditor_report", {})
+        detective = state.get("detective_report", {})
+        regulatory = state.get("regulatory_report", {})
+
+        auditor_assessment = str(auditor.get("overall_assessment", "PARTIAL")).upper()
+        detective_status = str(detective.get("status", "SUSPICIOUS")).upper()
+        regulatory_status = str(regulatory.get("status", "RED_FLAG")).upper()
+        derogation_needed = int(regulatory.get("derogation_needed", 0) or 0)
+
+        no_go = (
+            regulatory_status == "RED_FLAG"
+            or derogation_needed > 0
+            or detective_status == "SUSPICIOUS"
+            or auditor_assessment == "NON_COMPLIANT"
+        )
+
+        report = {
+            "final_decision": "NO-GO" if no_go else "GO",
+            "vdd_explanation": (
+                "Deterministic fallback decision was used due to LLM connectivity issues. "
+                f"Inputs: auditor={auditor_assessment}, detective={detective_status}, "
+                f"regulatory_status={regulatory_status}, derogation_needed={derogation_needed}."
+            ),
+        }
+        return {"assessor_report": report}
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = json.loads(content)
