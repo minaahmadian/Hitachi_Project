@@ -3,11 +3,18 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.state import GraphState
 
-llm = ChatGroq(
-    model="llama-3.1-8b-instant", 
-    temperature=0,
-    model_kwargs={"response_format": {"type": "json_object"}} 
-)
+_llm: ChatGroq | None = None
+
+
+def _get_llm() -> ChatGroq:
+    global _llm
+    if _llm is None:
+        _llm = ChatGroq(
+            model="llama-3.1-8b-instant",
+            temperature=0,
+            model_kwargs={"response_format": {"type": "json_object"}},
+        )
+    return _llm
 
 def lead_assessor_node(state: GraphState):
     print("Lead Assessor: Cross-referencing reports and making final decision (VDD)...")
@@ -41,7 +48,7 @@ def lead_assessor_node(state: GraphState):
     """)
     
     try:
-        response = llm.invoke([system_prompt, user_message])
+        response = _get_llm().invoke([system_prompt, user_message])
     except Exception:
         # Deterministic fallback when LLM is unavailable.
         auditor = state.get("auditor_report", {})

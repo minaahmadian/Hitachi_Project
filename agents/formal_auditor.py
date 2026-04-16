@@ -4,11 +4,18 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.state import GraphState
 
-llm = ChatGroq(
-    model="llama-3.1-8b-instant", 
-    temperature=0,
-    model_kwargs={"response_format": {"type": "json_object"}} 
-)
+_llm: ChatGroq | None = None
+
+
+def _get_llm() -> ChatGroq:
+    global _llm
+    if _llm is None:
+        _llm = ChatGroq(
+            model="llama-3.1-8b-instant",
+            temperature=0,
+            model_kwargs={"response_format": {"type": "json_object"}},
+        )
+    return _llm
 
 
 def _extract_text_from_docx_content(node: Any) -> list[str]:
@@ -202,7 +209,7 @@ Document text for analysis:
 """)
 
     try:
-        response = llm.invoke([system_prompt, user_message])
+        response = _get_llm().invoke([system_prompt, user_message])
     except Exception as exc:
         # Fallback mode when external LLM call is unavailable.
         return {
