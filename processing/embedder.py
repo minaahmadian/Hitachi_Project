@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 import importlib
+import os
 from typing import Callable, Final, Protocol, cast
 import time
 from typing_extensions import override
@@ -172,3 +173,26 @@ class HashEmbedder(EmbeddingProvider):
                 vec = [x / norm for x in vec]
             vectors.append(vec)
         return vectors
+
+
+def make_embedder_from_env() -> EmbeddingProvider:
+    """
+    Construct the active embedder from environment variables.
+
+    Used by regulatory indexing and runtime retrieval so query vectors match the index.
+    """
+    provider = os.getenv("EMBEDDING_PROVIDER", "hash").strip().lower()
+    if provider == "groq":
+        return GroqEmbedder(
+            model=os.getenv("EMBEDDING_MODEL", "nomic-embed-text"),
+            api_key=os.getenv("GROQ_API_KEY"),
+        )
+    if provider in {"local", "sentence_transformers", "sentence-transformers"}:
+        return LocalEmbedder(
+            model_name=os.getenv(
+                "LOCAL_EMBED_MODEL",
+                "sentence-transformers/paraphrase-MiniLM-L3-v2",
+            ),
+        )
+    dim = int(os.getenv("HASH_EMBED_DIM", "128"))
+    return HashEmbedder(dim=dim)

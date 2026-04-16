@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from processing.embedder import GroqEmbedder, HashEmbedder, LocalEmbedder
+from processing.embedder import make_embedder_from_env
 from rag.context_builder import ContextBuilder, ContextStrategy
 from rag.retriever import RAGRetriever
 from vectordb import DocumentChunk, VectorDBConfig
@@ -34,21 +34,6 @@ def _load_clause_records(path: Path) -> list[dict[str, Any]]:
             continue
         records.append(item)
     return records
-
-
-def _make_embedder() -> Any:
-    provider = os.getenv("EMBEDDING_PROVIDER", "hash").strip().lower()
-    if provider == "groq":
-        return GroqEmbedder(
-            model=os.getenv("EMBEDDING_MODEL", "nomic-embed-text"),
-            api_key=os.getenv("GROQ_API_KEY"),
-        )
-    if provider in {"local", "sentence_transformers", "sentence-transformers"}:
-        return LocalEmbedder(
-            model_name=os.getenv("LOCAL_EMBED_MODEL", "sentence-transformers/paraphrase-MiniLM-L3-v2"),
-        )
-    dim = int(os.getenv("HASH_EMBED_DIM", "128"))
-    return HashEmbedder(dim=dim)
 
 
 def _to_chunks(records: list[dict[str, Any]], vectors: list[list[float]]) -> list[DocumentChunk]:
@@ -139,7 +124,7 @@ def main() -> None:
     if not records:
         raise RuntimeError(f"No valid clause records found in {clauses_path}")
 
-    embedder = _make_embedder()
+    embedder = make_embedder_from_env()
     vectors = embedder.embed([str(item["text"]) for item in records])
     if not vectors:
         raise RuntimeError("Embedding returned zero vectors")

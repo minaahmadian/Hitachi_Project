@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import os
 from dataclasses import asdict
 from pathlib import Path
 
 from core.state import GraphState
+from regulatory.clause_retrieval import retrieve_regulatory_clauses
 from regulatory.rule_engine import EvidenceItem, RegulatoryRuleEngine
 
 
@@ -51,12 +53,20 @@ def _build_evidence(state: GraphState) -> list[EvidenceItem]:
 def regulatory_assessor_node(state: GraphState):
     print("Regulatory Assessor: Running deterministic CEI EN 50128 rule checks...")
 
-    rules_path = Path(__file__).resolve().parent.parent / "data" / "regulatory" / "cei_en_50128_rules.json"
+    repo_root = Path(__file__).resolve().parent.parent
+    rules_path = repo_root / "data" / "regulatory" / "cei_en_50128_rules.json"
     engine = RegulatoryRuleEngine(rules_path=rules_path)
 
     anomaly_text = _build_anomaly_text(state)
     evidence = _build_evidence(state)
     summary = engine.evaluate(anomaly_text=anomaly_text, evidence=evidence, top_k_rules=30)
+
+    top_k = int(os.getenv("REGULATORY_RAG_TOP_K", "5") or "5")
+    retrieval = retrieve_regulatory_clauses(
+        anomaly_text,
+        repo_root=repo_root,
+        top_k=max(1, min(top_k, 20)),
+    )
 
     findings = [asdict(item) for item in summary.findings]
     high_failures = [f for f in findings if f["status"] == "FAIL" and f["severity"] == "HIGH"]
@@ -70,6 +80,7 @@ def regulatory_assessor_node(state: GraphState):
         "warning": summary.warning,
         "derogation_needed": summary.derogation_needed,
         "top_findings": findings[:10],
+        "retrieval": retrieval,
         "summary_text": (
             f"Deterministic rule-check result: checked={summary.total_rules_checked}, "
             f"pass={summary.passed}, fail={summary.failed}, warning={summary.warning}, "
