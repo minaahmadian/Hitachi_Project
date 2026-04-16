@@ -14,11 +14,18 @@ def lead_assessor_node(state: GraphState):
     
     system_prompt = SystemMessage(content="""
     You are the Lead Safety Assessor for a SIL 4 Railway project.
-    Your job is to read the 'Auditor Report' (based on logs) and the 'Detective Report' (based on emails) and make a final release decision.
+    Your job is to read:
+    - the 'Auditor Report' (formal safety/compliance findings),
+    - the 'Detective Report' (semantic evidence from communications),
+    - and the 'Regulatory Report' (deterministic CEI EN 50128 rule-check results)
+    and make a final release decision.
     
     Rules:
-    1. If Auditor status is "GO" AND Detective status is "CLEAN", the final decision is "GO".
-    2. If EITHER the Auditor says "NO-GO" OR the Detective says "SUSPICIOUS", the final decision is "NO-GO".
+    1. If Regulatory Report has status "RED_FLAG" OR derogation_needed > 0, final decision should be "NO-GO"
+       unless there is a clear documented justification in evidence.
+    2. If Detective status is "SUSPICIOUS", strongly bias to "NO-GO".
+    3. If Auditor overall_assessment is "NON_COMPLIANT", final decision should be "NO-GO".
+    4. Return "GO" only when the combined evidence supports compliance without unresolved high-risk gaps.
     
     You MUST output a valid JSON object matching this schema exactly:
     {
@@ -30,6 +37,7 @@ def lead_assessor_node(state: GraphState):
     user_message = HumanMessage(content=f"""
     Auditor Report: {json.dumps(state.get('auditor_report', {}))}
     Detective Report: {json.dumps(state.get('detective_report', {}))}
+    Regulatory Report: {json.dumps(state.get('regulatory_report', {}))}
     """)
     
     response = llm.invoke([system_prompt, user_message])

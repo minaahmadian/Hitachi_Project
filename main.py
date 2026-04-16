@@ -9,6 +9,7 @@ from core.io_utils import load_local_data
 from core.docx_parser import parse_docx
 from agents.formal_auditor import formal_auditor_node
 from agents.context_detective import context_detective_node
+from agents.regulatory_assessor import regulatory_assessor_node
 from agents.lead_assessor import lead_assessor_node
 
 if __name__ == "__main__":
@@ -24,11 +25,13 @@ if __name__ == "__main__":
     
     workflow.add_node("formal_auditor", formal_auditor_node)
     workflow.add_node("context_detective", context_detective_node)
+    workflow.add_node("regulatory_assessor", regulatory_assessor_node)
     workflow.add_node("lead_assessor", lead_assessor_node)
     
     workflow.set_entry_point("formal_auditor")
     workflow.add_edge("formal_auditor", "context_detective")
-    workflow.add_edge("context_detective", "lead_assessor")
+    workflow.add_edge("context_detective", "regulatory_assessor")
+    workflow.add_edge("regulatory_assessor", "lead_assessor")
     workflow.add_edge("lead_assessor", END)
     
     app = workflow.compile()
@@ -38,6 +41,7 @@ if __name__ == "__main__":
         email_threads=emails,
         auditor_report={},
         detective_report={},
+        regulatory_report={},
         assessor_report={}
     )
     

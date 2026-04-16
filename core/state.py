@@ -6,4 +6,5 @@ class GraphState(TypedDict):
     email_threads: str
     auditor_report: Dict[str, Any]
     detective_report: Dict[str, Any]
+    regulatory_report: Dict[str, Any]
     assessor_report: Dict[str, Any]
