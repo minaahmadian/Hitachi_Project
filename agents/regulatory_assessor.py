@@ -12,8 +12,14 @@ from regulatory.rule_engine import EvidenceItem, RegulatoryRuleEngine
 def _build_anomaly_text(state: GraphState) -> str:
     auditor_report = state.get("auditor_report", {})
     detective_report = state.get("detective_report", {})
+    matcher_report = state.get("matcher_report") or {}
 
     parts: list[str] = []
+    parts.append(str(matcher_report.get("status", "")))
+    for row in matcher_report.get("anomalies") or []:
+        if isinstance(row, dict):
+            parts.append(str(row.get("type", "")))
+            parts.append(str(row.get("detail", "")))
     parts.append(str(auditor_report.get("overall_assessment", "")))
     parts.extend(str(item) for item in auditor_report.get("risks", []) if str(item).strip())
     parts.append(str(detective_report.get("status", "")))
@@ -26,8 +32,25 @@ def _build_anomaly_text(state: GraphState) -> str:
 def _build_evidence(state: GraphState) -> list[EvidenceItem]:
     auditor_report = state.get("auditor_report", {})
     detective_report = state.get("detective_report", {})
+    matcher_report = state.get("matcher_report") or {}
 
     evidence: list[EvidenceItem] = []
+    for idx, row in enumerate(matcher_report.get("anomalies") or [], start=1):
+        if not isinstance(row, dict):
+            continue
+        blob = " ".join(
+            str(row.get(k, ""))
+            for k in ("type", "severity", "requirement_id", "detail", "evidence_snippet")
+            if row.get(k)
+        ).strip()
+        if blob:
+            evidence.append(
+                EvidenceItem(
+                    evidence_id=f"matcher-anomaly-{idx}",
+                    text=blob,
+                    source_type="traceability_matcher",
+                )
+            )
     for idx, req in enumerate(auditor_report.get("requirements_found", []), start=1):
         req_text = str(req).strip()
         if req_text:

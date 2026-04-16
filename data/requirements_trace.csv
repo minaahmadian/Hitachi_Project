@@ -1,0 +1,5 @@
+requirement_id,title,verification_status,allocation
+HIT-REQ-101,RSSOM watchdog and safe state recovery,Verified,SW
+HIT-REQ-MQTT-042,MQTT microservice connectivity and auth,Verified,SW
+HIT-REQ-SAFE-003,Emergency braking interlock chain,Verified,SW
+HIT-REQ-DOCS-900,Toolchain and dependency pinning,Planned,Process

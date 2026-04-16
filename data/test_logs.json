@@ -5,9 +5,17 @@
     "test_environment": "Software_Simulator",
     "metrics": {
         "coverage": 100,
-        "failed_tests": 0,
+        "failed_tests": 1,
         "bypassed_checks": 0
     },
+    "requirement_results": [
+        {
+            "requirement_id": "HIT-REQ-MQTT-042",
+            "result": "FAIL",
+            "suite": "integration",
+            "detail": "MQTT microservice connection refused after token refresh"
+        }
+    ],
     "static_analysis": {
         "misra_c_violations": 0,
         "warnings": 0

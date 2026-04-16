@@ -11,27 +11,31 @@ def lead_assessor_node(state: GraphState):
     Your job is to read:
     - the 'Auditor Report' (formal safety/compliance findings),
     - the 'Detective Report' (semantic evidence from communications),
-    - and the 'Regulatory Report' (deterministic CEI EN 50128 rule-check results)
+    - the 'Regulatory Report' (deterministic CEI EN 50128 rule-check results),
+    - and the 'Traceability Matcher Report' (deterministic requirements ↔ test design ↔ log consistency)
     and make a final release decision.
     
     Rules:
-    1. If Regulatory Report has status "RED_FLAG" OR derogation_needed > 0, final decision should be "NO-GO"
+    1. If Traceability Matcher status is "RED_FLAG", final decision should be "NO-GO" unless emails or authorizations clearly document an approved derogation for every high-severity anomaly.
+    2. If Regulatory Report has status "RED_FLAG" OR derogation_needed > 0, final decision should be "NO-GO"
        unless there is a clear documented justification in evidence.
-    2. If Detective status is "SUSPICIOUS", strongly bias to "NO-GO".
-    3. If Auditor overall_assessment is "NON_COMPLIANT", final decision should be "NO-GO".
-    4. Return "GO" only when the combined evidence supports compliance without unresolved high-risk gaps.
+    3. If Detective status is "SUSPICIOUS", strongly bias to "NO-GO".
+    4. If Auditor overall_assessment is "NON_COMPLIANT", final decision should be "NO-GO".
+    5. Return "GO" only when the combined evidence supports compliance without unresolved high-risk gaps.
     
     You MUST output a valid JSON object matching this schema exactly:
     {
         "final_decision": "GO" or "NO-GO",
-        "vdd_explanation": "A professional paragraph for the Version Description Document explaining WHY the release is approved or rejected, citing specific findings from the Auditor and Detective."
+        "vdd_explanation": "A professional paragraph for the Version Description Document explaining WHY the release is approved or rejected, citing specific findings from the Traceability Matcher, Auditor, Detective, and Regulatory outputs where relevant."
     }
     """)
     
     user_message = HumanMessage(content=f"""
+    Traceability Matcher Report: {json.dumps(state.get('matcher_report', {}))}
     Auditor Report: {json.dumps(state.get('auditor_report', {}))}
     Detective Report: {json.dumps(state.get('detective_report', {}))}
     Regulatory Report: {json.dumps(state.get('regulatory_report', {}))}
+    Authorization / waiver text (may be empty): {(state.get('authorization_text') or '')[:4000]}
     """)
     
     try:
@@ -41,14 +45,17 @@ def lead_assessor_node(state: GraphState):
         auditor = state.get("auditor_report", {})
         detective = state.get("detective_report", {})
         regulatory = state.get("regulatory_report", {})
+        matcher = state.get("matcher_report", {})
 
         auditor_assessment = str(auditor.get("overall_assessment", "PARTIAL")).upper()
         detective_status = str(detective.get("status", "SUSPICIOUS")).upper()
         regulatory_status = str(regulatory.get("status", "RED_FLAG")).upper()
         derogation_needed = int(regulatory.get("derogation_needed", 0) or 0)
+        matcher_status = str(matcher.get("status", "WARNING")).upper()
 
         no_go = (
-            regulatory_status == "RED_FLAG"
+            matcher_status == "RED_FLAG"
+            or regulatory_status == "RED_FLAG"
             or derogation_needed > 0
             or detective_status == "SUSPICIOUS"
             or auditor_assessment == "NON_COMPLIANT"
@@ -58,7 +65,7 @@ def lead_assessor_node(state: GraphState):
             "final_decision": "NO-GO" if no_go else "GO",
             "vdd_explanation": (
                 "Deterministic fallback decision was used due to LLM connectivity issues. "
-                f"Inputs: auditor={auditor_assessment}, detective={detective_status}, "
+                f"Inputs: matcher={matcher_status}, auditor={auditor_assessment}, detective={detective_status}, "
                 f"regulatory_status={regulatory_status}, derogation_needed={derogation_needed}."
             ),
             "mode": "deterministic_fallback",

@@ -1,0 +1,11 @@
+RSSOM / APCS — FIT traceability extract (sample test design evidence)
+=====================================================================
+
+Table 3 — Software integration results (excerpt)
+
+HIT-REQ-101 | RSSOM watchdog | PASS | Observed safe state recovery in simulator run IR-12.
+HIT-REQ-MQTT-042 | MQTT microservice | FAIL | Connection refused after token refresh; see log bundle L-903.
+HIT-REQ-SAFE-003 | Emergency braking interlock | PASS | HIL cycle EB-04 completed without fault injection gaps.
+
+Notes:
+- HIT-REQ-MQTT-042 remains open pending DevOps manifest correction (serviceAccount).

@@ -8,6 +8,7 @@ def context_detective_node(state: GraphState):
     system_prompt = SystemMessage(content="""
     You are a Context Detective for a SIL 4 Railway system.
     Your job is to read informal team communications and find hidden safety risks, procedural violations, or unauthorized workarounds.
+    You are also given the Traceability Matcher output (deterministic CSV ↔ test evidence ↔ logs cross-check). Use it to prioritize emails that might justify or worsen a matcher anomaly (e.g. failed MQTT test, derogation, workaround language).
     
     Look specifically for:
     - Bypassed hardware tests (e.g., HIL) or disabled sensors.
@@ -22,7 +23,17 @@ def context_detective_node(state: GraphState):
         "red_flags": ["list", "of", "exact", "quotes", "or", "issues"]
     }
     """)
-    user_message = HumanMessage(content=f"Emails:\n{state['email_threads']}")
+    matcher_blob = ""
+    mr = state.get("matcher_report")
+    if isinstance(mr, dict) and mr:
+        matcher_blob = json.dumps(mr, ensure_ascii=False)[:6000]
+
+    user_message = HumanMessage(
+        content=(
+            f"Traceability Matcher Report (JSON, may be truncated):\n{matcher_blob or '{}'}"
+            f"\n\nEmails:\n{state['email_threads']}"
+        )
+    )
     
     try:
         response = get_chat_groq().invoke([system_prompt, user_message])

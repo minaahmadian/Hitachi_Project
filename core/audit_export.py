@@ -27,13 +27,47 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
     if len(email_text) > max_email:
         email_text = email_text[:max_email] + "\n...[truncated]"
 
+    reqs = final_state.get("requirements_records") or []
+    req_summary: dict[str, Any] = {"count": len(reqs) if isinstance(reqs, list) else 0}
+    if isinstance(reqs, list) and reqs:
+        req_summary["sample_ids"] = [
+            str(r.get("requirement_id", "")).strip()
+            for r in reqs[:12]
+            if isinstance(r, dict) and str(r.get("requirement_id", "")).strip()
+        ]
+
+    logs = final_state.get("test_logs") if isinstance(final_state.get("test_logs"), dict) else {}
+    logs_preview = json.dumps(logs, indent=2, ensure_ascii=False) if logs else "{}"
+    max_logs = 6_000
+    if len(logs_preview) > max_logs:
+        logs_preview = logs_preview[:max_logs] + "\n...[truncated]"
+
+    corpus = final_state.get("test_evidence_corpus") or ""
+    corpus_preview = corpus if isinstance(corpus, str) else str(corpus)
+    max_corpus = 8_000
+    if len(corpus_preview) > max_corpus:
+        corpus_preview = corpus_preview[:max_corpus] + "\n...[truncated]"
+
+    auth = final_state.get("authorization_text") or ""
+    auth_text = auth if isinstance(auth, str) else str(auth)
+    if len(auth_text) > 4_000:
+        auth_text = auth_text[:4_000] + "\n...[truncated]"
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "matcher_report": final_state.get("matcher_report"),
         "auditor_report": final_state.get("auditor_report"),
         "detective_report": final_state.get("detective_report"),
         "regulatory_report": final_state.get("regulatory_report"),
         "assessor_report": final_state.get("assessor_report"),
-        "inputs": {"docx": docx_meta, "email_threads": email_text},
+        "inputs": {
+            "docx": docx_meta,
+            "requirements": req_summary,
+            "test_logs": logs_preview,
+            "test_evidence_corpus_preview": corpus_preview,
+            "authorization_text": auth_text,
+            "email_threads": email_text,
+        },
     }
 
 
