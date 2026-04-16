@@ -67,12 +67,19 @@ def lead_assessor_node(state: GraphState):
                 f"Inputs: auditor={auditor_assessment}, detective={detective_status}, "
                 f"regulatory_status={regulatory_status}, derogation_needed={derogation_needed}."
             ),
+            "mode": "deterministic_fallback",
         }
         return {"assessor_report": report}
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = json.loads(content)
+        if isinstance(report, dict):
+            report["mode"] = "llm"
     except:
-        report = {"final_decision": "ERROR", "vdd_explanation": "Parsing error in Assessor."}
+        report = {
+            "final_decision": "ERROR",
+            "vdd_explanation": "Parsing error in Assessor.",
+            "mode": "deterministic_fallback",
+        }
         
     return {"assessor_report": report}

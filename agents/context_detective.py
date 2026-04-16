@@ -42,11 +42,14 @@ def context_detective_node(state: GraphState):
                 "red_flags": [
                     "Unable to semantically verify communications due to LLM connectivity issue"
                 ],
+                "mode": "deterministic_fallback",
             }
         }
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = json.loads(content)
+        if isinstance(report, dict):
+            report["mode"] = "llm"
     except:
-        report = {"status": "ERROR"}
+        report = {"status": "ERROR", "mode": "deterministic_fallback"}
     return {"detective_report": report}

@@ -87,6 +87,7 @@ def _normalize_auditor_report(raw_report: dict[str, Any]) -> dict[str, Any]:
         "compliance_score": score,
         "risks": [str(item) for item in risks if str(item).strip()],
         "recommendations": [str(item) for item in recommendations if str(item).strip()],
+        "mode": str(raw_report.get("mode", "llm")),
     }
 
 
@@ -214,11 +215,13 @@ Document text for analysis:
                     "Retry with network access for full semantic audit",
                     "Use deterministic regulatory assessor output as interim gate",
                 ],
+                "mode": "deterministic_fallback",
             }
         }
     try:
         content = response.content if isinstance(response.content, str) else json.dumps(response.content)
         report = _normalize_auditor_report(json.loads(content))
+        report["mode"] = "llm"
     except Exception:
         report = {
             "overall_assessment": "PARTIAL",
@@ -228,6 +231,7 @@ Document text for analysis:
             "recommendations": [
                 "Retry analysis with cleaner parsed DOCX content and verify LLM JSON response formatting"
             ],
+            "mode": "deterministic_fallback",
         }
 
     return {"auditor_report": report}

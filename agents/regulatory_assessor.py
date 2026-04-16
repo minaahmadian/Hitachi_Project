@@ -62,6 +62,7 @@ def regulatory_assessor_node(state: GraphState):
     high_failures = [f for f in findings if f["status"] == "FAIL" and f["severity"] == "HIGH"]
 
     report = {
+        "mode": "deterministic_rule_engine",
         "status": "RED_FLAG" if high_failures else ("WARNING" if summary.warning > 0 else "PASS"),
         "rules_checked": summary.total_rules_checked,
         "passed": summary.passed,
