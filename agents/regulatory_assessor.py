@@ -29,6 +29,20 @@ def _build_anomaly_text(state: GraphState) -> str:
     return text or "safety release compliance verification evidence traceability"
 
 
+def _build_clause_retrieval_query(state: GraphState, anomaly_text: str) -> tuple[str, str]:
+    """
+    Step B: prefer Phase-2 ``anomaly_envelope.retrieval_query`` for regulatory clause RAG;
+    fall back to the combined anomaly string used by the rule engine.
+    """
+    matcher_report = state.get("matcher_report") or {}
+    env = matcher_report.get("anomaly_envelope")
+    if isinstance(env, dict):
+        rq = str(env.get("retrieval_query", "")).strip()
+        if rq:
+            return rq, "anomaly_envelope"
+    return (anomaly_text.strip() or "safety release compliance verification evidence traceability"), "anomaly_text_fallback"
+
+
 def _build_evidence(state: GraphState) -> list[EvidenceItem]:
     auditor_report = state.get("auditor_report", {})
     detective_report = state.get("detective_report", {})
@@ -84,12 +98,25 @@ def regulatory_assessor_node(state: GraphState):
     evidence = _build_evidence(state)
     summary = engine.evaluate(anomaly_text=anomaly_text, evidence=evidence, top_k_rules=30)
 
+    rag_query, rag_query_source = _build_clause_retrieval_query(state, anomaly_text)
     top_k = int(os.getenv("REGULATORY_RAG_TOP_K", "5") or "5")
     retrieval = retrieve_regulatory_clauses(
-        anomaly_text,
+        rag_query,
         repo_root=repo_root,
         top_k=max(1, min(top_k, 20)),
     )
+    matcher_report = state.get("matcher_report") or {}
+    envelope = matcher_report.get("anomaly_envelope")
+    envelope_fp = str(envelope.get("phase2_fingerprint", "")).strip() if isinstance(envelope, dict) else None
+    if isinstance(retrieval, dict):
+        retrieval = {
+            **retrieval,
+            "rag_query_source": rag_query_source,
+            "rag_query_used_preview": rag_query[:500],
+            **({"phase2_fingerprint": envelope_fp} if envelope_fp else {}),
+        }
+
+    print(f"   -> Regulatory clause RAG query source: {rag_query_source}")
 
     findings = [asdict(item) for item in summary.findings]
     high_failures = [f for f in findings if f["status"] == "FAIL" and f["severity"] == "HIGH"]
