@@ -11,6 +11,7 @@ class GraphState(TypedDict):
     test_evidence_corpus: str
     authorization_text: str
     matcher_report: dict[str, Any]
+    derogation_report: dict[str, Any]
     auditor_report: dict[str, Any]
     detective_report: dict[str, Any]
     regulatory_report: dict[str, Any]

@@ -1,0 +1,10 @@
+Configuration Control Board (CCB) — minutes excerpt (sample)
+================================================================
+Date: 2026-04-02
+Subject: Integration evidence for HIT-REQ-MQTT-042
+
+The board agreed to accept the current integration log discrepancy until Argo CD manifests
+for the motion namespace are aligned. Formal deviation APPROVED for HIT-REQ-MQTT-042 with
+re-test scheduled on 2026-04-10. QA Lead sign-off recorded pending successful re-run.
+
+This sample file demonstrates Phase 3 deterministic derogation language tied to a requirement ID.

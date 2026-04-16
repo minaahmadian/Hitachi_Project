@@ -56,6 +56,7 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "matcher_report": final_state.get("matcher_report"),
+        "derogation_report": final_state.get("derogation_report"),
         "auditor_report": final_state.get("auditor_report"),
         "detective_report": final_state.get("detective_report"),
         "regulatory_report": final_state.get("regulatory_report"),

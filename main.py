@@ -17,6 +17,7 @@ from core.project_ingestion import (
     load_test_logs_json,
 )
 from agents.formal_auditor import formal_auditor_node
+from agents.derogation_context import derogation_context_node
 from agents.context_detective import context_detective_node
 from agents.traceability_matcher import traceability_matcher_node
 from agents.regulatory_assessor import regulatory_assessor_node
@@ -54,13 +55,15 @@ if __name__ == "__main__":
 
     workflow.add_node("traceability_matcher", traceability_matcher_node)
     workflow.add_node("formal_auditor", formal_auditor_node)
+    workflow.add_node("derogation_context", derogation_context_node)
     workflow.add_node("context_detective", context_detective_node)
     workflow.add_node("regulatory_assessor", regulatory_assessor_node)
     workflow.add_node("lead_assessor", lead_assessor_node)
 
     workflow.set_entry_point("traceability_matcher")
     workflow.add_edge("traceability_matcher", "formal_auditor")
-    workflow.add_edge("formal_auditor", "context_detective")
+    workflow.add_edge("formal_auditor", "derogation_context")
+    workflow.add_edge("derogation_context", "context_detective")
     workflow.add_edge("context_detective", "regulatory_assessor")
     workflow.add_edge("regulatory_assessor", "lead_assessor")
     workflow.add_edge("lead_assessor", END)
@@ -75,6 +78,7 @@ if __name__ == "__main__":
         test_evidence_corpus=test_evidence_corpus,
         authorization_text=authorization_text,
         matcher_report={},
+        derogation_report={},
         auditor_report={},
         detective_report={},
         regulatory_report={},
@@ -96,6 +100,14 @@ if __name__ == "__main__":
         print(f"Status            : {mr.get('status')}")
         print(f"Requirements      : {ms.get('total_requirements')} (doc hits: {ms.get('with_document_hit')})")
         print(f"Anomalies         : {ms.get('anomalies_count')} (HIGH: {ms.get('high_severity_count')})")
+
+    dr = final_state.get("derogation_report") or {}
+    if isinstance(dr, dict) and dr:
+        print("-" * 50)
+        print("DEROGATION CONTEXT SCAN (Phase 3 — deterministic)")
+        print("-" * 50)
+        print(f"Overall           : {dr.get('overall')}")
+        print(f"Summary           : {dr.get('summary_text', '')[:200]}")
 
     print("\n" + "="*50)
     print("DRAFT VDD (Version Description Document)")

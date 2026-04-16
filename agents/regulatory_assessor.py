@@ -65,6 +65,32 @@ def _build_evidence(state: GraphState) -> list[EvidenceItem]:
                     source_type="traceability_matcher",
                 )
             )
+
+    derogation_report = state.get("derogation_report") or {}
+    if isinstance(derogation_report, dict):
+        dsum = str(derogation_report.get("summary_text", "")).strip()
+        overall = str(derogation_report.get("overall", "")).strip()
+        if dsum or overall:
+            evidence.append(
+                EvidenceItem(
+                    evidence_id="derogation-scan-summary",
+                    text=f"{overall}: {dsum}".strip(": ").strip(),
+                    source_type="derogation_scan",
+                )
+            )
+        for idx, hit in enumerate(derogation_report.get("hits") or [], start=1):
+            if idx > 5 or not isinstance(hit, dict):
+                break
+            blob = " ".join(str(hit.get(k, "")) for k in ("pattern_id", "strength", "source", "snippet") if hit.get(k))
+            if blob.strip():
+                evidence.append(
+                    EvidenceItem(
+                        evidence_id=f"derogation-hit-{idx}",
+                        text=blob.strip(),
+                        source_type="derogation_scan",
+                    )
+                )
+
     for idx, req in enumerate(auditor_report.get("requirements_found", []), start=1):
         req_text = str(req).strip()
         if req_text:
