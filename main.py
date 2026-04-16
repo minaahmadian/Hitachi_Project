@@ -23,6 +23,7 @@ from agents.traceability_matcher import traceability_matcher_node
 from agents.regulatory_assessor import regulatory_assessor_node
 from agents.pre_isa_compiler import pre_isa_compiler_node
 from agents.lead_assessor import lead_assessor_node
+from vdd.render_vdd_docx import try_render_vdd_docx
 
 if __name__ == "__main__":
     print("Initializing Multi-Agent Network (LangGraph)...\n")
@@ -94,6 +95,10 @@ if __name__ == "__main__":
     audit_path = write_vdd_audit_artifact(repo_root=repo_root, final_state=final_state)
     if audit_path is not None:
         print(f"\nVDD audit bundle written to: {audit_path}")
+
+    vdd_docx_path = try_render_vdd_docx(repo_root=repo_root, final_state=final_state)
+    if vdd_docx_path is not None:
+        print(f"\nVDD Word draft (Phase 4) written to: {vdd_docx_path}")
     
     mr = final_state.get("matcher_report") or {}
     if isinstance(mr, dict) and mr:

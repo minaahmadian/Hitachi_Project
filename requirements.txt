@@ -25,6 +25,7 @@ pydantic==2.12.5
 pydantic_core==2.41.5
 python-dotenv==1.2.2
 python-docx==1.1.2
+docxtpl>=0.16.0
 PyYAML==6.0.3
 qdrant-client
 requests==2.33.0
