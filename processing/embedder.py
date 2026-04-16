@@ -142,3 +142,33 @@ class LocalEmbedder(EmbeddingProvider):
 
         self._model = cast(_SentenceTransformerProtocol, sentence_transformer_ctor(self.model_name))
         return self._model
+
+
+class HashEmbedder(EmbeddingProvider):
+    """
+    Lightweight offline embedder for demos/tests.
+
+    It converts tokens to a fixed-size vector via hashing, then L2-normalizes.
+    """
+
+    def __init__(self, *, dim: int = 128, batch_size: int = 100) -> None:
+        super().__init__(batch_size=batch_size)
+        if dim <= 0:
+            raise ValueError("dim must be > 0")
+        self.dim: Final[int] = dim
+
+    def embed(self, texts: list[str]) -> list[Vector]:
+        import re
+
+        vectors: list[Vector] = []
+        for text in texts:
+            vec = [0.0] * self.dim
+            terms = re.findall(r"\b\w+\b", (text or "").lower())
+            for term in terms:
+                vec[hash(term) % self.dim] += 1.0
+
+            norm = sum(x * x for x in vec) ** 0.5
+            if norm > 0:
+                vec = [x / norm for x in vec]
+            vectors.append(vec)
+        return vectors

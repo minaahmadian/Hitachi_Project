@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import re
+import numbers
 from typing import Callable, Protocol
 
 from vectordb.base import VectorDBProvider
@@ -93,7 +94,7 @@ class RAGRetriever:
             raise ValueError("Embedder must return a list[float]")
         normalized: list[float] = []
         for value in vector:
-            if not isinstance(value, (int, float)):
+            if not isinstance(value, numbers.Real):
                 raise ValueError("Embedder returned a non-numeric vector value")
             normalized.append(float(value))
         return normalized

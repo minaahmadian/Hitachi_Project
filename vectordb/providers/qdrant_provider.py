@@ -165,14 +165,36 @@ class QdrantProvider(VectorDBProvider):
         query_filter = self._build_filter(filters)
 
         def _search() -> list[Any]:
-            return client.search(
-                collection_name=collection_name,
-                query_vector=query_vector,
-                query_filter=query_filter,
-                limit=top_k,
-                with_payload=True,
-                with_vectors=True,
-            )
+            # Compatibility across qdrant-client versions:
+            # - older APIs expose `search(...)`
+            # - newer APIs expose `query_points(...)` and return QueryResponse(points=[...])
+            search_fn = getattr(client, "search", None)
+            if callable(search_fn):
+                return search_fn(
+                    collection_name=collection_name,
+                    query_vector=query_vector,
+                    query_filter=query_filter,
+                    limit=top_k,
+                    with_payload=True,
+                    with_vectors=True,
+                )
+
+            query_points_fn = getattr(client, "query_points", None)
+            if callable(query_points_fn):
+                response = query_points_fn(
+                    collection_name=collection_name,
+                    query=query_vector,
+                    query_filter=query_filter,
+                    limit=top_k,
+                    with_payload=True,
+                    with_vectors=True,
+                )
+                points = getattr(response, "points", None)
+                if isinstance(points, list):
+                    return points
+                raise QdrantOperationError("query_points returned unexpected response format (missing points)")
+
+            raise QdrantOperationError("Qdrant client does not support search() or query_points()")
 
         points = self._with_retry(_search, operation=f"search collection '{collection_name}'")
         return [self._from_scored_point(point) for point in points]
