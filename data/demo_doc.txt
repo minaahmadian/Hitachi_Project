@@ -1,0 +1,1 @@
+This demo document is about railway safety. The system must ensure hazards are identified and verified through testing. Compliance requires clear acceptance criteria and verification evidence.
