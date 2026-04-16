@@ -21,6 +21,7 @@ from agents.derogation_context import derogation_context_node
 from agents.context_detective import context_detective_node
 from agents.traceability_matcher import traceability_matcher_node
 from agents.regulatory_assessor import regulatory_assessor_node
+from agents.pre_isa_compiler import pre_isa_compiler_node
 from agents.lead_assessor import lead_assessor_node
 
 if __name__ == "__main__":
@@ -58,6 +59,7 @@ if __name__ == "__main__":
     workflow.add_node("derogation_context", derogation_context_node)
     workflow.add_node("context_detective", context_detective_node)
     workflow.add_node("regulatory_assessor", regulatory_assessor_node)
+    workflow.add_node("pre_isa_compiler", pre_isa_compiler_node)
     workflow.add_node("lead_assessor", lead_assessor_node)
 
     workflow.set_entry_point("traceability_matcher")
@@ -65,7 +67,8 @@ if __name__ == "__main__":
     workflow.add_edge("formal_auditor", "derogation_context")
     workflow.add_edge("derogation_context", "context_detective")
     workflow.add_edge("context_detective", "regulatory_assessor")
-    workflow.add_edge("regulatory_assessor", "lead_assessor")
+    workflow.add_edge("regulatory_assessor", "pre_isa_compiler")
+    workflow.add_edge("pre_isa_compiler", "lead_assessor")
     workflow.add_edge("lead_assessor", END)
     
     app = workflow.compile()
@@ -82,6 +85,7 @@ if __name__ == "__main__":
         auditor_report={},
         detective_report={},
         regulatory_report={},
+        pre_isa_report={},
         assessor_report={},
     )
     
@@ -108,6 +112,15 @@ if __name__ == "__main__":
         print("-" * 50)
         print(f"Overall           : {dr.get('overall')}")
         print(f"Summary           : {dr.get('summary_text', '')[:200]}")
+
+    pr = final_state.get("pre_isa_report") or {}
+    if isinstance(pr, dict) and pr:
+        print("-" * 50)
+        print("PRE-ISA REPORT (Step D — consolidated)")
+        print("-" * 50)
+        print(f"Overall           : {pr.get('overall')}")
+        _s = str(pr.get("summary_for_vdd", ""))
+        print(f"VDD summary       : {_s[:220]}{'…' if len(_s) > 220 else ''}")
 
     print("\n" + "="*50)
     print("DRAFT VDD (Version Description Document)")

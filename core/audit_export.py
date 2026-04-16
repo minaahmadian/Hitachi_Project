@@ -60,6 +60,7 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
         "auditor_report": final_state.get("auditor_report"),
         "detective_report": final_state.get("detective_report"),
         "regulatory_report": final_state.get("regulatory_report"),
+        "pre_isa_report": final_state.get("pre_isa_report"),
         "assessor_report": final_state.get("assessor_report"),
         "inputs": {
             "docx": docx_meta,

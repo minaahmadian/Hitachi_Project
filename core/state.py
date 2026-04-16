@@ -15,4 +15,5 @@ class GraphState(TypedDict):
     auditor_report: dict[str, Any]
     detective_report: dict[str, Any]
     regulatory_report: dict[str, Any]
+    pre_isa_report: dict[str, Any]
     assessor_report: dict[str, Any]
