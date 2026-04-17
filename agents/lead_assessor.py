@@ -14,38 +14,22 @@ def _truncate_blob(text: str, max_chars: int) -> str:
 def lead_assessor_node(state: GraphState):
     print("Lead Assessor: Cross-referencing reports and making final decision (VDD)...")
     
-    system_prompt = SystemMessage(content="""
-    You are the Lead Safety Assessor for a SIL 4 Railway project.
-    Your job is to read:
-    - the 'Auditor Report' (formal safety/compliance findings),
-    - the 'Detective Report' (semantic evidence from communications),
-    - the 'Regulatory Report' (deterministic CEI EN 50128 rule-check results),
-    - the 'Traceability Matcher Report' (deterministic requirements ↔ test design ↔ log consistency),
-    - the 'Derogation Context Scan' (deterministic governance / waiver language near anomalies in emails + authorizations),
-    - and the 'Pre-ISA Report' (single consolidated JSON: overall gate, per-anomaly verdicts, and citations for VDD / audit)
-    and make a final release decision.
-    
-    Rules:
-    1. Read the Pre-ISA Report first: use ``overall`` (RED_FLAG / REVIEW_REQUIRED / CLEAR) and ``verdict_per_anomaly`` as the structured summary of traceability + derogation posture before reconciling with the other reports.
-    2. If Traceability Matcher status is "RED_FLAG", final decision should be "NO-GO" unless emails or authorizations clearly document an approved derogation for every high-severity anomaly. Use the Derogation Context Scan overall field (STRONG_SIGNALS / WEAK_SIGNALS / NO_SIGNALS) as a hint, not a substitute for human ISA judgement.
-    3. If Regulatory Report has status "RED_FLAG" OR derogation_needed > 0, final decision should be "NO-GO"
-       unless there is a clear documented justification in evidence.
-    4. If Detective status is "SUSPICIOUS", strongly bias to "NO-GO".
-    5. If Auditor overall_assessment is "NON_COMPLIANT", final decision should be "NO-GO".
-    6. Return "GO" only when the combined evidence supports compliance without unresolved high-risk gaps.
-    
-    You MUST output a valid JSON object matching this schema exactly:
-    {
-        "final_decision": "GO" or "NO-GO",
-        "vdd_explanation": "A professional paragraph for the Version Description Document explaining WHY the release is approved or rejected, citing the Pre-ISA Report, Traceability Matcher, Derogation Scan, Auditor, Detective, and Regulatory outputs where relevant."
-    }
-    """)
+    system_prompt = SystemMessage(
+        content=(
+            "Lead SIL4 safety assessor. Read Pre-ISA JSON first (overall, per-anomaly). "
+            "NO-GO if: matcher RED_FLAG without documented derogations for each HIGH anomaly; "
+            "or regulatory RED_FLAG / derogation_needed>0 without justification; "
+            "or detective SUSPICIOUS; or auditor NON_COMPLIANT. "
+            "GO only if evidence supports compliance. "
+            'Output JSON: {"final_decision":"GO"|"NO-GO","vdd_explanation":"short professional paragraph"}'
+        )
+    )
     
     # Groq free/low tiers often enforce ~6k TPM and small per-request bodies; full JSON dumps
     # caused 413 Payload Too Large. Tune via env if your tier allows larger prompts.
-    pre_max = int(os.getenv("LEAD_ASSESSOR_PRE_ISA_CHARS", "2500"))
-    rep_max = int(os.getenv("LEAD_ASSESSOR_REPORT_CHARS", "1200"))
-    auth_max = int(os.getenv("LEAD_ASSESSOR_AUTH_CHARS", "1000"))
+    pre_max = int(os.getenv("LEAD_ASSESSOR_PRE_ISA_CHARS", "1800"))
+    rep_max = int(os.getenv("LEAD_ASSESSOR_REPORT_CHARS", "800"))
+    auth_max = int(os.getenv("LEAD_ASSESSOR_AUTH_CHARS", "700"))
 
     pre_isa_blob = _truncate_blob(
         json.dumps(state.get("pre_isa_report") or {}, ensure_ascii=False),

@@ -1,43 +1,42 @@
 import json
+import os
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.llm_factory import invoke_chat_groq
 from core.state import GraphState
 
 def context_detective_node(state: GraphState):
     print("Detective: Semantic analysis of team communications in progress...")
-    system_prompt = SystemMessage(content="""
-    You are a Context Detective for a SIL 4 Railway system.
-    Your job is to read informal team communications and find hidden safety risks, procedural violations, or unauthorized workarounds.
-    You are also given the Traceability Matcher output (deterministic CSV ↔ test evidence ↔ logs cross-check) and the Derogation Context Scan (deterministic keyword scan of emails + authorizations near those anomalies). Use both to prioritize emails that might justify or worsen a matcher anomaly (e.g. failed MQTT test, formal deviation, workaround language).
-    
-    Look specifically for:
-    - Bypassed hardware tests (e.g., HIL) or disabled sensors.
-    - Rushed releases ("just to pass the build").
-    - Discrepancies between formal logs and actual actions.
-    
-    You MUST output a valid JSON object matching this schema exactly:
-    {
-        "status": "CLEAN" or "SUSPICIOUS",
-        "severity": "LOW", "MEDIUM", "HIGH", or "CRITICAL",
-        "reason": "Detailed explanation of the anomalies found",
-        "red_flags": ["list", "of", "exact", "quotes", "or", "issues"]
-    }
-    """)
+    system_prompt = SystemMessage(
+        content=(
+            "SIL4 communications triage. Use matcher + derogation JSON + emails. "
+            "Flag bypasses, rushed release, log discrepancies. "
+            'JSON only: {"status":"CLEAN"|"SUSPICIOUS","severity":"LOW"|"MEDIUM"|"HIGH"|"CRITICAL",'
+            '"reason":"...","red_flags":["..."]}'
+        )
+    )
+    mc = int(os.getenv("DETECTIVE_MATCHER_JSON_CHARS", "2200"))
+    dc = int(os.getenv("DETECTIVE_DEROG_JSON_CHARS", "1200"))
+    ec = int(os.getenv("DETECTIVE_EMAIL_CHARS", "3200"))
+
     matcher_blob = ""
     mr = state.get("matcher_report")
     if isinstance(mr, dict) and mr:
-        matcher_blob = json.dumps(mr, ensure_ascii=False)[:6000]
+        matcher_blob = json.dumps(mr, ensure_ascii=False)[:mc]
 
     derog_blob = ""
     dr = state.get("derogation_report")
     if isinstance(dr, dict) and dr:
-        derog_blob = json.dumps(dr, ensure_ascii=False)[:3500]
+        derog_blob = json.dumps(dr, ensure_ascii=False)[:dc]
+
+    emails = str(state.get("email_threads") or "")
+    if len(emails) > ec:
+        emails = emails[:ec] + "\n...[emails truncated]"
 
     user_message = HumanMessage(
         content=(
-            f"Traceability Matcher Report (JSON, may be truncated):\n{matcher_blob or '{}'}"
-            f"\n\nDerogation Context Scan (JSON, may be truncated):\n{derog_blob or '{}'}"
-            f"\n\nEmails:\n{state['email_threads']}"
+            f"Matcher JSON:\n{matcher_blob or '{}'}"
+            f"\n\nDerogation JSON:\n{derog_blob or '{}'}"
+            f"\n\nEmails:\n{emails}"
         )
     )
     

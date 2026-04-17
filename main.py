@@ -130,6 +130,8 @@ if __name__ == "__main__":
     print("\n" + "="*50)
     print("DRAFT VDD (Version Description Document)")
     print("="*50)
-    print(f"RELEASE VERDICT   : {final_state['assessor_report'].get('final_decision')}")
-    print(f"RATIONALE         : {final_state['assessor_report'].get('vdd_explanation')}")
+    ar = final_state.get("assessor_report") or {}
+    print(f"LEAD ASSESSOR MODE: {ar.get('mode', 'unknown')}  (llm = Groq wrote rationale)")
+    print(f"RELEASE VERDICT   : {ar.get('final_decision')}")
+    print(f"RATIONALE         : {ar.get('vdd_explanation')}")
     print("="*50)

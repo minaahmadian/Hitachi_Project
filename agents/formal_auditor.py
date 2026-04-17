@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Any
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.llm_factory import invoke_chat_groq
@@ -146,47 +147,23 @@ def formal_auditor_node(state: GraphState):
     if isinstance(docx_content, dict):
         analysis_text = _build_focused_content(docx_content)
     else:
-        analysis_text = str(docx_content)[:4000]
-    
-    max_chars = 4000
+        analysis_text = str(docx_content)[:2200]
+
+    max_chars = int(os.getenv("AUDITOR_MAX_DOC_CHARS", "2200"))
     if len(analysis_text) > max_chars:
-        analysis_text = analysis_text[:max_chars] + "\n[Content truncated due to size limits]"
+        analysis_text = analysis_text[:max_chars] + "\n[truncated]"
 
-    system_prompt = SystemMessage(content="""
-You are a Formal Safety Compliance Auditor for a SIL 4 railway software process.
-
-Task:
-Analyze the provided parsed document text (from RSSOM_APCS_FIT.docx) and extract meaningful compliance intelligence.
-
-You MUST identify and reason about:
-1) Safety requirements explicitly or implicitly stated
-2) Compliance criteria / acceptance criteria
-3) Test coverage and verification requirements
-4) Mandatory obligations containing SHALL / MUST (or equivalent strict obligation language)
-5) Risks, gaps, ambiguities, or concerns
-
-Scoring guidance:
-- 85-100 COMPLIANT: requirements are clear, testability is strong, obligations are concrete, and risks are low/mitigated
-- 50-84 PARTIAL: some compliance evidence exists but there are gaps, ambiguity, or weak verification detail
-- 0-49 NON_COMPLIANT: major missing requirements, weak/no verification criteria, or significant unresolved risks
-
-Output MUST be valid JSON and MUST match this schema exactly:
-{
-  "overall_assessment": "COMPLIANT" | "PARTIAL" | "NON_COMPLIANT",
-  "requirements_found": [
-    "Concise requirement statement including MUST/SHALL wording when present"
-  ],
-  "compliance_score": 0,
-  "risks": ["Potential issue or concern"],
-  "recommendations": ["Concrete action to improve compliance"]
-}
-
-Rules:
-- Use only evidence from the provided text
-- Do not invent requirements that are not present
-- Keep requirements_found, risks, and recommendations specific and actionable
-- Return at least 3 items in requirements_found when possible
-""")
+    system_prompt = SystemMessage(
+        content=(
+            "SIL4 railway compliance auditor. From the excerpt only: find SHALL/MUST obligations, "
+            "verification/test gaps, risks. "
+            "Scores: 85+ COMPLIANT; 50-84 PARTIAL; 0-49 NON_COMPLIANT. "
+            "Output JSON only:\n"
+            '{"overall_assessment":"COMPLIANT"|"PARTIAL"|"NON_COMPLIANT",'
+            '"requirements_found":["..."],"compliance_score":0,'
+            '"risks":["..."],"recommendations":["..."]}'
+        )
+    )
 
     user_message = HumanMessage(content=f"""
 Document source: RSSOM_APCS_FIT.docx (parsed content)
