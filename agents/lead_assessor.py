@@ -1,7 +1,15 @@
 import json
+import os
 from langchain_core.messages import SystemMessage, HumanMessage
 from core.llm_factory import get_chat_groq
 from core.state import GraphState
+
+
+def _truncate_blob(text: str, max_chars: int) -> str:
+    if max_chars <= 0 or len(text) <= max_chars:
+        return text
+    return text[:max_chars] + "\n...[truncated]"
+
 
 def lead_assessor_node(state: GraphState):
     print("Lead Assessor: Cross-referencing reports and making final decision (VDD)...")
@@ -33,24 +41,59 @@ def lead_assessor_node(state: GraphState):
     }
     """)
     
-    pre_isa_blob = json.dumps(state.get("pre_isa_report") or {}, ensure_ascii=False)
-    if len(pre_isa_blob) > 7000:
-        pre_isa_blob = pre_isa_blob[:7000] + "\n...[truncated]"
+    # Groq free/low tiers often enforce ~6k TPM and small per-request bodies; full JSON dumps
+    # caused 413 Payload Too Large. Tune via env if your tier allows larger prompts.
+    pre_max = int(os.getenv("LEAD_ASSESSOR_PRE_ISA_CHARS", "4000"))
+    rep_max = int(os.getenv("LEAD_ASSESSOR_REPORT_CHARS", "1800"))
+    auth_max = int(os.getenv("LEAD_ASSESSOR_AUTH_CHARS", "1500"))
+
+    pre_isa_blob = _truncate_blob(
+        json.dumps(state.get("pre_isa_report") or {}, ensure_ascii=False),
+        pre_max,
+    )
+    matcher_blob = _truncate_blob(
+        json.dumps(state.get("matcher_report") or {}, ensure_ascii=False),
+        rep_max,
+    )
+    derog_blob = _truncate_blob(
+        json.dumps(state.get("derogation_report") or {}, ensure_ascii=False),
+        rep_max,
+    )
+    auditor_blob = _truncate_blob(
+        json.dumps(state.get("auditor_report") or {}, ensure_ascii=False),
+        rep_max,
+    )
+    detective_blob = _truncate_blob(
+        json.dumps(state.get("detective_report") or {}, ensure_ascii=False),
+        rep_max,
+    )
+    regulatory_blob = _truncate_blob(
+        json.dumps(state.get("regulatory_report") or {}, ensure_ascii=False),
+        rep_max,
+    )
+    auth_blob = _truncate_blob(
+        (state.get("authorization_text") or "").strip(),
+        auth_max,
+    )
 
     user_message = HumanMessage(content=f"""
     Pre-ISA Report (consolidated — read first): {pre_isa_blob}
-    Traceability Matcher Report: {json.dumps(state.get('matcher_report', {}))}
-    Derogation Context Scan: {json.dumps(state.get('derogation_report', {}))}
-    Auditor Report: {json.dumps(state.get('auditor_report', {}))}
-    Detective Report: {json.dumps(state.get('detective_report', {}))}
-    Regulatory Report: {json.dumps(state.get('regulatory_report', {}))}
-    Authorization / waiver text (may be empty): {(state.get('authorization_text') or '')[:4000]}
+    Traceability Matcher Report: {matcher_blob}
+    Derogation Context Scan: {derog_blob}
+    Auditor Report: {auditor_blob}
+    Detective Report: {detective_blob}
+    Regulatory Report: {regulatory_blob}
+    Authorization / waiver text (may be empty): {auth_blob}
     """)
     
     try:
         response = get_chat_groq().invoke([system_prompt, user_message])
-    except Exception:
-        # Deterministic fallback when LLM is unavailable.
+    except Exception as exc:
+        # Deterministic fallback when LLM is unavailable (rate limit, auth, network, etc.).
+        print(
+            f"Lead Assessor: Groq call failed ({type(exc).__name__}): {exc!s}",
+            flush=True,
+        )
         auditor = state.get("auditor_report", {})
         detective = state.get("detective_report", {})
         regulatory = state.get("regulatory_report", {})
