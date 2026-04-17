@@ -68,6 +68,9 @@ def get_chat_groq(
 
     with _lock:
         if _cached_llm is None:
+            # Default 0: Groq's SDK otherwise retries 429s with long sleeps; we prefer
+            # immediate failure so agent nodes can use deterministic fallbacks. Set
+            # GROQ_MAX_RETRIES=2 if you want SDK-level retries instead.
             _cached_llm = ChatGroq(
                 model=resolved_model,
                 temperature=temperature,
