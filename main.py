@@ -131,7 +131,13 @@ if __name__ == "__main__":
     print("DRAFT VDD (Version Description Document)")
     print("="*50)
     ar = final_state.get("assessor_report") or {}
-    print(f"LEAD ASSESSOR MODE: {ar.get('mode', 'unknown')}  (llm = Groq wrote rationale)")
+    _mode = str(ar.get("mode", "unknown"))
+    _mode_hint = (
+        "Groq wrote this rationale"
+        if _mode == "llm"
+        else "fallback text (Groq failed or rate-limited); not a live model completion"
+    )
+    print(f"LEAD ASSESSOR MODE: {_mode} — {_mode_hint}")
     print(f"RELEASE VERDICT   : {ar.get('final_decision')}")
     print(f"RATIONALE         : {ar.get('vdd_explanation')}")
     print("="*50)

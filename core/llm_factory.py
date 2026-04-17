@@ -17,6 +17,23 @@ _last_llm_call_monotonic: float | None = None
 _DEFAULT_MODEL: Final[str] = "llama-3.1-8b-instant"
 
 
+def _sleep_cooldown(seconds: float) -> None:
+    """Sleep in chunks with periodic logs so long waits are not mistaken for a hang."""
+    if seconds <= 0:
+        return
+    end = time.monotonic() + seconds
+    step = 15.0
+    while True:
+        now = time.monotonic()
+        left = end - now
+        if left <= 0:
+            break
+        time.sleep(min(step, left))
+        left = end - time.monotonic()
+        if left > 1.0:
+            print(f"  ... {left:.0f}s cooldown remaining (do not interrupt)", flush=True)
+
+
 def _parse_groq_retry_after_seconds(exc: BaseException) -> float | None:
     """Groq 429 bodies often include 'try again in 12.34s'."""
     s = str(exc)
@@ -68,26 +85,29 @@ def invoke_chat_groq(messages: list[BaseMessage]) -> Any:
     - Retries on 429 (parse server wait hint; up to GROQ_INVOKE_RATE_LIMIT_RETRIES)
 
     GROQ_LLM_CALL_DELAY_SEC=0 disables spacing (may hit 429 on free tier).
+
+    Default delay is 35s (balance: TPM vs wait time). Use 50–65 if you still see 429.
     """
     global _last_llm_call_monotonic
-    delay = float(os.getenv("GROQ_LLM_CALL_DELAY_SEC", "65"))
+    delay = float(os.getenv("GROQ_LLM_CALL_DELAY_SEC", "35"))
     delay = max(0.0, delay)
     rate_retries = max(0, int(os.getenv("GROQ_INVOKE_RATE_LIMIT_RETRIES", "3")))
 
     with _cooldown_lock:
         if _last_llm_call_monotonic is not None and delay > 0:
             print(
-                f"Groq cooldown: waiting {delay:.0f}s before next LLM call "
-                f"(spreads ~6000 TPM; GROQ_LLM_CALL_DELAY_SEC)...",
+                f"Groq cooldown: waiting ~{delay:.0f}s before next LLM call "
+                f"(free-tier TPM; let it finish or set GROQ_LLM_CALL_DELAY_SEC=0 to skip)...",
                 flush=True,
             )
-            time.sleep(delay)
+            _sleep_cooldown(delay)
 
         attempt = 0
         while True:
             try:
                 response = get_chat_groq().invoke(messages)
                 _last_llm_call_monotonic = time.monotonic()
+                print("Groq LLM call completed.", flush=True)
                 return response
             except Exception as exc:
                 wait = _parse_groq_retry_after_seconds(exc)
