@@ -1,7 +1,7 @@
 import json
 from typing import Any
 from langchain_core.messages import SystemMessage, HumanMessage
-from core.llm_factory import get_chat_groq
+from core.llm_factory import invoke_chat_groq
 from core.state import GraphState
 
 
@@ -196,7 +196,7 @@ Document text for analysis:
 """)
 
     try:
-        response = get_chat_groq().invoke([system_prompt, user_message])
+        response = invoke_chat_groq([system_prompt, user_message])
     except Exception as exc:
         # Fallback mode when external LLM call is unavailable.
         return {

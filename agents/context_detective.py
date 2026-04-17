@@ -1,6 +1,6 @@
 import json
 from langchain_core.messages import SystemMessage, HumanMessage
-from core.llm_factory import get_chat_groq
+from core.llm_factory import invoke_chat_groq
 from core.state import GraphState
 
 def context_detective_node(state: GraphState):
@@ -42,7 +42,7 @@ def context_detective_node(state: GraphState):
     )
     
     try:
-        response = get_chat_groq().invoke([system_prompt, user_message])
+        response = invoke_chat_groq([system_prompt, user_message])
     except Exception as exc:
         # Fallback mode when external LLM call is unavailable.
         return {

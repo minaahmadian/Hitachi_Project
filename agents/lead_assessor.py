@@ -1,7 +1,7 @@
 import json
 import os
 from langchain_core.messages import SystemMessage, HumanMessage
-from core.llm_factory import get_chat_groq
+from core.llm_factory import invoke_chat_groq
 from core.state import GraphState
 
 
@@ -43,9 +43,9 @@ def lead_assessor_node(state: GraphState):
     
     # Groq free/low tiers often enforce ~6k TPM and small per-request bodies; full JSON dumps
     # caused 413 Payload Too Large. Tune via env if your tier allows larger prompts.
-    pre_max = int(os.getenv("LEAD_ASSESSOR_PRE_ISA_CHARS", "4000"))
-    rep_max = int(os.getenv("LEAD_ASSESSOR_REPORT_CHARS", "1800"))
-    auth_max = int(os.getenv("LEAD_ASSESSOR_AUTH_CHARS", "1500"))
+    pre_max = int(os.getenv("LEAD_ASSESSOR_PRE_ISA_CHARS", "2500"))
+    rep_max = int(os.getenv("LEAD_ASSESSOR_REPORT_CHARS", "1200"))
+    auth_max = int(os.getenv("LEAD_ASSESSOR_AUTH_CHARS", "1000"))
 
     pre_isa_blob = _truncate_blob(
         json.dumps(state.get("pre_isa_report") or {}, ensure_ascii=False),
@@ -87,7 +87,7 @@ def lead_assessor_node(state: GraphState):
     """)
     
     try:
-        response = get_chat_groq().invoke([system_prompt, user_message])
+        response = invoke_chat_groq([system_prompt, user_message])
     except Exception as exc:
         # Deterministic fallback when LLM is unavailable (rate limit, auth, network, etc.).
         print(
