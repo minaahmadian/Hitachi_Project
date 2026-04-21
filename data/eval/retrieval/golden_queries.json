@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q01_assessor",
+    "query": "Who is the assessor responsible for railway software safety assessment",
+    "relevant_clause_ids": ["3.2"],
+    "labeling_rationale": "Clause 3.2 defines Assessor; query paraphrases the title/sentence."
+  },
+  {
+    "id": "q02_availability",
+    "query": "availability of a product to perform required function under given conditions",
+    "relevant_clause_ids": ["3.3"],
+    "labeling_rationale": "Direct overlap with Availability definition 3.3."
+  },
+  {
+    "id": "q03_cots",
+    "query": "commercial off the shelf software fitness for purpose demonstrated by commercial users",
+    "relevant_clause_ids": ["3.4"],
+    "labeling_rationale": "COTS definition 3.4."
+  },
+  {
+    "id": "q04_design_authority",
+    "query": "body responsible for design solution and overseeing development of system",
+    "relevant_clause_ids": ["3.5"],
+    "labeling_rationale": "Design authority 3.5."
+  },
+  {
+    "id": "q05_multi",
+    "query": "assessment process design authority and validator product requirements",
+    "relevant_clause_ids": ["3.1", "3.5"],
+    "labeling_rationale": "Multi-relevant: touches Assessment (3.1) and Design authority (3.5)."
+  }
+]
