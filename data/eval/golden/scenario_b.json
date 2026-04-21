@@ -1,0 +1,22 @@
+{
+  "scenario_id": "B_no_hit_fake_row",
+  "description": "Same as A but CSV has no HIT-FAKE-999 row — no anomaly should cite that ID.",
+  "data_bundle": [
+    "data/eval/scenarios/scenario_b_no_hit_fake.csv",
+    "data/email_threads.txt",
+    "data/test_logs.json",
+    "data/authorizations.txt",
+    "data/RSSOM_APCS_FIT.docx"
+  ],
+  "run_instructions": "export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/scenario_b_no_hit_fake.csv",
+  "labeling_rationale": "Removing only the fake row; matcher may still be RED_FLAG due to other VERIFIED rows missing corpus hits, but HIT-FAKE must not appear.",
+  "expected_deterministic": {
+    "matcher_report.status": "RED_FLAG",
+    "pre_isa_report.overall": "RED_FLAG"
+  },
+  "anomaly_requirement_id_checks": {
+    "must_include": [],
+    "must_not_include": ["HIT-FAKE-999"]
+  },
+  "expected_soft": {}
+}

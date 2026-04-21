@@ -1,0 +1,46 @@
+Cross-pipeline accuracy comparison — what to share with your team
+================================================================
+
+See also: data/eval/TEAM_INSTRUCTIONS.txt (scenarios A/B/C) and
+  data/eval/golden/scenario_a.json, scenario_b.json, scenario_c.json
+
+Goal
+----
+Both teams run the SAME inputs and compare scores using the same golden JSON
+files + scripts/evaluate_against_golden.py
+
+What to share (copy as a bundle)
+--------------------------------
+1. data/requirements_trace.csv          (your labeled scenario)
+2. data/email_threads.txt
+3. data/test_logs.json
+4. data/authorizations.txt
+5. data/RSSOM_APCS_FIT.docx             (or same name; empty if missing)
+6. data/eval/golden/scenario_baseline.json   (or your golden file)
+7. Same Python deps: requirements.txt
+
+Do NOT commit secrets. GROQ_API_KEY stays local.
+
+How to produce a comparable audit JSON
+--------------------------------------
+  export VDD_AUDIT=1
+  python main.py
+  → writes output/vdd_last_run.json (when VDD_AUDIT=1)
+
+How to score this pipeline
+--------------------------
+  python scripts/evaluate_against_golden.py \\
+    --audit output/vdd_last_run.json \\
+    --golden data/eval/golden/scenario_baseline.json
+
+Your team runs the same commands with their code + same data folder.
+
+Fair comparison tips
+--------------------
+• "Deterministic" fields (matcher_report.status, pre_isa_report.overall) should
+  match if inputs are identical — use these as primary accuracy.
+• Lead assessor / auditor / detective use Groq: outputs can differ between
+  runs or models. Either average over N runs, or compare only deterministic
+  gates, or freeze model id + temperature in .env.
+• To add a scenario: copy scenario_baseline.json, edit expected_* and list
+  exact files under data_bundle.

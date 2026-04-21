@@ -1,0 +1,22 @@
+{
+  "scenario_id": "C_extra_conflict_row",
+  "description": "Scenario A plus C6-CONFLICT-DEMO (VERIFIED, text deliberately wrong vs typical matrix) — must appear as missing-evidence anomaly.",
+  "data_bundle": [
+    "data/eval/scenarios/scenario_c_extra_conflict_row.csv",
+    "data/email_threads.txt",
+    "data/test_logs.json",
+    "data/authorizations.txt",
+    "data/RSSOM_APCS_FIT.docx"
+  ],
+  "run_instructions": "export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/scenario_c_extra_conflict_row.csv",
+  "labeling_rationale": "New ID not in corpus → MISSING_TEST_DESIGN_EVIDENCE for that ID; also still expect HIT-FAKE anomaly.",
+  "expected_deterministic": {
+    "matcher_report.status": "RED_FLAG",
+    "pre_isa_report.overall": "RED_FLAG"
+  },
+  "anomaly_requirement_id_checks": {
+    "must_include": ["HIT-FAKE-999", "C6-CONFLICT-DEMO"],
+    "must_not_include": []
+  },
+  "expected_soft": {}
+}

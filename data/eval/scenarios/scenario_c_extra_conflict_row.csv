@@ -1,0 +1,9 @@
+requirement_id,title,verification_status
+C6-APCS-1,Interface with ATS and MMIS subsystems,VERIFIED
+C6-APCS-2,Data collection from TCMS and PIS-CU,VERIFIED
+C6-APCS-3,Station data visualization and FCS interface,VERIFIED
+C6-APCS-84,High crowding level visualization (Red color),VERIFIED
+C6-APCS-87,Data retention for historical analysis,VERIFIED
+HIT-FAKE-999,Critical Safety Module - Redundancy Check,VERIFIED
+C6-APCS-1,C6-APCS-1 (CR-Informal: User Blocking function),NEW_REQUEST
+C6-CONFLICT-DEMO,Deliberate eval row: crowding High level MUST be Blue (contradicts typical RSSOM matrix),VERIFIED

@@ -1,0 +1,8 @@
+{
+  "scenario_id": "minimal_example_only",
+  "description": "Placeholder: fill expected_* after you freeze a run with a specific CSV/corpus. Use this to copy structure for your own golden file.",
+  "data_bundle": [],
+  "notes": "Replace expected_* with your labels; run pipeline with VDD_AUDIT=1 and compare.",
+  "expected_deterministic": {},
+  "expected_soft": {}
+}

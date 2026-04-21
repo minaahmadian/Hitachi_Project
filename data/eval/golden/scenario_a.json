@@ -1,0 +1,24 @@
+{
+  "scenario_id": "A_hit_fake_in_matrix",
+  "description": "Includes HIT-FAKE-999 as VERIFIED but not in test corpus → pipeline must flag it.",
+  "data_bundle": [
+    "data/eval/scenarios/scenario_a_hit_fake.csv",
+    "data/email_threads.txt",
+    "data/test_logs.json",
+    "data/authorizations.txt",
+    "data/RSSOM_APCS_FIT.docx"
+  ],
+  "run_instructions": "export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/scenario_a_hit_fake.csv",
+  "labeling_rationale": "Independent expectation: fake ID with no evidence must produce HIGH anomaly for that requirement_id.",
+  "expected_deterministic": {
+    "matcher_report.status": "RED_FLAG",
+    "pre_isa_report.overall": "RED_FLAG"
+  },
+  "anomaly_requirement_id_checks": {
+    "must_include": ["HIT-FAKE-999"],
+    "must_not_include": []
+  },
+  "expected_soft": {
+    "assessor_report.final_decision": "NO-GO"
+  }
+}

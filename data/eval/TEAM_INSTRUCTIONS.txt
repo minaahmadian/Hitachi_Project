@@ -1,0 +1,49 @@
+Evaluation scenarios A / B / C — for both teams
+===============================================
+
+What this is
+------------
+Three controlled CSV variants + one golden JSON each. Same emails, logs, authorizations,
+and RSSOM doc as in data/. Only the requirements_trace file changes per scenario.
+
+Files
+-----
+  data/eval/scenarios/scenario_a_hit_fake.csv
+  data/eval/scenarios/scenario_b_no_hit_fake.csv
+  data/eval/scenarios/scenario_c_extra_conflict_row.csv
+
+  data/eval/golden/scenario_a.json
+  data/eval/golden/scenario_b.json
+  data/eval/golden/scenario_c.json
+
+  scripts/evaluate_against_golden.py
+  scripts/run_eval_scenarios.sh   (optional: runs A then B then C)
+
+Scenario meaning (labels agreed by design, not copied from a pipeline output)
+------------------------------------------------------------------------------
+  A — Includes HIT-FAKE-999 (VERIFIED, not in corpus). Expect: anomaly cites HIT-FAKE-999.
+  B — Same as A but row HIT-FAKE-999 removed. Expect: no anomaly cites HIT-FAKE-999.
+  C — Same as A plus row C6-CONFLICT-DEMO (VERIFIED, synthetic conflict text).
+      Expect: anomalies cite both HIT-FAKE-999 and C6-CONFLICT-DEMO.
+
+Your team should run the SAME commands with THEIR pipeline, same files, and compare:
+  - exit code of evaluate_against_golden.py (0 = pass)
+  - printed accuracy lines
+
+One scenario manually
+-----------------------
+  export VDD_AUDIT=1
+  export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/scenario_b_no_hit_fake.csv
+  python main.py
+  python scripts/evaluate_against_golden.py \
+    --audit output/vdd_last_run.json \
+    --golden data/eval/golden/scenario_b.json
+
+All three (bash)
+----------------
+  chmod +x scripts/run_eval_scenarios.sh
+  export VDD_AUDIT=1
+  ./scripts/run_eval_scenarios.sh
+
+Do not copy golden expected values from your own JSON output before the first independent
+review — use the rationale fields inside each golden file instead.
