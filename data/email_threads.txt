@@ -7,35 +7,129 @@ Ciao a tutti, vi ricordiamo che venerdì gli uffici chiuderanno alle 14:00. Rico
 --- EMAIL 2 ---
 Da: mario.rossi@hitachirail.com
 A: luigi.qa@hitachirail.com
-Oggetto: R: [360Motion demo on-prem] errori microservizi
-Ciao,
-Sarebbe possibile aggiornare il sistema inserendo una nuova funzione che possa bloccare alcuni utenti dall'accedere al backend?
+Oggetto: R: [APCS FIT / RSSOM] evidenza C6-APCS-87
+Ciao Luigi,
+per la sessione FIT di questa settimana dobbiamo portare evidenza traceability su C6-APCS-87 (data retention / historical analysis).
+Nel documento RSSOM_APCS_FIT il Test Case collegato risulta PASS su crowding visualization; confermi che nei log HIL abbiamo anche la retention tag?
+Grazie, Mario
 
 --- EMAIL 3 ---
-Da: marco.dev@hitachirail.com
+Da: luigi.qa@hitachirail.com
 A: mario.rossi@hitachirail.com
-Oggetto: R: [360Motion demo on-prem] errori microservizi
-Ciao,
-Si certo, provvedo a realizzarla e la troverai nell'ambiente di test domani.
+Oggetto: Re: [APCS FIT / RSSOM] evidenza C6-APCS-87
+Mario,
+sì: nei test_logs.json la riga per C6-APCS-87 è PASS. L’ho allineata anche alla tabella requirements_trace prima del gate.
+Se serve allego lo zip degli estratti RTM.
+Luigi
 
 --- EMAIL 4 ---
+Da: elena.pmo@hitachirail.com
+A: occ-safety@hitachirail.com
+Oggetto: [CCB] richiesta deroga temporanea su evidenza APCS-FIT-021
+Team,
+la Change Control Board ha registrato una richiesta di derogation per completare i test HMI maintainer prima della milestone OCC.
+La deviation è stata discussa in call; serve il formal signoff da Validator entro giovedì. Nessun waiver senza tracciamento su ticket CCB-4412.
+Elena
+
+--- EMAIL 5 ---
+Da: francesco.validator@hitachirail.com
+A: elena.pmo@hitachirail.com
+Oggetto: Re: [CCB] richiesta deroga temporanea su evidenza APCS-FIT-021
+Elena,
+accetto il rischio residuo formalmente solo dopo review della checklist ISA. Il test APCS_FIT_020 su maintainer profile deve risultare PASS nel corpus; se vedo FAIL sul RTM section per C6-APCS-90 blocco il release.
+Francesco
+
+--- EMAIL 6 ---
+Da: marco.dev@hitachirail.com
+A: team-dev@hitachirail.com
+Oggetto: ATS-APCS interface checks (C6-APCS-1)
+Ragazzi,
+per C6-APCS-1 abbiamo ripetuto l’interface test con ATS: esito OK sul back-end simulato. Allego log JSON aggiornato (requirement_id C6-APCS-1, result PASS).
+Marco
+
+--- EMAIL 7 ---
 Da: andrea.sysadmin@hitachirail.com
 A: team-dev@hitachirail.com
 Oggetto: Manutenzione server Jira
 Ragazzi, stasera dalle 22 alle 23 Jira sarà offline per aggiornamenti di sicurezza. Nessun impatto sulle pipeline in corso.
 
---- EMAIL 5 ---
+--- EMAIL 8 ---
+Da: sofia.architect@hitachirail.com
+A: marco.dev@hitachirail.com
+Oggetto: RTM crowding levels vs RSSOM matrix
+Marco,
+nel RSSOM la matrice Verification lega C6-APCS-7 .. C6-APCS-11 ai livelli Empty/Light/Medium/High/Full; in produzione dobbiamo evitare mismatch tra RTM e IL. Puoi verificare che nel documento FIT sia coerente con quanto promesso al cliente?
+Grazie, Sofia
+
+--- EMAIL 9 ---
+Da: marco.dev@hitachirail.com
+A: sofia.architect@hitachirail.com
+Oggetto: Re: RTM crowding levels vs RSSOM matrix
+Sofia,
+controllo le righe APCS_FIT_006..011 nel Word: per ora PASS/FAIL sono sulle righe con riferimento C6-APCS-89 dove previsto. Se qualcosa risulta FAIL apro subito anomalia su Phase 2.
+
+--- EMAIL 10 ---
+Da: luigi.qa@hitachirail.com
+A: regulatory-review@hitachirail.com
+Oggetto: EN 50128 evidence bundle + RAG corpus note
+Colleghi,
+per il assessor: il corpus lungo deriva dal parse di RSSOM_APCS_FIT.docx (tabelle incluse). La trace CSV elenca gli ID che portiamo in release; il matcher confronta CSV vs testo FIT + log strutturati. Le email non sostituiscono il documento ma forniscono governance language attorno agli ID quando c’è anomaly HIGH.
+Luigi QA
+
+--- EMAIL 11 ---
+Da: giuseppe.dev@hitachirail.com
+A: luigi.qa@hitachirail.com
+Oggetto: Re: Patch emergenza modulo ATC / crowding
+Luigi, il PM chiede la demo per il cliente. Ho pushato la patch collegata ai messaggi RTM. Il tool MISRA segnala ancora due warning ma sono in codice non safety-critical.
+Non fare rerun completo dei test a banco: impatta la timeline. Possiamo accettare un workaround documentato in derogation solo se il Validator ha firmato. Dimmi se serve bypass su un check HIL minore.
+Giuseppe
+
+--- EMAIL 12 ---
+Da: audit.external@partner.example.com
+A: occ-safety@hitachirail.com
+Oggetto: Osservazione — tracciabilità C6-APCS-84 vs log
+Nel campione che ci avete inviato, il requirement C6-APCS-84 risulta VERIFIED nella matrice interna ma nel corpus FIT compare una riga con contesto FAIL vicino al token FAIL della stessa riga: chiediamo chiarimento prima della pre-ISA firmata.
+
+--- EMAIL 13 ---
+Da: paola.compliance@hitachirail.com
+A: audit.external@partner.example.com
+Oggetto: Re: Osservazione — tracciabilità C6-APCS-84 vs log
+Buongiorno,
+apriamo review interna: se il matcher segnala DOC_EVIDENCE_FAIL per C6-APCS-84 mentre il CSV è VERIFIED, la derogation deve coprire l’anomaly HIGH con segnali forti da CCB o authorization archive. Invieremo evidenza aggiornata entro 48h.
+Paola
+
+--- EMAIL 14 ---
+Da: mario.rossi@hitachirail.com
+A: luigi.qa@hitachirail.com
+Oggetto: R: [360Motion demo on-prem] errori microservizi
+Sarebbe possibile aggiornare il sistema inserendo una nuova funzione che possa bloccare alcuni utenti dall'accedere al backend?
+
+--- EMAIL 15 ---
+Da: marco.dev@hitachirail.com
+A: mario.rossi@hitachirail.com
+Oggetto: R: [360Motion demo on-prem] errori microservizi
+Si certo, provvedo a realizzarla e la troverai nell'ambiente di test domani.
+
+--- EMAIL 16 ---
 Da: marco.dev@hitachirail.com
 A: luigi.qa@hitachirail.com
 Oggetto: R: [360Motion demo on-prem] errori microservizi
 Ciao, grazie mille.
 Ho creato i 3 manifest che mancavano (serviceaccount, role e rolebinding) ed ora MQTT è running.
 L'aggiunta del serviceAccount al namespace motion su dev1 l'avevo fatto io manualmente:
-Ho definito un file rbca e successivamente ho eseguito il comando kubectl apply.
-N.B.: guardando su dev1 vedo che il serviceAccount emqx è presente (non integrato in Argo) ma non riesco a trovare dove viene creato sul devBranch. Fatemi sapere.
+Ho definito un file rbac e successivamente ho eseguito il comando kubectl apply.
+N.B.: su dev1 il serviceAccount emqx è presente (non integrato in Argo) ma non trovo dove viene creato sul devBranch. Fatemi sapere.
 
---- EMAIL 6 ---
-Da: giuseppe.dev@hitachirail.com
-A: luigi.qa@hitachirail.com
-Oggetto: Re: Patch emergenza modulo ATC
-Luigi, il PM ha fretta per la demo di domani. Ho pushato la patch. Il tool di static analysis dà un warning su MISRA-C ma è chiaramente un falso positivo. Ignora il warning e procedi, i test a banco li salto per fare prima, tanto il codice è banale.
+--- EMAIL 17 ---
+Da: occ-operator.training@hitachirail.com
+A: apcs-hmi@hitachirail.com
+Oggetto: Sessione training OCC — profili operatore vs maintainer
+Per la settimana prossima scheduliamo esercitazione su APCS HMI: profilo OCC Operator vs Maintainer (riferimento test APCS_FIT_020 e APCS_FIT_021 nel pacchetto FIT). Servono screenshot coerenti con C6-APCS-87 e C6-APCS-90 nel documento RSSOM.
+Grazie
+
+--- EMAIL 18 ---
+Da: warehouse.docs@hitachirail.com
+A: team-dev@hitachirail.com
+Oggetto: Nuova revisione RSSOM_APCS_FIT.docx in archivio condiviso
+La revisione 0x02 del file RSSOM è stata pubblicata sullo share progetto. Chi esegue pipeline locale deve copiare sotto data/RSSOM_APCS_FIT.docx per allineare il parse e il corpus.
+Document control
