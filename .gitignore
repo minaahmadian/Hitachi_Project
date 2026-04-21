@@ -1,6 +1,8 @@
 # [CRITICAL] API Keys and Secrets
 .env
 .env.local
+.env.save
+.env.backup
 .env.development.local
 .env.test.local
 .env.production.local
