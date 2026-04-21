@@ -1,13 +1,14 @@
 {
   "scenario_id": "baseline_hitachi_trace_csv",
-  "description": "Default repo data: requirements_trace.csv with HIT-FAKE-999 VERIFIED, duplicate C6-APCS-1, email_threads.txt, test_logs.json. Use same files byte-for-byte when comparing pipelines.",
+  "description": "Frozen 24-row requirement trace (RSSOM-merge style titles): VERIFIED block + HIT-FAKE-999 + duplicate C6-APCS-1 + PLANNED IDs from FIT matrix, in data/eval/scenarios/baseline_legacy_trace.csv — byte-aligned with the canonical merge target for data/requirements_trace.csv; rerun CSV export to refresh if RSSOM changes.",
   "data_bundle": [
-    "data/requirements_trace.csv",
+    "data/eval/scenarios/baseline_legacy_trace.csv",
     "data/email_threads.txt",
     "data/test_logs.json",
     "data/authorizations.txt",
     "data/RSSOM_APCS_FIT.docx"
   ],
+  "run_instructions": "export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/baseline_legacy_trace.csv",
   "notes": "matcher + pre_isa are deterministic given same inputs. assessor_report.final_decision and auditor/detective JSON may vary when Groq is used (temperature, rate limits). Compare deterministic_* first; treat soft_* as optional.",
   "expected_deterministic": {
     "matcher_report.status": "RED_FLAG",

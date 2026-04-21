@@ -1,0 +1,25 @@
+requirement_id,title,verification_status
+C6-APCS-1,APCS-MMIS interface through IL | ATS-APCS interface through IL | Software Integration Testing (SI) of i-OCC and APCS,VERIFIED
+C6-APCS-2,Vehicle crowding levels visualization on RTM section | Interface test with PIS-CU | Interface test with TCMS,VERIFIED
+C6-APCS-3,Station data visualization on RTM section | FCS-APCS interface through IL,VERIFIED
+C6-APCS-84,High Level of crowding check on HMI and IL | APCS-PVIS interface through IL,VERIFIED
+C6-APCS-87,Vehicle crowding levels visualization on RTM section | Diagnostics visualization on HMI | Data retention test,VERIFIED
+HIT-FAKE-999,Critical Safety Module - Redundancy Check,VERIFIED
+C6-APCS-1,APCS-MMIS interface through IL | ATS-APCS interface through IL | Software Integration Testing (SI) of i-OCC and APCS,NEW_REQUEST
+C6-APCS-4,Collecting timestamps and statistics visualization on HMI,PLANNED
+C6-APCS-6,Vehicle crowding levels visualization on RTM section,PLANNED
+C6-APCS-7,Vehicle crowding levels visualization on RTM section | Empty Level of crowding check on HMI and IL,PLANNED
+C6-APCS-8,Vehicle crowding levels visualization on RTM section | Light Level of crowding check on HMI and IL,PLANNED
+C6-APCS-9,Vehicle crowding levels visualization on RTM section | Medium Level of crowding check on HMI and IL,PLANNED
+C6-APCS-10,Vehicle crowding levels visualization on RTM section | High Level of crowding check on HMI and IL,PLANNED
+C6-APCS-11,Vehicle crowding levels visualization on RTM section | Full Level of crowding check on HMI and IL,PLANNED
+C6-APCS-12,Vehicle crowding levels visualization on RTM section | Vehicle crowding levels update,PLANNED
+C6-APCS-72,Vehicle crowding levels visualization on RTM section | Vehicle crowding levels update,PLANNED
+C6-APCS-74,Vehicle crowding levels visualization on RTM section,PLANNED
+C6-APCS-75,APCS-IAMS interface through IL,PLANNED
+C6-APCS-82,Empty Level of crowding check on HMI and IL | APCS-PVIS interface through IL,PLANNED
+C6-APCS-83,Medium Level of crowding check on HMI and IL | APCS-PVIS interface through IL,PLANNED
+C6-APCS-85,Full Level of crowding check on HMI and IL | APCS-PVIS interface through IL,PLANNED
+C6-APCS-88,Light Level of crowding check on HMI and IL | APCS-PVIS interface through IL,PLANNED
+C6-APCS-89,Empty Level of crowding check on HMI and IL | Light Level of crowding check on HMI and IL | Medium Level of crowding check on HMI and IL | High Level of crowding check on HMI and IL | Full Level of crowding check on HMI and IL | APCS-PVIS interface through IL,PLANNED
+C6-APCS-90,Diagnostics visualization on HMI,PLANNED

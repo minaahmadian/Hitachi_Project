@@ -19,6 +19,12 @@ Files
   scripts/evaluate_against_golden.py
   scripts/run_eval_scenarios.sh   (optional: runs A then B then C)
 
+Baseline (24 data rows, RSSOM-enriched trace — frozen for eval):
+  data/eval/scenarios/baseline_legacy_trace.csv
+  data/eval/golden/scenario_baseline.json
+  Run:  export REQUIREMENTS_TRACE_CSV=data/eval/scenarios/baseline_legacy_trace.csv
+  Refresh the CSV from RSSOM when needed:  python -m core.rssom_requirements_trace --docx data/RSSOM_APCS_FIT.docx --out data/eval/scenarios/baseline_legacy_trace.csv --merge
+
 Scenario meaning (labels agreed by design, not copied from a pipeline output)
 ------------------------------------------------------------------------------
   A — Includes HIT-FAKE-999 (VERIFIED, not in corpus). Expect: anomaly cites HIT-FAKE-999.
