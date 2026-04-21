@@ -43,6 +43,24 @@ STOPWORDS = {
 }
 
 
+def _requirement_excerpt(rule: dict[str, object], *, max_len: int = 360) -> str:
+    """Short, single-line text from the rule JSON for human-readable rationales."""
+    raw = str(
+        rule.get("requirement_text")
+        or rule.get("action")
+        or rule.get("condition")
+        or ""
+    ).strip()
+    if not raw:
+        return ""
+    raw = re.sub(r"\s+", " ", raw)
+    raw = raw.replace('"', "'")
+    if len(raw) <= max_len:
+        return raw
+    cut = raw[: max_len - 1].rsplit(" ", 1)[0]
+    return cut + "…"
+
+
 @dataclass(slots=True)
 class EvidenceItem:
     evidence_id: str
@@ -134,22 +152,41 @@ class RegulatoryRuleEngine:
             rule_id = str(rule.get("rule_id", ""))
             clause_id = str(rule.get("clause_id", ""))
 
+            excerpt = _requirement_excerpt(rule)
+
             if matched:
                 status = "PASS"
                 needs_derogation = False
-                rationale = f"Matched supporting evidence for {clause_id}: {', '.join(matched)}"
+                if excerpt:
+                    rationale = (
+                        f'Matched supporting evidence for rule {clause_id} ({modality}) that is "{excerpt}": '
+                        f'{", ".join(matched)}'
+                    )
+                else:
+                    rationale = f"Matched supporting evidence for {clause_id}: {', '.join(matched)}"
             else:
                 if modality in {"MUST", "SHALL"}:
                     status = "FAIL"
                     needs_derogation = True
-                    rationale = (
-                        f"No supporting evidence found for mandatory rule {clause_id}; "
-                        "derogation or corrective action is required."
-                    )
+                    if excerpt:
+                        rationale = (
+                            f'No supporting evidence found for mandatory rule {clause_id} that is "{excerpt}"; '
+                            "derogation or corrective action is required."
+                        )
+                    else:
+                        rationale = (
+                            f"No supporting evidence found for mandatory rule {clause_id}; "
+                            "derogation or corrective action is required."
+                        )
                 else:
                     status = "WARNING"
                     needs_derogation = False
-                    rationale = f"No evidence found for recommended rule {clause_id}."
+                    if excerpt:
+                        rationale = (
+                            f'No evidence found for recommended rule {clause_id} that is "{excerpt}".'
+                        )
+                    else:
+                        rationale = f"No evidence found for recommended rule {clause_id}."
 
             findings.append(
                 RuleEvaluation(

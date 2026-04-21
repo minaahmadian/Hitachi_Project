@@ -24,6 +24,48 @@ from agents.regulatory_assessor import regulatory_assessor_node
 from agents.pre_isa_compiler import pre_isa_compiler_node
 from agents.lead_assessor import lead_assessor_node
 from vdd.render_vdd_docx import try_render_vdd_docx
+from vdd.regulatory_findings_text import format_regulatory_findings_plain
+
+
+def _print_regulatory_findings_breakdown(regulatory_report: dict) -> None:
+    """
+    List each evaluated CEI EN 50128 rule as PASS / FAIL / WARNING (same text as VDD appendix).
+    Set REGULATORY_PRINT_FINDINGS=0 to hide. REGULATORY_FINDINGS_OUT_PATH=... to also write a file.
+    """
+    flag = os.getenv("REGULATORY_PRINT_FINDINGS", "1").strip().lower()
+    if flag in {"0", "false", "no", "off"}:
+        return
+    rac_max = max(40, int(os.getenv("REGULATORY_PRINT_RATIONALE_MAX_CHARS", "240") or "240"))
+    text = format_regulatory_findings_plain(regulatory_report, rationale_max=rac_max)
+    if not text.strip():
+        return
+    print("\n  --- Per-rule breakdown (overlap: rule keywords vs pipeline evidence text) ---")
+    for line in text.splitlines():
+        print(f"  {line}")
+
+    out_path = os.getenv("REGULATORY_FINDINGS_OUT_PATH", "").strip()
+    if out_path:
+        path = Path(out_path).expanduser()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        lines: list[str] = []
+        raw = regulatory_report.get("findings") or regulatory_report.get("top_findings") or []
+
+        def _bucket(status: str) -> list:
+            return [f for f in raw if isinstance(f, dict) and str(f.get("status", "")).upper() == status]
+
+        for label, items in (("PASS", _bucket("PASS")), ("FAIL", _bucket("FAIL")), ("WARNING", _bucket("WARNING"))):
+            lines.append(f"=== {label} ({len(items)}) ===")
+            for f in items:
+                lines.append(
+                    f"{f.get('status')}  clause={f.get('clause_id')}  rule={f.get('rule_id')}  "
+                    f"modality={f.get('modality')}  severity={f.get('severity')}"
+                )
+                lines.append(f"  rationale: {f.get('rationale')}")
+                lines.append(f"  matched_evidence_ids: {f.get('matched_evidence_ids')}")
+                lines.append("")
+        path.write_text("\n".join(lines), encoding="utf-8")
+        print(f"\n  (Wrote regulatory findings to {path})")
+
 
 if __name__ == "__main__":
     print("Initializing Multi-Agent Network (LangGraph)...\n")
@@ -117,6 +159,22 @@ if __name__ == "__main__":
         print("-" * 50)
         print(f"Overall           : {dr.get('overall')}")
         print(f"Summary           : {dr.get('summary_text', '')[:200]}")
+
+    rr = final_state.get("regulatory_report") or {}
+    if isinstance(rr, dict) and rr:
+        print("-" * 50)
+        print("REGULATORY (CEI EN 50128 — deterministic rule engine)")
+        print("-" * 50)
+        print(f"Status            : {rr.get('status')}")
+        print(
+            f"Rules checked      : {rr.get('rules_checked')} "
+            f"(pass={rr.get('passed')}, fail={rr.get('failed')}, warning={rr.get('warning')})"
+        )
+        print(f"Derogation needed  : {rr.get('derogation_needed')}")
+        _st = str(rr.get('summary_text', ''))
+        if _st:
+            print(f"Summary           : {_st[:220]}{'…' if len(_st) > 220 else ''}")
+        _print_regulatory_findings_breakdown(rr)
 
     pr = final_state.get("pre_isa_report") or {}
     if isinstance(pr, dict) and pr:

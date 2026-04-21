@@ -156,6 +156,7 @@ def regulatory_assessor_node(state: GraphState):
         "warning": summary.warning,
         "derogation_needed": summary.derogation_needed,
         "top_findings": findings[:10],
+        "findings": findings,
         "retrieval": retrieval,
         "summary_text": (
             f"Deterministic rule-check result: checked={summary.total_rules_checked}, "

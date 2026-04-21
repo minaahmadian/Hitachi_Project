@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from vdd.regulatory_findings_text import format_regulatory_findings_plain
+
 
 def _templates_dir(repo_root: Path) -> Path:
     return repo_root / "templates"
@@ -91,6 +93,12 @@ def build_vdd_template_context(final_state: dict[str, Any]) -> dict[str, Any]:
             )
     citations_text = "\n".join(cite_lines) if cite_lines else "(none)"
 
+    rac_doc = max(120, int(os.getenv("VDD_REGULATORY_RATIONALE_MAX_CHARS", "500") or "500"))
+    regulatory_findings_text = format_regulatory_findings_plain(
+        regulatory if isinstance(regulatory, dict) else {},
+        rationale_max=rac_doc,
+    ).strip() or "(no per-rule regulatory findings for this run)"
+
     return {
         "final_decision": str(assessor.get("final_decision", "UNKNOWN")),
         "vdd_explanation": str(assessor.get("vdd_explanation", "")).strip() or "(no rationale recorded)",
@@ -103,6 +111,7 @@ def build_vdd_template_context(final_state: dict[str, Any]) -> dict[str, Any]:
         "derogation_scan_overall": str(digest.get("derogation_scan_overall", derogation.get("overall", ""))),
         "verdict_per_anomaly_text": verdict_text,
         "citations_text": citations_text,
+        "regulatory_findings_text": regulatory_findings_text,
         "document_generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -142,4 +151,44 @@ def try_render_vdd_docx(*, repo_root: Path, final_state: dict[str, Any]) -> Path
     tpl = DocxTemplate(str(template_path))
     tpl.render(context)
     tpl.save(str(out))
+
+    if os.getenv("VDD_APPEND_REGULATORY_APPENDIX", "1").strip().lower() not in {
+        "0",
+        "false",
+        "no",
+        "off",
+    }:
+        _append_regulatory_appendix_to_docx(out, final_state)
+
     return out
+
+
+def _append_regulatory_appendix_to_docx(out: Path, final_state: dict[str, Any]) -> None:
+    """
+    After Jinja render, append the regulatory PASS/FAIL list so Word always contains it
+    without editing ``vdd_pre_isa_template.docx``. Disable with ``VDD_APPEND_REGULATORY_APPENDIX=0``.
+    Context key ``regulatory_findings_text`` is still available for custom templates.
+    """
+    regulatory = final_state.get("regulatory_report") or {}
+    if not isinstance(regulatory, dict):
+        return
+    rac = max(120, int(os.getenv("VDD_REGULATORY_RATIONALE_MAX_CHARS", "500") or "500"))
+    body = format_regulatory_findings_plain(regulatory, rationale_max=rac).strip()
+    if not body:
+        return
+    try:
+        from docx import Document
+    except ImportError:
+        return
+    doc = Document(str(out))
+    doc.add_page_break()
+    doc.add_heading("Appendix — CEI EN 50128 per-rule results", level=1)
+    doc.add_paragraph(
+        "Scoring uses keyword overlap between each rule (from cei_en_50128_rules.json) and evidence text "
+        "from traceability anomalies, derogation scan, auditor, and detective. PASS = sufficient overlap; "
+        "FAIL on MUST/SHALL = gap or formal derogation topic — not a semantic diff between two documents."
+    )
+    for block in body.split("\n\n"):
+        if block.strip():
+            doc.add_paragraph(block.replace("\n", " ").strip())
+    doc.save(str(out))
