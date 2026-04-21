@@ -106,50 +106,59 @@ def formal_auditor_node(state: GraphState):
             }
         }
 
-    def _build_focused_content(docx: Any) -> str:
-        parts = []
-        
-        title = docx.get("title", "") if isinstance(docx, dict) else ""
-        headings = docx.get("headings", []) if isinstance(docx, dict) else []
+    def _build_focused_content(docx: Any, max_chars: int) -> str:
+        """
+        Prefer full body paragraph text (all non-empty paragraphs), then append flattened
+        table rows until max_chars. This avoids missing prose-only obligations that never
+        appeared in the old keyword-filter + small table sample.
+        """
+        if not isinstance(docx, dict):
+            return ""
+
+        parts: list[str] = []
+        title = (docx.get("title") or "").strip()
+        headings = docx.get("headings", []) or []
         if title:
             parts.append(f"DOCUMENT TITLE: {title}")
         if headings:
             parts.append("\nKEY SECTIONS:")
-            for h in headings[:20]:
+            for h in headings[:30]:
                 if isinstance(h, dict):
                     parts.append(f"  {'  ' * (h.get('level', 1) - 1)}{h.get('text', '')}")
-        
-        paragraphs = docx.get("paragraphs", []) if isinstance(docx, dict) else []
-        important_paras = []
-        keywords = ["shall", "must", "requirement", "safety", "compliance", "verify", "test", "hazard", "risk"]
-        for p in paragraphs:
-            if isinstance(p, str) and any(kw in p.lower() for kw in keywords):
-                important_paras.append(p)
-                if len(important_paras) >= 30:
-                    break
-        
-        if important_paras:
-            parts.append("\nKEY REQUIREMENTS AND OBLIGATIONS:")
-            parts.extend(important_paras[:30])
-        
-        tables = docx.get("tables", []) if isinstance(docx, dict) else []
-        if tables:
-            parts.append("\nREQUIREMENT TABLES (samples):")
-            for i, table in enumerate(tables[:5]):
-                if isinstance(table, list) and len(table) > 0:
-                    parts.append(f"\nTable {i+1}:")
-                    for row in table[:5]:
-                        if isinstance(row, list):
-                            parts.append("  |  ".join(str(cell)[:100] for cell in row))
-        
-        return "\n".join(parts)
-    
-    if isinstance(docx_content, dict):
-        analysis_text = _build_focused_content(docx_content)
-    else:
-        analysis_text = str(docx_content)[:2200]
 
-    max_chars = int(os.getenv("AUDITOR_MAX_DOC_CHARS", "2200"))
+        paragraphs = [p.strip() for p in (docx.get("paragraphs") or []) if isinstance(p, str) and p.strip()]
+        para_text = "\n\n".join(paragraphs)
+
+        tables = docx.get("tables", []) or []
+        table_lines: list[str] = []
+        for row in tables:
+            if isinstance(row, list) and row:
+                table_lines.append("  |  ".join(str(cell)[:400] for cell in row))
+        table_text = "\n".join(table_lines)
+
+        header = "\n".join(parts)
+        prefix = header + "\n\nFULL PARAGRAPH TEXT (all non-empty paragraphs):\n"
+        budget = max_chars - len(prefix) - 40
+        if budget <= 0:
+            return (prefix + "\n[truncated]")[:max_chars]
+
+        if len(para_text) <= budget:
+            out = prefix + para_text
+            rest = max_chars - len(out) - 30
+            if rest > 0 and table_text:
+                tbl_snip = table_text[:rest]
+                out += "\n\nTABLES (all rows, flattened):\n" + tbl_snip
+                if len(table_text) > len(tbl_snip):
+                    out += "\n[truncated tables]"
+            return out[:max_chars]
+        out = prefix + para_text[:budget] + "\n[truncated paragraphs]"
+        return out[:max_chars]
+
+    max_chars = int(os.getenv("AUDITOR_MAX_DOC_CHARS", "12000"))
+    if isinstance(docx_content, dict):
+        analysis_text = _build_focused_content(docx_content, max_chars)
+    else:
+        analysis_text = str(docx_content)[:max_chars]
     if len(analysis_text) > max_chars:
         analysis_text = analysis_text[:max_chars] + "\n[truncated]"
 
