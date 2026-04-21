@@ -182,8 +182,11 @@ if __name__ == "__main__":
         print("PRE-ISA REPORT (Step D — consolidated)")
         print("-" * 50)
         print(f"Overall           : {pr.get('overall')}")
+        _ec = str(pr.get("evidence_chain_text", "")).strip()
+        if _ec:
+            print(f"Evidence chain     : {_ec}")
         _s = str(pr.get("summary_for_vdd", ""))
-        print(f"VDD summary       : {_s[:220]}{'…' if len(_s) > 220 else ''}")
+        print(f"VDD summary       : {_s[:360]}{'…' if len(_s) > 360 else ''}")
 
     print("\n" + "="*50)
     print("DRAFT VDD (Version Description Document)")

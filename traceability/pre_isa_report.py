@@ -5,6 +5,15 @@ from typing import Any
 
 from core.state import GraphState
 
+# Shown in pre-ISA / VDD so reviewers see how RSSOM corpus, matcher, and emails connect.
+EVIDENCE_CHAIN_TEXT = (
+    "Evidence chain: Test-design text is parsed from the FIT Word document (RSSOM_APCS_FIT.docx) "
+    "into the traceability corpus. The matcher compares each requirement ID from the trace CSV "
+    "against that corpus. Email threads and authorizations are then reviewed in the same "
+    "requirement context—derogation uses deterministic windows around matcher-linked requirement "
+    "IDs; the communications detective triages emails using matcher and derogation summaries together."
+)
+
 
 def _derogation_by_anomaly_id(derogation_report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     out: dict[str, dict[str, Any]] = {}
@@ -145,13 +154,14 @@ def _summary_for_vdd(
         if isinstance(v, dict) and str(v.get("verdict", "")).upper() == "JUSTIFICATION_SIGNALS"
     )
     parts = [
+        EVIDENCE_CHAIN_TEXT,
         f"Pre-ISA consolidated assessment: overall={overall}.",
         f"Traceability matcher status={matcher_status}; regulatory gate status={regulatory_status}; "
         f"communications triage status={detective_status}; derogation language scan={derogation_overall}.",
     ]
     if n_high:
         parts.append(f"High-severity traceability anomalies reviewed: {n_high}; with formal justification signals: {n_just}.")
-    return " ".join(parts)[:1600]
+    return " ".join(parts)[:2400]
 
 
 def build_pre_isa_report(state: GraphState) -> dict[str, Any]:
@@ -236,6 +246,7 @@ def build_pre_isa_report(state: GraphState) -> dict[str, Any]:
         "compiled_at": datetime.now(timezone.utc).isoformat(),
         "overall": overall,
         "release_readiness": overall,
+        "evidence_chain_text": EVIDENCE_CHAIN_TEXT,
         "summary_for_vdd": summary_for_vdd,
         "fingerprints": {
             "phase2_traceability": fp or None,

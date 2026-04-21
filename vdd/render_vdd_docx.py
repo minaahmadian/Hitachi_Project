@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from traceability.pre_isa_report import EVIDENCE_CHAIN_TEXT
+
 from vdd.regulatory_findings_text import format_regulatory_findings_plain
 
 
@@ -30,6 +32,8 @@ def ensure_default_vdd_template(repo_root: Path) -> Path:
     doc.add_paragraph(
         "Hitachi / railway software — CENELEC EN 50128–oriented pre-audit bundle (automated draft, not signed)."
     )
+    doc.add_heading("Inputs and evidence chain", level=1)
+    doc.add_paragraph("{{ evidence_chain_text }}")
     doc.add_heading("1. Release decision", level=1)
     doc.add_paragraph("Verdict: {{ final_decision }}")
     doc.add_paragraph("Lead assessor rationale:")
@@ -99,10 +103,13 @@ def build_vdd_template_context(final_state: dict[str, Any]) -> dict[str, Any]:
         rationale_max=rac_doc,
     ).strip() or "(no per-rule regulatory findings for this run)"
 
+    ev = str(pre.get("evidence_chain_text", "")).strip() or EVIDENCE_CHAIN_TEXT
+
     return {
         "final_decision": str(assessor.get("final_decision", "UNKNOWN")),
         "vdd_explanation": str(assessor.get("vdd_explanation", "")).strip() or "(no rationale recorded)",
         "pre_isa_overall": str(pre.get("overall", "UNKNOWN")),
+        "evidence_chain_text": ev,
         "summary_for_vdd": str(pre.get("summary_for_vdd", "")).strip() or "(no pre-ISA summary)",
         "matcher_status": str(digest.get("matcher_status", matcher.get("status", ""))),
         "regulatory_status": str(digest.get("regulatory_status", regulatory.get("status", ""))),

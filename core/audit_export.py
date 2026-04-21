@@ -53,6 +53,9 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
     if len(auth_text) > 4_000:
         auth_text = auth_text[:4_000] + "\n...[truncated]"
 
+    pre_isa = final_state.get("pre_isa_report") if isinstance(final_state.get("pre_isa_report"), dict) else {}
+    ev_chain = str(pre_isa.get("evidence_chain_text", "")).strip()
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "matcher_report": final_state.get("matcher_report"),
@@ -69,6 +72,7 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
             "test_evidence_corpus_preview": corpus_preview,
             "authorization_text": auth_text,
             "email_threads": email_text,
+            "evidence_chain_text": ev_chain,
         },
     }
 
