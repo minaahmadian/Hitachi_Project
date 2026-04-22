@@ -55,6 +55,27 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
 
     pre_isa = final_state.get("pre_isa_report") if isinstance(final_state.get("pre_isa_report"), dict) else {}
     ev_chain = str(pre_isa.get("evidence_chain_text", "")).strip()
+    matcher = final_state.get("matcher_report") if isinstance(final_state.get("matcher_report"), dict) else {}
+    matcher_summary = matcher.get("summary") if isinstance(matcher.get("summary"), dict) else {}
+    rssom_preview: list[dict[str, Any]] = []
+    for row in (matcher.get("requirement_results") or [])[:12]:
+        if not isinstance(row, dict):
+            continue
+        rag = row.get("rssom_rag") if isinstance(row.get("rssom_rag"), dict) else {}
+        hits = rag.get("hits") if isinstance(rag.get("hits"), list) else []
+        if not hits:
+            continue
+        top = hits[0] if isinstance(hits[0], dict) else {}
+        rssom_preview.append(
+            {
+                "requirement_id": row.get("requirement_id"),
+                "document_outcome": row.get("document_outcome"),
+                "document_outcome_source": row.get("document_outcome_source"),
+                "top_rag_hit": top,
+            }
+        )
+        if len(rssom_preview) >= 8:
+            break
 
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -73,6 +94,11 @@ def build_vdd_audit_payload(final_state: GraphState) -> dict[str, Any]:
             "authorization_text": auth_text,
             "email_threads": email_text,
             "evidence_chain_text": ev_chain,
+            "rssom_retrieval_summary": {
+                "enabled": bool(matcher_summary.get("rssom_rag_enabled")),
+                "with_rag_hit": int(matcher_summary.get("with_rag_hit", 0) or 0),
+                "sample_hits": rssom_preview,
+            },
         },
     }
 

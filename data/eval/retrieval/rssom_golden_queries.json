@@ -1,0 +1,32 @@
+[
+  {
+    "id": "rssom_q01_apcs1",
+    "query": "APCS MMIS interface through IL and ATS APCS interface through IL",
+    "relevant_requirement_ids": ["C6-APCS-1"],
+    "labeling_rationale": "RSSOM title cluster for C6-APCS-1."
+  },
+  {
+    "id": "rssom_q02_apcs87",
+    "query": "diagnostics visualization on HMI and data retention historical analysis",
+    "relevant_requirement_ids": ["C6-APCS-87", "C6-APCS-90"],
+    "labeling_rationale": "Retention and diagnostics appear around these requirements in FIT matrix/titles."
+  },
+  {
+    "id": "rssom_q03_apcs84",
+    "query": "high level of crowding check on HMI and IL red color APCS PVIS interface",
+    "relevant_requirement_ids": ["C6-APCS-84"],
+    "labeling_rationale": "High crowding / PVIS wording aligns to C6-APCS-84."
+  },
+  {
+    "id": "rssom_q04_apcs75",
+    "query": "APCS IAMS interface through IL",
+    "relevant_requirement_ids": ["C6-APCS-75"],
+    "labeling_rationale": "Direct wording match for APCS-IAMS interface."
+  },
+  {
+    "id": "rssom_q05_apcs89",
+    "query": "empty light medium high full level of crowding check on HMI and IL",
+    "relevant_requirement_ids": ["C6-APCS-89"],
+    "labeling_rationale": "The aggregate crowding-level requirement maps to C6-APCS-89."
+  }
+]

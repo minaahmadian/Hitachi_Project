@@ -43,6 +43,7 @@ def ensure_default_vdd_template(repo_root: Path) -> Path:
     doc.add_paragraph("{{ summary_for_vdd }}")
     doc.add_heading("3. Supporting gate status (deterministic)", level=1)
     doc.add_paragraph("Traceability matcher: {{ matcher_status }}")
+    doc.add_paragraph("RSSOM semantic retrieval: enabled={{ matcher_rssom_rag_enabled }}, with_rag_hit={{ matcher_with_rag_hit }}")
     doc.add_paragraph("Regulatory rule engine: {{ regulatory_status }} (derogation_needed={{ regulatory_derogation_needed }})")
     doc.add_paragraph("Communications triage: {{ detective_status }}")
     doc.add_paragraph("Derogation language scan: {{ derogation_scan_overall }}")
@@ -90,6 +91,12 @@ def build_vdd_template_context(final_state: dict[str, Any]) -> dict[str, Any]:
             cite_lines.append(
                 f"• Clause {c.get('clause_id', '')} ({c.get('title', '')}) score={c.get('score', '')}"
             )
+        elif kind == "rssom_retrieval":
+            cite_lines.append(
+                f"• RSSOM retrieval {c.get('requirement_id', '')} "
+                f"[source={c.get('evidence_source', '')}] score={c.get('score', '')} "
+                f"chunk={c.get('chunk_index', '')}/{c.get('total_chunks', '')}: {str(c.get('text', ''))[:140]}"
+            )
         else:
             cite_lines.append(
                 f"• {c.get('pattern_id', '')} [{c.get('strength', '')}] "
@@ -112,6 +119,8 @@ def build_vdd_template_context(final_state: dict[str, Any]) -> dict[str, Any]:
         "evidence_chain_text": ev,
         "summary_for_vdd": str(pre.get("summary_for_vdd", "")).strip() or "(no pre-ISA summary)",
         "matcher_status": str(digest.get("matcher_status", matcher.get("status", ""))),
+        "matcher_rssom_rag_enabled": str(digest.get("matcher_rssom_rag_enabled", "")),
+        "matcher_with_rag_hit": str(digest.get("matcher_with_rag_hit", "")),
         "regulatory_status": str(digest.get("regulatory_status", regulatory.get("status", ""))),
         "regulatory_derogation_needed": str(digest.get("regulatory_derogation_needed", regulatory.get("derogation_needed", ""))),
         "detective_status": str(digest.get("detective_status", detective.get("status", ""))),

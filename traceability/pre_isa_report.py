@@ -64,10 +64,36 @@ def _rationale_for_verdict(verdict: str, anomaly_type: str | None, score: int) -
 
 
 def _build_citations(
+    matcher_report: dict[str, Any],
     regulatory_report: dict[str, Any],
     derogation_report: dict[str, Any],
 ) -> list[dict[str, Any]]:
     citations: list[dict[str, Any]] = []
+
+    requirement_results = matcher_report.get("requirement_results") if isinstance(matcher_report.get("requirement_results"), list) else []
+    rssom_hits_added = 0
+    for item in requirement_results:
+        if rssom_hits_added >= 8 or not isinstance(item, dict):
+            continue
+        rid = str(item.get("requirement_id", "")).strip()
+        source = str(item.get("document_outcome_source", "")).strip()
+        rag = item.get("rssom_rag") if isinstance(item.get("rssom_rag"), dict) else {}
+        hits = rag.get("hits") if isinstance(rag.get("hits"), list) else []
+        if not hits:
+            continue
+        top = hits[0] if isinstance(hits[0], dict) else {}
+        citations.append(
+            {
+                "kind": "rssom_retrieval",
+                "requirement_id": rid or None,
+                "evidence_source": source or None,
+                "score": top.get("score"),
+                "chunk_index": top.get("chunk_index"),
+                "total_chunks": top.get("total_chunks"),
+                "text": str(top.get("text", ""))[:220],
+            }
+        )
+        rssom_hits_added += 1
 
     retrieval = regulatory_report.get("retrieval") if isinstance(regulatory_report.get("retrieval"), dict) else {}
     hits = retrieval.get("hits") if isinstance(retrieval.get("hits"), list) else []
@@ -144,6 +170,7 @@ def _summary_for_vdd(
     regulatory_status: str,
     detective_status: str,
     derogation_overall: str,
+    matcher_summary: dict[str, Any],
     verdict_per_anomaly: list[dict[str, Any]],
 ) -> str:
     n_high = sum(
@@ -160,6 +187,10 @@ def _summary_for_vdd(
         f"Traceability matcher status={matcher_status}; regulatory gate status={regulatory_status}; "
         f"communications triage status={detective_status}; derogation language scan={derogation_overall}.",
     ]
+    rag_enabled = bool(matcher_summary.get("rssom_rag_enabled"))
+    rag_hits = int(matcher_summary.get("with_rag_hit", 0) or 0)
+    if rag_enabled:
+        parts.append(f"RSSOM semantic retrieval was enabled for traceability; requirements with at least one retrieval hit: {rag_hits}.")
     if n_high:
         parts.append(f"High-severity traceability anomalies reviewed: {n_high}; with formal justification signals: {n_just}.")
     return " ".join(parts)[:2400]
@@ -230,7 +261,8 @@ def build_pre_isa_report(state: GraphState) -> dict[str, Any]:
     envelope = matcher.get("anomaly_envelope") if isinstance(matcher.get("anomaly_envelope"), dict) else {}
     fp = str(envelope.get("phase2_fingerprint", "")).strip()
 
-    citations = _build_citations(regulatory, derogation)
+    matcher_summary = matcher.get("summary") if isinstance(matcher.get("summary"), dict) else {}
+    citations = _build_citations(matcher, regulatory, derogation)
 
     summary_for_vdd = _summary_for_vdd(
         overall,
@@ -238,6 +270,7 @@ def build_pre_isa_report(state: GraphState) -> dict[str, Any]:
         regulatory_status,
         detective_status,
         derogation_overall,
+        matcher_summary,
         verdict_rows,
     )
 
@@ -254,6 +287,8 @@ def build_pre_isa_report(state: GraphState) -> dict[str, Any]:
         },
         "inputs_digest": {
             "matcher_status": matcher_status,
+            "matcher_rssom_rag_enabled": bool(matcher_summary.get("rssom_rag_enabled")),
+            "matcher_with_rag_hit": int(matcher_summary.get("with_rag_hit", 0) or 0),
             "regulatory_status": regulatory_status,
             "regulatory_derogation_needed": int(regulatory.get("derogation_needed", 0) or 0),
             "detective_status": detective_status,
