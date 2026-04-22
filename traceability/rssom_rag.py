@@ -171,7 +171,7 @@ def _title_overlap(title: str, text: str) -> int:
 
 
 def _to_hit(item: SearchResult, *, max_chars: int) -> RSSOMRAGHit:
-    meta = item.chunk.metadata or {}
+    meta = _merged_chunk_metadata(item.chunk.metadata)
     text = (item.chunk.text or "").strip()
     if len(text) > max_chars:
         text = text[: max_chars - 3].rstrip() + "..."
@@ -201,6 +201,16 @@ def _as_int(value: object) -> int | None:
         return int(value) if value is not None else None
     except (TypeError, ValueError):
         return None
+
+
+def _merged_chunk_metadata(metadata: dict[str, object] | None) -> dict[str, object]:
+    base = dict(metadata or {})
+    extra = base.get("source_extra_fields")
+    if isinstance(extra, dict):
+        for key, value in extra.items():
+            if key not in base or base.get(key) in (None, ""):
+                base[key] = value
+    return base
 
 
 def _build_requirement_documents(
