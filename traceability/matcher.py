@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import os
 import re
 from typing import Any
+
+from traceability.rssom_rag import RSSOMRAGIndex, classify_requirement_with_rag
 
 
 def _normalize_status(value: str) -> str:
@@ -83,6 +86,21 @@ def _append_anomaly(
     )
 
 
+def _merge_document_and_rag_outcomes(doc_out: str, rag_out: str) -> tuple[str, str]:
+    """
+    Prefer exact line-local evidence first, then use RSSOM semantic retrieval as fallback.
+    """
+    direct = str(doc_out or "").upper()
+    rag = str(rag_out or "").upper()
+    if direct in {"PASS", "FAIL"}:
+        return direct, "exact_corpus_scan"
+    if direct == "UNKNOWN" and rag in {"PASS", "FAIL"}:
+        return rag, "rssom_rag_fallback"
+    if direct == "NOT_FOUND" and rag in {"PASS", "FAIL", "UNKNOWN"}:
+        return rag, "rssom_rag_fallback"
+    return direct or "NOT_FOUND", "exact_corpus_scan"
+
+
 def run_traceability_match(
     *,
     requirements_records: list[dict[str, str]],
@@ -104,20 +122,32 @@ def run_traceability_match(
     per_req: list[dict[str, Any]] = []
 
     verified_states = {"VERIFIED", "VALIDATED", "APPROVED", "COMPLETE"}
+    rag_top_k = max(1, int((os.getenv("RSSOM_RAG_TOP_K", "3") or "3")))
+    rssom_rag = RSSOMRAGIndex(test_evidence_corpus, title="RSSOM FIT traceability corpus")
 
     for row in requirements_records:
         req_id = str(row.get("requirement_id", "")).strip()
         if not req_id:
             continue
+        title = str(row.get("title", "")).strip()
         csv_status = _normalize_status(str(row.get("verification_status", "")))
         doc_out, snippet = _doc_outcome_for_requirement(test_evidence_corpus, req_id)
+        rag_out, rag_snippet, rag_meta = classify_requirement_with_rag(
+            rssom_rag,
+            requirement_id=req_id,
+            title=title,
+            top_k=rag_top_k,
+        )
+        effective_doc_out, evidence_source = _merge_document_and_rag_outcomes(doc_out, rag_out)
+        if evidence_source == "rssom_rag_fallback" and rag_snippet:
+            snippet = rag_snippet
         log_res = log_by_id.get(req_id.upper())
 
         consistent = True
         notes: list[str] = []
 
         if csv_status in verified_states:
-            if doc_out == "NOT_FOUND":
+            if effective_doc_out == "NOT_FOUND":
                 consistent = False
                 _append_anomaly(
                     anomalies,
@@ -127,7 +157,7 @@ def run_traceability_match(
                     detail=f"Requirement {req_id} is {csv_status} in trace CSV but not found in test evidence corpus.",
                 )
                 notes.append("no_doc_hit")
-            elif doc_out == "FAIL":
+            elif effective_doc_out == "FAIL":
                 consistent = False
                 _append_anomaly(
                     anomalies,
@@ -138,7 +168,7 @@ def run_traceability_match(
                     evidence_snippet=snippet,
                 )
                 notes.append("doc_fail")
-            elif doc_out == "UNKNOWN":
+            elif effective_doc_out == "UNKNOWN":
                 _append_anomaly(
                     anomalies,
                     anomaly_type="WEAK_VERIFICATION_SIGNAL",
@@ -150,7 +180,7 @@ def run_traceability_match(
                 notes.append("unknown_doc_verdict")
 
         if log_res == "FAIL":
-            if doc_out == "PASS":
+            if effective_doc_out == "PASS":
                 consistent = False
                 _append_anomaly(
                     anomalies,
@@ -173,9 +203,13 @@ def run_traceability_match(
         per_req.append(
             {
                 "requirement_id": req_id,
-                "title": row.get("title", ""),
+                "title": title,
                 "csv_verification_status": row.get("verification_status", ""),
-                "document_outcome": doc_out,
+                "document_outcome": effective_doc_out,
+                "document_outcome_exact_scan": doc_out,
+                "document_outcome_rag": rag_out,
+                "document_outcome_source": evidence_source,
+                "rssom_rag": rag_meta,
                 "log_result": log_res,
                 "consistent": consistent,
                 "notes": notes,
@@ -204,6 +238,7 @@ def run_traceability_match(
         overall = "PASS"
 
     linked = sum(1 for r in per_req if r["document_outcome"] != "NOT_FOUND")
+    rag_linked = sum(1 for r in per_req if str(r.get("document_outcome_rag")) != "NOT_FOUND")
 
     return {
         "mode": "deterministic_traceability",
@@ -211,10 +246,12 @@ def run_traceability_match(
         "summary": {
             "total_requirements": len(per_req),
             "with_document_hit": linked,
+            "with_rag_hit": rag_linked,
             "anomalies_count": len(anomalies),
             "high_severity_count": high,
             "medium_severity_count": med,
             "metrics_failed_tests": failed_metrics,
+            "rssom_rag_enabled": bool(rssom_rag.ready),
         },
         "requirement_results": per_req,
         "anomalies": anomalies,

@@ -8,8 +8,9 @@ from core.state import GraphState
 # Shown in pre-ISA / VDD so reviewers see how RSSOM corpus, matcher, and emails connect.
 EVIDENCE_CHAIN_TEXT = (
     "Evidence chain: Test-design text is parsed from the FIT Word document (RSSOM_APCS_FIT.docx) "
-    "into the traceability corpus. The matcher compares each requirement ID from the trace CSV "
-    "against that corpus. Email threads and authorizations are then reviewed in the same "
+    "into the traceability corpus. The matcher first checks exact requirement-ID evidence in that corpus, "
+    "then falls back to chunked RSSOM semantic retrieval over the same FIT evidence when exact line-local hits are weak "
+    "or missing. Email threads and authorizations are then reviewed in the same "
     "requirement context—derogation uses deterministic windows around matcher-linked requirement "
     "IDs; the communications detective triages emails using matcher and derogation summaries together."
 )
