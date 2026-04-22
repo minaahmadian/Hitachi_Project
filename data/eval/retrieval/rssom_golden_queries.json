@@ -3,7 +3,13 @@
     "id": "rssom_q01_apcs1",
     "query": "APCS MMIS interface through IL and ATS APCS interface through IL",
     "relevant_requirement_ids": ["C6-APCS-1"],
-    "labeling_rationale": "RSSOM title cluster for C6-APCS-1."
+    "labeling_rationale": "Direct wording from RSSOM title cluster for C6-APCS-1."
+  },
+  {
+    "id": "rssom_q01b_apcs1_paraphrase",
+    "query": "integration layer between APCS and MMIS subsystems software integration testing i-OCC",
+    "relevant_requirement_ids": ["C6-APCS-1"],
+    "labeling_rationale": "Paraphrase of C6-APCS-1 title using different wording."
   },
   {
     "id": "rssom_q02_apcs87",
@@ -12,10 +18,22 @@
     "labeling_rationale": "Retention and diagnostics appear around these requirements in FIT matrix/titles."
   },
   {
+    "id": "rssom_q02b_apcs87_paraphrase",
+    "query": "vehicle crowding data retention test diagnostic display human machine interface",
+    "relevant_requirement_ids": ["C6-APCS-87"],
+    "labeling_rationale": "Paraphrase combining crowding and diagnostic HMI wording for C6-APCS-87."
+  },
+  {
     "id": "rssom_q03_apcs84",
     "query": "high level of crowding check on HMI and IL red color APCS PVIS interface",
     "relevant_requirement_ids": ["C6-APCS-84"],
     "labeling_rationale": "High crowding / PVIS wording aligns to C6-APCS-84."
+  },
+  {
+    "id": "rssom_q03b_apcs84_paraphrase",
+    "query": "passenger information visualization system crowding alert high threshold integration layer",
+    "relevant_requirement_ids": ["C6-APCS-84"],
+    "labeling_rationale": "Paraphrase of C6-APCS-84 using PVIS expansion and threshold wording."
   },
   {
     "id": "rssom_q04_apcs75",
@@ -24,9 +42,33 @@
     "labeling_rationale": "Direct wording match for APCS-IAMS interface."
   },
   {
+    "id": "rssom_q04b_apcs75_paraphrase",
+    "query": "integrated asset management system APCS integration test interface layer",
+    "relevant_requirement_ids": ["C6-APCS-75"],
+    "labeling_rationale": "IAMS expansion + interface layer paraphrase for C6-APCS-75."
+  },
+  {
     "id": "rssom_q05_apcs89",
     "query": "empty light medium high full level of crowding check on HMI and IL",
     "relevant_requirement_ids": ["C6-APCS-89"],
     "labeling_rationale": "The aggregate crowding-level requirement maps to C6-APCS-89."
+  },
+  {
+    "id": "rssom_q05b_apcs89_paraphrase",
+    "query": "five crowding threshold levels verification empty light medium high full display",
+    "relevant_requirement_ids": ["C6-APCS-89"],
+    "labeling_rationale": "Paraphrase describing the five crowding levels tested in C6-APCS-89."
+  },
+  {
+    "id": "rssom_q06_apcs2",
+    "query": "vehicle crowding levels visualization on RTM section real time monitoring",
+    "relevant_requirement_ids": ["C6-APCS-2"],
+    "labeling_rationale": "RTM crowding visualization maps to C6-APCS-2 title."
+  },
+  {
+    "id": "rssom_q07_apcs3",
+    "query": "station data visualization RTM section FCS APCS interface through IL",
+    "relevant_requirement_ids": ["C6-APCS-3"],
+    "labeling_rationale": "Station data + FCS interface wording from C6-APCS-3 title."
   }
 ]

@@ -31,8 +31,12 @@ def _build_anomaly_text(state: GraphState) -> str:
 
 def _build_clause_retrieval_query(state: GraphState, anomaly_text: str) -> tuple[str, str]:
     """
-    Step B: prefer Phase-2 ``anomaly_envelope.retrieval_query`` for regulatory clause RAG;
-    fall back to the combined anomaly string used by the rule engine.
+    Build a targeted regulatory clause retrieval query.
+
+    Priority:
+      1. Phase-2 anomaly_envelope.retrieval_query  (most structured, pre-built)
+      2. Anomaly-type-aware query (clause-family hints keyed to detected anomaly types)
+      3. Fallback: combined anomaly string
     """
     matcher_report = state.get("matcher_report") or {}
     env = matcher_report.get("anomaly_envelope")
@@ -40,6 +44,42 @@ def _build_clause_retrieval_query(state: GraphState, anomaly_text: str) -> tuple
         rq = str(env.get("retrieval_query", "")).strip()
         if rq:
             return rq, "anomaly_envelope"
+
+    # Build anomaly-type-aware query from active anomaly types + requirement IDs
+    anomalies = matcher_report.get("anomalies") or []
+    anomaly_types: set[str] = {
+        str(a.get("type", "")).strip()
+        for a in anomalies
+        if isinstance(a, dict) and a.get("type")
+    }
+    req_ids = [
+        str(a.get("requirement_id", "")).strip()
+        for a in anomalies
+        if isinstance(a, dict) and a.get("requirement_id")
+    ][:5]
+
+    clause_hints: list[str] = []
+    if "MISSING_TEST_DESIGN_EVIDENCE" in anomaly_types:
+        clause_hints.append("software requirements specification test specification documentation evidence clause 8 10 12")
+    if {"DOC_EVIDENCE_FAIL", "LOG_FAIL_VS_VERIFIED_REQUIREMENT"} & anomaly_types:
+        clause_hints.append("test report validation verification failure result record clause 11 13")
+    if "WEAK_VERIFICATION_SIGNAL" in anomaly_types:
+        clause_hints.append("verification evidence incomplete traceability clause 6 8")
+    if "LOG_FAIL_VS_DOC_PASS" in anomaly_types:
+        clause_hints.append("discrepancy test log verification report clause 11 12 13")
+    if "METRICS_REPORT_FAILED_TESTS" in anomaly_types:
+        clause_hints.append("failed tests metrics safety integrity level clause 13 17")
+
+    parts: list[str] = ["CEI EN 50128 railway software safety compliance"]
+    if clause_hints:
+        parts.extend(clause_hints)
+    if req_ids:
+        parts.append("requirements: " + " ".join(req_ids))
+    if anomaly_text.strip():
+        parts.append(anomaly_text[:300])
+
+    if len(parts) > 1:
+        return " ".join(parts).strip(), "anomaly_type_aware"
     return (anomaly_text.strip() or "safety release compliance verification evidence traceability"), "anomaly_text_fallback"
 
 
