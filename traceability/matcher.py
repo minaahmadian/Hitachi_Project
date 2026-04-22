@@ -123,7 +123,11 @@ def run_traceability_match(
 
     verified_states = {"VERIFIED", "VALIDATED", "APPROVED", "COMPLETE"}
     rag_top_k = max(1, int((os.getenv("RSSOM_RAG_TOP_K", "3") or "3")))
-    rssom_rag = RSSOMRAGIndex(test_evidence_corpus, title="RSSOM FIT traceability corpus")
+    rssom_rag = RSSOMRAGIndex(
+        test_evidence_corpus,
+        title="RSSOM FIT traceability corpus",
+        requirement_rows=requirements_records,
+    )
 
     for row in requirements_records:
         req_id = str(row.get("requirement_id", "")).strip()

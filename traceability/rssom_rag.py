@@ -19,6 +19,8 @@ class RSSOMRAGHit:
     score: float
     chunk_index: int | None
     total_chunks: int | None
+    requirement_id: str | None
+    index_kind: str | None
 
 
 class RSSOMRAGIndex:
@@ -29,7 +31,13 @@ class RSSOMRAGIndex:
     instead of relying only on exact line scanning.
     """
 
-    def __init__(self, corpus_text: str, *, title: str = "RSSOM FIT corpus") -> None:
+    def __init__(
+        self,
+        corpus_text: str,
+        *,
+        title: str = "RSSOM FIT corpus",
+        requirement_rows: list[dict[str, str]] | None = None,
+    ) -> None:
         self._provider = InMemoryProvider()
         self._retriever: RAGRetriever | None = None
         self._ready = False
@@ -41,21 +49,26 @@ class RSSOMRAGIndex:
 
         embedder = make_embedder_from_env()
         chunker = TextChunker(
-            chunk_size=int(os.getenv("CHUNK_SIZE", "500") or "500"),
-            chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "50") or "50"),
+            chunk_size=int(os.getenv("RSSOM_RAG_ENTRY_CHUNK_SIZE", "1400") or "1400"),
+            chunk_overlap=int(os.getenv("RSSOM_RAG_ENTRY_CHUNK_OVERLAP", "120") or "120"),
             strategy=ChunkingStrategy.RECURSIVE,
         )
         pipeline = ProcessingPipeline(chunker=chunker, embedder=embedder)
-        doc = Document(
-            content=raw,
-            metadata=DocumentMetadata(
-                source_type=DocumentSource.MANUAL,
-                source_id="rssom_test_evidence_corpus",
-                title=title,
-                tags=["rssom", "fit", "traceability", "rag"],
-            ),
-        )
-        chunks = pipeline.process_document(doc)
+        docs = _build_requirement_documents(raw, requirement_rows=requirement_rows, title=title)
+        if not docs:
+            docs = [
+                Document(
+                    content=raw,
+                    metadata=DocumentMetadata(
+                        source_type=DocumentSource.MANUAL,
+                        source_id="rssom_test_evidence_corpus",
+                        title=title,
+                        tags=["rssom", "fit", "traceability", "rag", "raw_corpus"],
+                        extra_fields={"index_kind": "raw_corpus"},
+                    ),
+                )
+            ]
+        chunks = pipeline.process_documents(docs)
         if not chunks or not chunks[0].embedding:
             return
 
@@ -113,8 +126,9 @@ def classify_requirement_with_rag(
     texts = [h.text for h in hits if h.text]
     score_max = max((h.score for h in hits), default=0.0)
     exact_id_hit = any(req_id.lower() in text.lower() for text in texts if req_id)
+    exact_meta_hit = any((h.requirement_id or "").upper() == req_id.upper() for h in hits if req_id)
     title_overlap = any(_title_overlap(title_s, text) > 0 for text in texts if title_s)
-    relevant = exact_id_hit or title_overlap
+    relevant = exact_id_hit or exact_meta_hit or title_overlap
     if not relevant:
         return "NOT_FOUND", None, {
             "enabled": True,
@@ -166,6 +180,8 @@ def _to_hit(item: SearchResult, *, max_chars: int) -> RSSOMRAGHit:
         score=round(float(item.score), 4),
         chunk_index=_as_int(meta.get("chunk_index")),
         total_chunks=_as_int(meta.get("total_chunks")),
+        requirement_id=str(meta.get("requirement_id", "")).strip() or None,
+        index_kind=str(meta.get("index_kind", "")).strip() or None,
     )
 
 
@@ -175,6 +191,8 @@ def _hit_dict(hit: RSSOMRAGHit) -> dict[str, object]:
         "score": hit.score,
         "chunk_index": hit.chunk_index,
         "total_chunks": hit.total_chunks,
+        "requirement_id": hit.requirement_id,
+        "index_kind": hit.index_kind,
     }
 
 
@@ -183,3 +201,81 @@ def _as_int(value: object) -> int | None:
         return int(value) if value is not None else None
     except (TypeError, ValueError):
         return None
+
+
+def _build_requirement_documents(
+    corpus_text: str,
+    *,
+    requirement_rows: list[dict[str, str]] | None,
+    title: str,
+) -> list[Document]:
+    rows = requirement_rows or []
+    if not rows:
+        return []
+    corpus = str(corpus_text or "")
+    corpus_l = corpus.lower()
+    docs: list[Document] = []
+    seen: set[str] = set()
+
+    for row in rows:
+        rid = str(row.get("requirement_id", "")).strip()
+        req_title = str(row.get("title", "")).strip()
+        if not rid or rid.upper() in seen:
+            continue
+        # Keep only IDs that truly exist in RSSOM evidence; this avoids indexing eval-only synthetic rows.
+        if rid.lower() not in corpus_l:
+            continue
+        seen.add(rid.upper())
+        excerpts = _evidence_excerpts_for_requirement(corpus, rid, req_title)
+        body = [
+            f"Requirement ID: {rid}",
+            f"Requirement title: {req_title}",
+        ]
+        if excerpts:
+            body.append("RSSOM evidence excerpts:")
+            body.extend(f"- {line}" for line in excerpts)
+        content = "\n".join(part for part in body if part).strip()
+        docs.append(
+            Document(
+                content=content,
+                metadata=DocumentMetadata(
+                    source_type=DocumentSource.MANUAL,
+                    source_id=f"rssom_requirement::{rid}",
+                    title=f"{rid} requirement entry",
+                    tags=["rssom", "fit", "traceability", "rag", "requirement_entry"],
+                    extra_fields={
+                        "index_kind": "requirement_entry",
+                        "requirement_id": rid,
+                        "requirement_title": req_title,
+                        "corpus_title": title,
+                    },
+                ),
+            )
+        )
+    return docs
+
+
+def _evidence_excerpts_for_requirement(corpus: str, requirement_id: str, title: str, *, max_lines: int = 6) -> list[str]:
+    lines: list[str] = []
+    rid_l = requirement_id.lower()
+    title_tokens = [
+        tok.lower()
+        for tok in re.findall(r"[A-Za-z][A-Za-z0-9_-]{2,}", title or "")
+        if tok.lower() not in {"and", "with", "the", "for", "level", "check", "through"}
+    ][:8]
+    for raw in corpus.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        ll = line.lower()
+        if rid_l in ll:
+            lines.append(line[:280])
+            if len(lines) >= max_lines:
+                break
+            continue
+        overlap = sum(1 for tok in title_tokens if tok in ll)
+        if overlap >= 2:
+            lines.append(line[:280])
+            if len(lines) >= max_lines:
+                break
+    return lines

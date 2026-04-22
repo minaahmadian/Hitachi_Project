@@ -30,6 +30,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from core.docx_parser import parse_docx
 from core.project_ingestion import build_test_evidence_corpus
+from core.rssom_requirements_trace import rows_from_rssom_docx
 from traceability.rssom_rag import RSSOMRAGIndex
 
 
@@ -37,23 +38,39 @@ def _norm(x: Any) -> str:
     return str(x or "").strip().upper()
 
 
-def _chunk_relevant(text: str, relevant_ids: set[str]) -> bool:
+def _chunk_relevant(hit: dict[str, Any], relevant_ids: set[str]) -> bool:
+    return bool(_hit_relevant_ids(hit, relevant_ids))
+
+
+def _hit_relevant_ids(hit: dict[str, Any], relevant_ids: set[str]) -> set[str]:
+    matched: set[str] = set()
+    rid = _norm(hit.get("requirement_id"))
+    if rid and rid in relevant_ids:
+        matched.add(rid)
+    text = hit.get("text", "")
     blob = str(text or "").upper()
-    return any(rid in blob for rid in relevant_ids)
+    matched.update(rid for rid in relevant_ids if rid in blob)
+    return matched
 
 
 def _first_relevant_rank(hits: list[dict[str, Any]], relevant_ids: set[str]) -> int | None:
     for idx, hit in enumerate(hits, start=1):
-        if _chunk_relevant(str(hit.get("text", "")), relevant_ids):
+        if _chunk_relevant(hit, relevant_ids):
             return idx
     return None
 
 
 def _prec_rec_at_k(hits: list[dict[str, Any]], relevant_ids: set[str], k: int) -> tuple[float, float]:
     top = hits[:k]
-    relevant_seen = sum(1 for hit in top if _chunk_relevant(str(hit.get("text", "")), relevant_ids))
-    precision = relevant_seen / k if k > 0 else 0.0
-    recall = relevant_seen / len(relevant_ids) if relevant_ids else 0.0
+    matched_ids: set[str] = set()
+    relevant_hits = 0
+    for hit in top:
+        hit_matches = _hit_relevant_ids(hit, relevant_ids)
+        if hit_matches:
+            relevant_hits += 1
+            matched_ids.update(hit_matches)
+    precision = relevant_hits / k if k > 0 else 0.0
+    recall = len(matched_ids) / len(relevant_ids) if relevant_ids else 0.0
     return precision, recall
 
 
@@ -83,7 +100,12 @@ def main() -> None:
 
     parsed = parse_docx(str(args.docx))
     corpus = build_test_evidence_corpus(parsed, REPO_ROOT, requirement_ids=[])
-    rag = RSSOMRAGIndex(corpus, title="RSSOM FIT retrieval benchmark corpus")
+    req_rows = rows_from_rssom_docx(args.docx)
+    rag = RSSOMRAGIndex(
+        corpus,
+        title="RSSOM FIT retrieval benchmark corpus",
+        requirement_rows=req_rows,
+    )
     if not rag.ready:
         raise SystemExit("RSSOM RAG index was not created; check corpus / embedding configuration")
 
@@ -106,6 +128,8 @@ def main() -> None:
                 "score": h.score,
                 "chunk_index": h.chunk_index,
                 "total_chunks": h.total_chunks,
+                "requirement_id": h.requirement_id,
+                "index_kind": h.index_kind,
             }
             for h in hits_raw
         ]
