@@ -47,6 +47,34 @@ TRUNCATION_MARKER = "[truncated]"
 prompts should treat its presence as a safety signal."""
 
 
+def parse_compacted_blob(blob: str) -> tuple[dict[str, Any], bool]:
+    """Safely parse a blob produced by :func:`compact_report`.
+
+    A compacted blob has one of two shapes:
+
+    * Pure JSON, when the compactor was able to fit within the budget.
+    * ``<valid JSON>\\n[truncated]`` when even the ``must_keep`` fields
+      exceeded the budget — this is the documented overflow contract, not
+      a bug. In that case we still want downstream consumers to recover
+      the JSON portion without crashing on ``json.loads``.
+
+    Returns a tuple ``(parsed_dict, was_truncated)``.  If the JSON portion
+    cannot be parsed, returns ``({}, True)`` rather than raising — the
+    ``True`` tells the caller to treat the payload as untrusted.
+    """
+    if not isinstance(blob, str) or not blob:
+        return {}, True
+    truncated = blob.endswith(TRUNCATION_MARKER)
+    json_part = blob[: -len(TRUNCATION_MARKER)].rstrip() if truncated else blob
+    try:
+        parsed = json.loads(json_part)
+    except (json.JSONDecodeError, ValueError):
+        return {}, True
+    if not isinstance(parsed, dict):
+        return {}, truncated
+    return parsed, truncated
+
+
 # Kept for backwards compatibility. New code should import Severity / Verdict
 # from ``core.enums`` directly. These dicts are derived from the enums so the
 # two sources can never disagree.
