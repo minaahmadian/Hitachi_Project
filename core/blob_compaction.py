@@ -35,6 +35,8 @@ from __future__ import annotations
 import json
 from typing import Any, Iterable, Sequence
 
+from core.enums import Severity, Verdict
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Public constants
@@ -45,15 +47,38 @@ TRUNCATION_MARKER = "[truncated]"
 prompts should treat its presence as a safety signal."""
 
 
-SEVERITY_ORDER: dict[str, int] = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
-VERDICT_ORDER: dict[str, int] = {
-    "RED_FLAG": 0,
-    "REVIEW": 1,
-    "JUSTIFICATION_SIGNALS": 2,
-    "TRACKED": 3,
+# Kept for backwards compatibility. New code should import Severity / Verdict
+# from ``core.enums`` directly. These dicts are derived from the enums so the
+# two sources can never disagree.
+SEVERITY_ORDER: dict[str, int] = {
+    Severity.HIGH.value: Severity.HIGH.order,
+    Severity.MEDIUM.value: Severity.MEDIUM.order,
+    Severity.LOW.value: Severity.LOW.order,
 }
-_UNKNOWN_SEV_RANK = 3
-_UNKNOWN_VER_RANK = 4
+VERDICT_ORDER: dict[str, int] = {
+    Verdict.RED_FLAG.value: Verdict.RED_FLAG.order,
+    Verdict.REVIEW.value: Verdict.REVIEW.order,
+    Verdict.JUSTIFICATION_SIGNALS.value: Verdict.JUSTIFICATION_SIGNALS.order,
+    Verdict.TRACKED.value: Verdict.TRACKED.order,
+}
+
+
+def _read_severity(item: dict[str, Any]) -> Severity:
+    """Read severity from an anomaly/verdict dict, accepting BOTH ``severity``
+    and ``matcher_severity`` keys.
+
+    This is the single source of truth for the safety gate: if either key
+    encodes HIGH/MEDIUM/LOW, we honour it. A downstream renaming that leaves
+    one key behind cannot silently disable the gate.
+    """
+    raw = item.get("severity")
+    if raw in (None, ""):
+        raw = item.get("matcher_severity")
+    return Severity.normalize(raw)
+
+
+def _read_verdict(item: dict[str, Any]) -> Verdict:
+    return Verdict.normalize(item.get("verdict"))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -67,7 +92,7 @@ def anomaly_digest(anomaly: dict[str, Any]) -> str:
     Example:  "C6-APCS-2 | HIGH | DOC_EVIDENCE_FAIL | Requirement C6-APCS-2 …"
     """
     rid = str(anomaly.get("requirement_id") or "").strip() or "-"
-    sev = str(anomaly.get("severity") or "").strip().upper() or "UNKNOWN"
+    sev = _read_severity(anomaly).value
     typ = str(anomaly.get("type") or "").strip() or "UNKNOWN"
     detail = str(anomaly.get("detail") or "").strip()
     if len(detail) > 160:
@@ -82,8 +107,8 @@ def verdict_digest(verdict: dict[str, Any]) -> str:
     Example:  "C6-APCS-2 | HIGH | RED_FLAG | evidence_source=rssom_rag_fallback"
     """
     rid = str(verdict.get("requirement_id") or "").strip() or "-"
-    sev = str(verdict.get("matcher_severity") or "").strip().upper() or "UNKNOWN"
-    ver = str(verdict.get("verdict") or "").strip().upper() or "UNKNOWN"
+    sev = _read_severity(verdict).value
+    ver = _read_verdict(verdict).value
     reason = str(verdict.get("reason") or verdict.get("evidence_source") or "").strip()
     if len(reason) > 140:
         reason = reason[:137] + "..."
@@ -92,36 +117,40 @@ def verdict_digest(verdict: dict[str, Any]) -> str:
 
 def severity_verdict_sort_key(item: dict[str, Any]) -> tuple[int, int]:
     """Sort key: HIGH & RED_FLAG first, UNKNOWN last."""
-    sev_raw = str(item.get("severity") or item.get("matcher_severity") or "").upper()
-    ver_raw = str(item.get("verdict") or "").upper()
-    sev = SEVERITY_ORDER.get(sev_raw, _UNKNOWN_SEV_RANK)
-    ver = VERDICT_ORDER.get(ver_raw, _UNKNOWN_VER_RANK)
-    return (sev, ver)
+    return (_read_severity(item).order, _read_verdict(item).order)
 
 
 def worst_verdict_in(verdicts: Iterable[dict[str, Any]]) -> str | None:
-    """Return the worst verdict token across a list of verdict entries."""
-    worst = _UNKNOWN_VER_RANK
+    """Return the worst verdict value across a list of verdict entries.
+
+    Returns ``None`` if the list is empty or contains only UNKNOWN verdicts.
+    """
+    best_rank = Verdict.UNKNOWN.order
     worst_label: str | None = None
     for v in verdicts:
         if not isinstance(v, dict):
             continue
-        label = str(v.get("verdict") or "").upper()
-        rank = VERDICT_ORDER.get(label, _UNKNOWN_VER_RANK)
-        if rank < worst:
-            worst = rank
-            worst_label = label
+        verdict = _read_verdict(v)
+        if verdict is Verdict.UNKNOWN:
+            continue
+        if verdict.order < best_rank:
+            best_rank = verdict.order
+            worst_label = verdict.value
     return worst_label
 
 
 def has_high_red_flag(verdicts: Iterable[dict[str, Any]]) -> bool:
-    """True iff any verdict is RED_FLAG on a HIGH-severity anomaly."""
+    """True iff any verdict is RED_FLAG on a HIGH-severity anomaly.
+
+    Reads severity from either ``severity`` or ``matcher_severity`` so the
+    safety gate fires regardless of which schema variant the upstream node
+    used. This is a deliberate choice: the gate must err on the side of
+    detection, never silent miss.
+    """
     for v in verdicts:
         if not isinstance(v, dict):
             continue
-        sev = str(v.get("matcher_severity") or "").upper()
-        ver = str(v.get("verdict") or "").upper()
-        if sev == "HIGH" and ver == "RED_FLAG":
+        if _read_severity(v) is Severity.HIGH and _read_verdict(v) is Verdict.RED_FLAG:
             return True
     return False
 

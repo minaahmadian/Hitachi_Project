@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
+from core.blob_compaction import _read_severity
+from core.enums import DetectiveStatus, Severity, StatusGate, Verdict
 from core.state import GraphState
 
 # Shown in pre-ISA / VDD so reviewers see how RSSOM corpus, matcher, and emails connect.
@@ -136,32 +138,32 @@ def _compute_overall(
     detective_status: str,
     verdict_per_anomaly: list[dict[str, Any]],
 ) -> str:
-    ms = matcher_status.upper()
-    rs = regulatory_status.upper()
-    ds = detective_status.upper()
+    ms = StatusGate.normalize(matcher_status)
+    rs = StatusGate.normalize(regulatory_status)
+    ds = DetectiveStatus.normalize(detective_status)
 
-    if ms == "RED_FLAG" or rs == "RED_FLAG":
-        return "RED_FLAG"
-    if ds == "SUSPICIOUS":
-        return "REVIEW_REQUIRED"
-    if ms == "WARNING" or rs == "WARNING":
-        return "REVIEW_REQUIRED"
+    if ms is StatusGate.RED_FLAG or rs is StatusGate.RED_FLAG:
+        return StatusGate.RED_FLAG.value
+    if ds is DetectiveStatus.SUSPICIOUS:
+        return StatusGate.REVIEW_REQUIRED.value
+    if ms is StatusGate.WARNING or rs is StatusGate.WARNING:
+        return StatusGate.REVIEW_REQUIRED.value
 
     high_red = any(
-        str(v.get("matcher_severity", "")).upper() == "HIGH" and str(v.get("verdict", "")).upper() == "RED_FLAG"
+        isinstance(v, dict)
+        and _read_severity(v) is Severity.HIGH
+        and Verdict.normalize(v.get("verdict")) is Verdict.RED_FLAG
         for v in verdict_per_anomaly
-        if isinstance(v, dict)
     )
     high_review = any(
-        str(v.get("matcher_severity", "")).upper() == "HIGH" and str(v.get("verdict", "")).upper() == "REVIEW"
+        isinstance(v, dict)
+        and _read_severity(v) is Severity.HIGH
+        and Verdict.normalize(v.get("verdict")) is Verdict.REVIEW
         for v in verdict_per_anomaly
-        if isinstance(v, dict)
     )
-    if high_red:
-        return "REVIEW_REQUIRED"
-    if high_review:
-        return "REVIEW_REQUIRED"
-    return "CLEAR"
+    if high_red or high_review:
+        return StatusGate.REVIEW_REQUIRED.value
+    return StatusGate.CLEAR.value
 
 
 def _summary_for_vdd(
@@ -174,12 +176,12 @@ def _summary_for_vdd(
     verdict_per_anomaly: list[dict[str, Any]],
 ) -> str:
     n_high = sum(
-        1 for v in verdict_per_anomaly if isinstance(v, dict) and str(v.get("matcher_severity", "")).upper() == "HIGH"
+        1 for v in verdict_per_anomaly
+        if isinstance(v, dict) and _read_severity(v) is Severity.HIGH
     )
     n_just = sum(
-        1
-        for v in verdict_per_anomaly
-        if isinstance(v, dict) and str(v.get("verdict", "")).upper() == "JUSTIFICATION_SIGNALS"
+        1 for v in verdict_per_anomaly
+        if isinstance(v, dict) and Verdict.normalize(v.get("verdict")) is Verdict.JUSTIFICATION_SIGNALS
     )
     parts = [
         EVIDENCE_CHAIN_TEXT,

@@ -40,6 +40,13 @@ from core.blob_compaction import (
     verdict_digest,
     worst_verdict_in,
 )
+from core.enums import (
+    AuditorAssessment,
+    DerogationOverall,
+    DetectiveStatus,
+    ReleaseDecision,
+    StatusGate,
+)
 from core.llm_factory import invoke_chat_groq
 from core.state import GraphState
 
@@ -259,8 +266,9 @@ def lead_assessor_node(state: GraphState):
     # or LLM behaviour.
     pre_isa = state.get("pre_isa_report") or {}
     raw_verdicts = pre_isa.get("verdict_per_anomaly") or []
-    if has_high_red_flag(raw_verdicts) and str(report.get("final_decision", "")).upper() != "NO-GO":
-        report["final_decision"] = "NO-GO"
+    llm_decision = ReleaseDecision.normalize(report.get("final_decision"))
+    if has_high_red_flag(raw_verdicts) and llm_decision is not ReleaseDecision.NO_GO:
+        report["final_decision"] = ReleaseDecision.NO_GO.value
         prior_expl = str(report.get("vdd_explanation") or "").strip()
         report["vdd_explanation"] = (
             "Safety override: at least one HIGH-severity anomaly has verdict=RED_FLAG in "
@@ -287,13 +295,13 @@ def _deterministic_fallback(state: GraphState, *, reason: str) -> dict:
     derogation = state.get("derogation_report", {}) or {}
     pre_isa = state.get("pre_isa_report", {}) or {}
 
-    auditor_assessment = str(auditor.get("overall_assessment", "PARTIAL")).upper()
-    detective_status = str(detective.get("status", "SUSPICIOUS")).upper()
-    regulatory_status = str(regulatory.get("status", "RED_FLAG")).upper()
+    auditor_assessment = AuditorAssessment.normalize(auditor.get("overall_assessment") or "PARTIAL")
+    detective_status = DetectiveStatus.normalize(detective.get("status") or "SUSPICIOUS")
+    regulatory_status = StatusGate.normalize(regulatory.get("status") or "RED_FLAG")
     derogation_needed = int(regulatory.get("derogation_needed", 0) or 0)
-    matcher_status = str(matcher.get("status", "WARNING")).upper()
-    derog_overall = str(derogation.get("overall", "NO_SIGNALS")).upper()
-    pre_isa_overall = str(pre_isa.get("overall", "REVIEW_REQUIRED")).upper()
+    matcher_status = StatusGate.normalize(matcher.get("status") or "WARNING")
+    derog_overall = DerogationOverall.normalize(derogation.get("overall") or "NO_SIGNALS")
+    pre_isa_overall = StatusGate.normalize(pre_isa.get("overall") or "REVIEW_REQUIRED")
     pre_isa_summary = str(pre_isa.get("summary_for_vdd", "")).strip()
 
     raw_verdicts = pre_isa.get("verdict_per_anomaly") or []
@@ -302,21 +310,22 @@ def _deterministic_fallback(state: GraphState, *, reason: str) -> dict:
 
     no_go = (
         any_high_red_flag
-        or matcher_status == "RED_FLAG"
-        or regulatory_status == "RED_FLAG"
+        or matcher_status is StatusGate.RED_FLAG
+        or regulatory_status is StatusGate.RED_FLAG
         or derogation_needed > 0
-        or detective_status == "SUSPICIOUS"
-        or auditor_assessment == "NON_COMPLIANT"
+        or detective_status is DetectiveStatus.SUSPICIOUS
+        or auditor_assessment is AuditorAssessment.NON_COMPLIANT
     )
 
+    final_decision = ReleaseDecision.NO_GO if no_go else ReleaseDecision.GO
     report = {
-        "final_decision": "NO-GO" if no_go else "GO",
+        "final_decision": final_decision.value,
         "vdd_explanation": (
             f"Deterministic fallback decision ({reason}). "
-            f"Pre-ISA overall={pre_isa_overall}. {pre_isa_summary} "
-            f"Raw gates: matcher={matcher_status}, derogation_scan={derog_overall}, "
-            f"auditor={auditor_assessment}, detective={detective_status}, "
-            f"regulatory_status={regulatory_status}, derogation_needed={derogation_needed}, "
+            f"Pre-ISA overall={pre_isa_overall.value}. {pre_isa_summary} "
+            f"Raw gates: matcher={matcher_status.value}, derogation_scan={derog_overall.value}, "
+            f"auditor={auditor_assessment.value}, detective={detective_status.value}, "
+            f"regulatory_status={regulatory_status.value}, derogation_needed={derogation_needed}, "
             f"any_high_red_flag={any_high_red_flag}, worst_verdict={worst_seen}."
         ),
         "mode": "deterministic_fallback",
