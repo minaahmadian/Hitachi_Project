@@ -61,9 +61,9 @@
   },
   {
     "id": "rssom_q06_apcs2",
-    "query": "vehicle crowding levels visualization on RTM section real time monitoring",
+    "query": "vehicle crowding visualization RTM section interface test with PIS-CU and TCMS",
     "relevant_requirement_ids": ["C6-APCS-2"],
-    "labeling_rationale": "RTM crowding visualization maps to C6-APCS-2 title."
+    "labeling_rationale": "APCS-2 is the only requirement whose title adds the PIS-CU and TCMS interface tests on top of the shared 'vehicle crowding levels visualization on RTM section' stem."
   },
   {
     "id": "rssom_q07_apcs3",

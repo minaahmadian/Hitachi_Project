@@ -130,6 +130,8 @@ def main() -> None:
                 "total_chunks": h.total_chunks,
                 "requirement_id": h.requirement_id,
                 "index_kind": h.index_kind,
+                "sources": list(h.sources),
+                "fused_score": h.fused_score,
             }
             for h in hits_raw
         ]
@@ -183,10 +185,13 @@ def main() -> None:
         )
     print()
     for row in per_query:
+        top_hit = row["retrieved_hits"][0] if row["retrieved_hits"] else {}
+        top_sources = "+".join(top_hit.get("sources", [])) or "n/a"
         print(
             f"{row['id']}: rank={row['metrics']['first_relevant_rank']} "
             f"relevant={row['relevant_requirement_ids']} "
-            f"top_score={(row['retrieved_hits'][0]['score'] if row['retrieved_hits'] else 'n/a')}"
+            f"top_score={top_hit.get('score', 'n/a')} "
+            f"top_sources={top_sources}"
         )
 
     payload = {"summary": summary, "per_query": per_query}

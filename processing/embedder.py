@@ -159,14 +159,27 @@ class HashEmbedder(EmbeddingProvider):
         self.dim: Final[int] = dim
 
     def embed(self, texts: list[str]) -> list[Vector]:
+        """
+        Deterministic hash embedding.
+
+        NOTE: Uses ``hashlib.md5`` (not Python's built-in ``hash()``) because
+        the latter is randomised per-process by PYTHONHASHSEED.  Using the
+        built-in hash would silently break the retrieval invariant that
+        "vectors stored in the index and vectors computed for a query live
+        in the same space" whenever a cached index is reloaded in a fresh
+        process — corrupting every dense search until the cache is rebuilt.
+        """
+        import hashlib
         import re
 
+        dim = self.dim
         vectors: list[Vector] = []
         for text in texts:
-            vec = [0.0] * self.dim
+            vec = [0.0] * dim
             terms = re.findall(r"\b\w+\b", (text or "").lower())
             for term in terms:
-                vec[hash(term) % self.dim] += 1.0
+                bucket = int.from_bytes(hashlib.md5(term.encode("utf-8")).digest()[:4], "big") % dim
+                vec[bucket] += 1.0
 
             norm = sum(x * x for x in vec) ** 0.5
             if norm > 0:
